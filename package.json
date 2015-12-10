@@ -1,0 +1,40 @@
+{
+  "name": "kambi-sportsbook-combo-widget",
+  "version": "0.1.0",
+  "description": "A combo building widget for the Kambi sportsbook",
+  "main": "dist/index.html",
+  "dependencies": {},
+  "devDependencies": {
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-awspublish": "^3.0.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-doxx": "0.0.5",
+    "gulp-filter": "^3.0.1",
+    "gulp-html-replace": "^1.5.4",
+    "gulp-install": "^0.6.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-ruby-sass": "^2.0.5",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-strip-debug": "^1.0.2",
+    "gulp-uglify": "^1.4.2",
+     "kambi-sportsbook-widget-library": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-library.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kambi-sportsbook-widgets/combo-widget.git"
+  },
+  "author": "Michael Blom <michael@globalmout.com>",
+  "contributors": [
+    "Andrei Teodorescu <andrei@globalmouth.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/kambi-sportsbook-widgets/combo-widget"
+}

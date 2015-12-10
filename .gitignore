@@ -1,0 +1,8 @@
+.idea
+node_modules
+.awspublish-*
+.buildTemp
+.sass-cache/
+docs
+*.map
+bower_components

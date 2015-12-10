@@ -1,0 +1,95 @@
+<!doctype html>
+<html ng-app="comboWidget">
+<head>
+   <title>Combo Widget</title>
+   <meta charset="UTF-8">
+   <meta name="apple-mobile-web-app-title" content="Kambi">
+   <meta name="description" content="Combo Widget">
+   <meta name="HandheldFriendly" content="True">
+   <meta name="MobileOptimized" content="320">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+   <meta name="fragment" content="!"/>
+
+   <meta name="mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-status-bar-style" content="black">
+   <meta name="apple-mobile-web-app-title" content="">
+
+   <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"/>
+   <!-- build:css -->
+   <!-- This section will be replaced in the gulp build process -->
+   <link rel="stylesheet" type="text/css" href="css/app.css"/>
+   <!-- endbuild -->
+   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.js"></script>
+   <script src="https://c3-static.kambi.com/sb-mobileclient/widget-api/1.0.0.7/kambi-widget-api.js"></script>
+   <!-- build:js -->
+   <!-- This section will be replaced in the gulp build process -->
+   <script src="js/app.js"></script>
+   <script src="js/controllers/appController.js"></script>
+   <script src="../node_modules/kambi-sportsbook-widget-library/src/js/controllers/widgetCoreController.js"></script>
+   <script src="../node_modules/kambi-sportsbook-widget-library/src/js/filters/startFrom.js"></script>
+   <script src="../node_modules/kambi-sportsbook-widget-library/src/js/services/kambiWidgetService.js"></script>
+   <script src="../node_modules/kambi-sportsbook-widget-library/src/js/services/kambiAPIService.js"></script>
+   <!-- endbuild -->
+</head>
+<body class="kw-body">
+<div class="kw-card l-flexbox l-vertical l-expander" ng-controller="appController">
+   <!--Header-->
+   <header class="kw-header l-pl-15">Combo widget</header>
+   <!--Main-->
+   <main class="l-flexbox l-vertical l-flexed l-pack-start">
+      <div class="kw-event l-flexbox l-vertical l-pb-15 l-pt-15 l-pl-15 l-pr-15 anim-fade-in"
+           ng-repeat="event in events | startFrom: startFrom | limitTo : listLimit"
+         >
+
+         <!--Competitors and path-->
+         <div class="kw-event-name-container l-flexbox l-vertical l-pack-center ">
+            <!--Competitors-->
+            <div class="kw-event-name l-flexbox" ng-click="navigateToLiveEvent(event.id)">
+               <div class="l-flexbox">
+                  <span class="text-truncate">{{event.homeName}}</span>
+               </div>
+               <div class="kw-event-name-divider l-pl-5 l-pr-5">-</div>
+               <div class="l-flexbox">
+                  <span class="text-truncate">{{event.awayName}}</span>
+               </div>
+            </div>
+            <!--Event path-->
+            <div class="kw-event-path l-flexbox">
+               <div class="l-flexbox" ng-class="{'text-truncate': $last}" ng-repeat="p in event.path">
+                  {{p.name}}
+                  <span ng-if="!$last" class="kw-event-path-divider l-pl-5 l-pr-5">{{!$last?'/':''}}</span>
+               </div>
+            </div>
+         </div>
+
+         <!--Outcomes-->
+         <div class="kw-event-outcomes l-flexbox l-mt-10">
+            <div class="kw-event-outcome l-flex-1 l-flexbox l-horizontal"
+                 ng-if="event.betoffer.outcomes.length <= 3"
+                 ng-repeat="outcome in event.betoffer.outcomes"
+                 ng-click="selectOutcome(outcome, event.betoffer.outcomes)"
+                 ng-class="{selected: outcome.selected===true} ">
+               <span class="kw-event-outcome-label text-truncate l-flex-2 l-pr-5">{{getOutcomeLabel(outcome, event)}}</span>
+               <span class="kw-event-outcome-odds l-flex-1 l-flexbox l-align-start l-pack-end"><strong>{{outcome.odds/1000}}</strong></span>
+            </div>
+            <div class="l-flexbox l-expander l-flex-1 l-pack-center l-align-center"
+                 ng-if="event.betoffer.outcomes.length > 3">
+               {{event.betoffer.outcomes.length }} outcomes
+            </div>
+         </div>
+      </div>
+   </main>
+   <!--Footer-->
+   <footer class="l-flexbox l-pack-end l-align-center l-mr-15 l-ml-15 l-mb-10">
+      <span class="kw-btn kw-plain" ng-click="selectNextOutcome()"><i class="ion-plus"></i></span>
+      <span class="kw-btn kw-plain" ng-click="resetSelection()"><i class="ion-refresh l-mr-5"></i>reset</span>
+      <span class="l-flexed"></span>
+      <span class="kw-btn kw-plain" ng-click="addOutcomesToBetslip()">Add to betslip - {{combinedOdds}}</span>
+   </footer>
+</div>
+</body>
+</html>
