@@ -11,7 +11,7 @@ __`client-widgets.js`__
 ...
 {
     "order": 1,
-    "widgetId": "Event poll widget",
+    "widgetId": "Combo widget",
     "args": {
         "groupId": 1000461733,
         "defaultListLimit": 3,
