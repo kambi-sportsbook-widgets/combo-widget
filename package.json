@@ -26,7 +26,7 @@
       "kambi-sportsbook-widget-library": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-library.git"
    },
    "scripts": {
-      "changelog": "changelog kambi-sportsbook-widgets/event-poll-widget all -m > CHANGELOG.md",
+      "changelog": "changelog kambi-sportsbook-widgets/combo-widget all -m > CHANGELOG.md",
       "test": "echo \"Error: no test specified\" && exit 1"
    },
    "repository": {

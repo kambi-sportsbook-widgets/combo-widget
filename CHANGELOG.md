@@ -2,14 +2,10 @@
 ==========
 
   * Update README.md
-
-2016-01-12
-==========
-
   * Added CHANGELOG
-  * KSBWI-60 Updated layout;
+  * Update README
 
-2016-01-05
+2015-12-10
 ==========
 
-  * Initial Commit KSBWI-60
+  * Initial commit
