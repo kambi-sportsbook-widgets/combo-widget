@@ -13,7 +13,7 @@ __`client-widgets.js`__
     "order": 1,
     "widgetId": "Combo widget",
     "args": {
-        "filter": 'football/all/all/,
+        "filter": 'football/all/all/',
         "defaultListLimit": 3,
         "selectionLimit": 12
     }
