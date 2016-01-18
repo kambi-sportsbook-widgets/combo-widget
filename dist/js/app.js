@@ -27,7 +27,7 @@
 
       // Default arguments, these will be overridden by the arguments from the widget api
       $scope.defaultArgs = {
-         groupId: 0,
+         filter: 'football/all/all/',
          defaultListLimit: 3, // A default setting for the size of the list, used when resetting
          selectionLimit: 12 // The maximum allowed selections, the bet slip supports up to 12 outcomes
       };
@@ -55,44 +55,46 @@
       $scope.args = angular.merge({}, $scope.defaultArgs);
 
       /**
-       * Fetches the offers from a group and sorts them according to their lowest outcome and then combines them with their related event
+       * Fetches the events based on the filter and sorts them according to their lowest outcome
+       * @param {String} filter A string with the filter
+       * @returns {*}
        */
-      $scope.getBetoffersByGroup = function ( groupId ) {
-         // Lading flag
+      $scope.getBetoffersByFilter = function ( filter ) {
+         // Loading flag
          $scope.loading = true;
-         // Call the api and get the specified group offers
-         return $apiService.getBetoffersByGroup(groupId)
+         // Call the api and get the filtered events
+         return $apiService.getEventsByFilter(filter)
             .then(function ( response ) {
                   $scope.events = [];
-                  // Sort through the bet offers based on their lowest outcome
-                  var sortedOffers = $scope.sortBetOffers(response.data.betoffers);
-                  var i = 0, len = sortedOffers.length, addedTeams = [], selectionCounter = 0;
-                  // Iterate over the sorted offers and find their event, then add the offer to the event and add the event to an array
-                  // This way we get events sorted according to their offers lowest id
+                  var sortedEvents = $scope.sortEventOffers(response.data.events);
+                  var i = 0, len = sortedEvents.length, selectionCounter = 0, addedTeams = [];
                   for ( ; i < len; ++i ) {
-                     var event = $scope.findEvent(response.data.events, sortedOffers[i].eventId);
-                     if ( event != null ) {
-                        if ( event.betoffers == null ) {
-                           // Check that the participants are not a in a previously added event, since they can only be in one outcome on the betslip
-                           var participantsExist = false, j = 0, plen = event.participants.length;
-                           for ( ; j < plen; ++j ) {
-                              if ( addedTeams.indexOf(event.participants[j].participantId) === -1 ) {
-                                 addedTeams.push(event.participants[j].participantId);
-                              } else {
-                                 participantsExist = true;
-                              }
-                           }
-                           // Finally if the participant hasn't already been added, add it now
-                           if ( !participantsExist ) {
-                              event.betoffer = sortedOffers[i];
-                              // We only want to mark the selection on as many items as we are currently displaying, so let's make sure of it
-                              if ( selectionCounter < $scope.listLimit ) {
-                                 event.betoffer.outcomes[event.betoffer.lowestOutcome].selected = true;
-                                 selectionCounter = selectionCounter + 1;
-                              }
-                              $scope.events.push(event);
-                           }
+                     // Check that the participants are not a in a previously added event, since they can only be in one outcome on the betslip
+                     var participantsExist = false;
+
+                     if ( sortedEvents[i].event.homeName != null ) {
+                        if ( addedTeams.indexOf(sortedEvents[i].event.homeName) === -1 ) {
+                           addedTeams.push(sortedEvents[i].event.homeName);
+                        } else {
+                           participantsExist = true;
                         }
+                     }
+
+                     if ( sortedEvents[i].event.awayName != null ) {
+                        if ( addedTeams.indexOf(sortedEvents[i].event.awayName) === -1 ) {
+                           addedTeams.push(sortedEvents[i].event.awayName);
+                        } else {
+                           participantsExist = true;
+                        }
+                     }
+
+                     // Finally if the participant hasn't already been added, add it now
+                     if ( !participantsExist ) {
+                        if ( selectionCounter < $scope.listLimit ) {
+                           sortedEvents[i].betOffers[0].outcomes[sortedEvents[i].betOffers[0].lowestOutcome].selected = true;
+                           selectionCounter = selectionCounter + 1;
+                        }
+                        $scope.events.push(sortedEvents[i]);
                      }
                   }
                   // Calculate the odds for the selected bets
@@ -108,23 +110,29 @@
       };
 
       /**
-       * Sorts through the offers based on the lowest odds value in their outcomes
-       * @param {Array.<Object>} offers An array of bet offers, including their outcomes
+       * Sorts the events bases on the lowest odds in the first offer, if it has any offer
+       * If the event does not contain a bet offer then it is filtered out
+       * @param {Array.<Object>} events An array of events, each containing events and betOffers.
+       * @returns {Array} The sorted and filtered array
        */
-      $scope.sortBetOffers = function ( offers ) {
-         var i = 0, len = offers.length;
+      $scope.sortEventOffers = function ( events ) {
+         var i = 0, len = events.length, eventsWithOffers = [];
          for ( ; i < len; ++i ) {
             // Find the lowest outcome odds in the offering, store the index of the lowest outcome in the object for reference, rather than sorting the outcomes
-            var j = 1, outcomesLen = offers[i].outcomes.length, lowestOutcome = 0;
-            for ( ; j < outcomesLen; ++j ) {
-               if ( offers[i].outcomes[j].odds < offers[i].outcomes[lowestOutcome].odds ) {
-                  lowestOutcome = j;
+            if ( events[i].betOffers[0] != null && events[i].betOffers[0].outcomes != null && events[i].betOffers[0].outcomes.length > 0 &&
+               events[i].betOffers[0].outcomes.length <= 3 ) {
+               var j = 1, outcomesLen = events[i].betOffers[0].outcomes.length, lowestOutcome = 0;
+               for ( ; j < outcomesLen; ++j ) {
+                  if ( events[i].betOffers[0].outcomes[j].odds < events[i].betOffers[0].outcomes[lowestOutcome].odds ) {
+                     lowestOutcome = j;
+                  }
                }
+               events[i].betOffers[0].lowestOutcome = lowestOutcome;
+               eventsWithOffers.push(events[i]);
             }
-            offers[i].lowestOutcome = lowestOutcome;
          }
-         // Sort the bet offers based on their lowest outcome
-         return $scope.quickSortBetOffers(offers);
+         // Sort the events based on their lowest outcome
+         return $scope.quickSortBetEvents(eventsWithOffers);
       };
 
       /**
@@ -134,7 +142,7 @@
        * @param {number} [right] Option end index
        * @returns {Array} Returns an array of bet offers
        */
-      $scope.quickSortBetOffers = function ( items, left, right ) {
+      $scope.quickSortBetEvents = function ( items, left, right ) {
 
          function swap( items, firstIndex, secondIndex ) {
             var temp = items[firstIndex];
@@ -148,11 +156,13 @@
                j = right;
 
             while ( i <= j ) {
-               while ( items[i].outcomes[items[i].lowestOutcome].odds < pivot.outcomes[pivot.lowestOutcome].odds ) {
+               while ( items[i].betOffers[0].outcomes[items[i].betOffers[0].lowestOutcome].odds <
+                        pivot.betOffers[0].outcomes[pivot.betOffers[0].lowestOutcome].odds ) {
                   i++;
                }
 
-               while ( items[j].outcomes[items[j].lowestOutcome].odds > pivot.outcomes[pivot.lowestOutcome].odds ) {
+               while ( items[j].betOffers[0].outcomes[items[j].betOffers[0].lowestOutcome].odds >
+                        pivot.betOffers[0].outcomes[pivot.betOffers[0].lowestOutcome].odds ) {
                   j--;
                }
 
@@ -175,11 +185,11 @@
             index = partition(items, left, right);
 
             if ( left < index - 1 ) {
-               $scope.quickSortBetOffers(items, left, index - 1);
+               $scope.quickSortBetEvents(items, left, index - 1);
             }
 
             if ( index < right ) {
-               $scope.quickSortBetOffers(items, index, right);
+               $scope.quickSortBetEvents(items, index, right);
             }
          }
 
@@ -201,10 +211,10 @@
                break;
             default:
                for ( ; i < $scope.listLimit; ++i ) {
-                  var j = 0, outcomesLen = $scope.events[i].betoffer.outcomes.length;
+                  var j = 0, outcomesLen = $scope.events[i].betOffers[0].outcomes.length;
                   for ( ; j < outcomesLen; ++j ) {
-                     if ( $scope.events[i].betoffer.outcomes[j].selected ) {
-                        result = result * $scope.events[i].betoffer.outcomes[j].odds / 1000;
+                     if ( $scope.events[i].betOffers[0].outcomes[j].selected ) {
+                        result = result * $scope.events[i].betOffers[0].outcomes[j].odds / 1000;
                      }
                   }
                }
@@ -219,10 +229,10 @@
       $scope.addOutcomesToBetslip = function () {
          var i = 0, outcomes = [];
          for ( ; i < $scope.listLimit; ++i ) {
-            var j = 0, outcomesLen = $scope.events[i].betoffer.outcomes.length;
+            var j = 0, outcomesLen = $scope.events[i].betOffers[0].outcomes.length;
             for ( ; j < outcomesLen; ++j ) {
-               if ( $scope.events[i].betoffer.outcomes[j].selected ) {
-                  outcomes.push($scope.events[i].betoffer.outcomes[j].id);
+               if ( $scope.events[i].betOffers[0].outcomes[j].selected ) {
+                  outcomes.push($scope.events[i].betOffers[0].outcomes[j].id);
                }
             }
 
@@ -236,9 +246,9 @@
       $scope.selectNextOutcome = function () {
          var i = 0, len = $scope.events.length, selectedCount = 0, alreadySelected = 0;
          for ( ; i < len; ++i ) {
-            var j = 0, outcomeLen = $scope.events[i].betoffer.outcomes.length, hasSelected = false;
+            var j = 0, outcomeLen = $scope.events[i].betOffers[0].outcomes.length, hasSelected = false;
             for ( ; j < outcomeLen; ++j ) {
-               if ( $scope.events[i].betoffer.outcomes[j].selected === true ) {
+               if ( $scope.events[i].betOffers[0].outcomes[j].selected === true ) {
                   hasSelected = true;
                   alreadySelected = alreadySelected + 1;
                }
@@ -251,7 +261,7 @@
                   $scope.listLimit = $scope.listLimit + 1;
                   $scope.setWidgetHeight($scope.currentHeight + $scope.rowHeight);
                }
-               $scope.events[i].betoffer.outcomes[$scope.events[i].betoffer.lowestOutcome].selected = true;
+               $scope.events[i].betOffers[0].outcomes[$scope.events[i].betOffers[0].lowestOutcome].selected = true;
                $scope.calculateCombinedOdds();
                return true;
             } else {
@@ -267,13 +277,13 @@
       $scope.resetSelection = function () {
          var i = 0, len = $scope.events.length, selectionCounter = 0;
          for ( ; i < len; ++i ) {
-            var j = 0, outcomeLen = $scope.events[i].betoffer.outcomes.length;
+            var j = 0, outcomeLen = $scope.events[i].betOffers[0].outcomes.length;
             for ( ; j < outcomeLen; ++j ) {
-               if ( selectionCounter < $scope.args.defaultListLimit && j === $scope.events[i].betoffer.lowestOutcome ) {
-                  $scope.events[i].betoffer.outcomes[j].selected = true;
+               if ( selectionCounter < $scope.args.defaultListLimit && j === $scope.events[i].betOffers[0].lowestOutcome ) {
+                  $scope.events[i].betOffers[0].outcomes[j].selected = true;
                   selectionCounter = selectionCounter + 1;
                } else {
-                  $scope.events[i].betoffer.outcomes[j].selected = false;
+                  $scope.events[i].betOffers[0].outcomes[j].selected = false;
                }
 
             }
@@ -308,9 +318,9 @@
       // The init-method returns a promise that resolves when all of the configurations are set, for instance the $scope.args variables
       // so we can call our methods that require parameters from the widget settings after the init method is called
       $scope.init().then(function () {
-         // Laad the data from the api
-         $scope.getBetoffersByGroup($scope.args.groupId);
-      })
+         // Load the data from the api
+         $scope.getBetoffersByFilter($scope.args.filter);
+      });
 
 
    }
@@ -321,4 +331,4 @@
 
 }).call(this);
 
-!function(){"use strict";function e(e,t,n,r){e.apiConfigSet=!1,e.appArgsSet=!1,e.oddsFormat="decimal",e.defaultHeight=350,e.currentHeight=350,e.apiVersion="v2",e.streamingAllowedForPlayer=!1,e.defaultArgs={},e.init=function(){var i=r.defer(),a=e.$on("CLIENT:CONFIG",function(t,r){null!=r.oddsFormat&&e.setOddsFormat(r.oddsFormat),r.version=e.apiVersion,n.setConfig(r),e.apiConfigSet=!0,e.apiConfigSet&&e.appArgsSet&&i.resolve(),a()}),o=e.$on("WIDGET:ARGS",function(t,r){e.setArgs(r),r.hasOwnProperty("offering")&&n.setOffering(r.offering),e.appArgsSet=!0,e.apiConfigSet&&e.appArgsSet&&i.resolve(),o()});return t.setWidgetHeight(e.defaultHeight),t.requestWidgetHeight(),t.enableWidgetTransition(!0),t.requestClientConfig(),t.requestWidgetArgs(),t.requestBetslipOutcomes(),t.requestOddsFormat(),i.promise},e.navigateToLiveEvent=function(e){t.navigateToLiveEvent(e)},e.getWidgetHeight=function(){t.requestWidgetHeight()},e.setWidgetHeight=function(n){e.currentHeight=n,t.setWidgetHeight(n)},e.setWidgetEnableTransition=function(e){t.enableWidgetTransition(e)},e.removeWidget=function(){t.removeWidget()},e.addOutcomeToBetslip=function(e){t.addOutcomeToBetslip(e.id)},e.removeOutcomeFromBetslip=function(e){t.removeOutcomeFromBetslip(e.id)},e.requestBetslipOutcomes=function(){t.requestBetslipOutcomes()},e.requestWidgetArgs=function(){t.requestWidgetArgs()},e.requestPageInfo=function(){t.requestPageInfo()},e.requestOddsFormat=function(){t.requestOddsFormat()},e.setOddsFormat=function(t){e.oddsFormat=t},e.findEvent=function(e,t){for(var n=0,r=e.length;r>n;++n)if(e[n].id===t)return e[n];return null},e.getOutcomeLabel=function(e,t){return n.getOutcomeLabel(e,t)},e.setArgs=function(t){var n=e.defaultArgs;for(var r in t)t.hasOwnProperty(r)&&n.hasOwnProperty(r)&&(n[r]=t[r]);e.args=n},e.setPages=function(t,n,r){var i=r||t.length,a=Math.ceil(i/n),o=0;for(e.pages=[];a>o;++o)e.pages.push({startFrom:n*o,page:o+1})},e.updateBetOfferOutcomes=function(e,t){for(var n=0,r=e.outcomes.length,i=t.length;r>n;++n){var a=0,o=-1;for(e.outcomes[n].selected=!1;i>a;a++)e.outcomes[n].id===t[a].id&&(e.outcomes[n].odds=t[a].odds,o=n),-1!==o&&(e.outcomes[o].selected=!0)}},e.$on("WIDGET:HEIGHT",function(t,n){e.currentHeight=n})}!function(t){return t.controller("widgetCoreController",["$scope","kambiWidgetService","kambiAPIService","$q",e])}(angular.module("widgetCore",[]))}(),function(){"use strict";!function(e){return e.directive("kambiPaginationDirective",[function(){return{restrict:"E",scope:{list:"=list",listLimit:"=",pages:"=",startFrom:"=",activePage:"="},template:'<span ng-class="{disabled:activePage === 1}" ng-if="pages.length > 1" ng-click="pagePrev()" class="kw-page-link kw-pagination-arrow"><i class="ion-ios-arrow-left"></i></span><span ng-if="pages.length > 1" ng-repeat="page in getPagination()" ng-click="setActivePage(page)" ng-class="{active:page === activePage}" class="kw-page-link l-pack-center l-align-center">{{page}}</span><span ng-class="{disabled:activePage === pages.length}" ng-if="pages.length > 1" ng-click="pageNext()" class="kw-page-link kw-pagination-arrow"><i class="ion-ios-arrow-right"></i></span>',controller:["$scope",function(e){e.activePage=1,e.setPage=function(t){e.startFrom=t.startFrom,e.activePage=t.page},e.setActivePage=function(t){e.setPage(e.pages[t-1])},e.pagePrev=function(){e.activePage>1&&e.setPage(e.pages[e.activePage-2])},e.pageNext=function(){e.activePage<e.pages.length&&e.setPage(e.pages[e.activePage])},e.pageCount=function(){return Math.ceil(e.list.length/e.listLimit)},e.getPagination=function(){var t=[],n=5,r=e.activePage,i=e.pageCount(),a=1,o=i;i>n&&(a=Math.max(r-Math.floor(n/2),1),o=a+n-1,o>i&&(o=i,a=o-n+1));for(var s=a;o>=s;s++)t.push(s);return t}}]}}])}(angular.module("widgetCore"))}(),function(){!function(e){"use strict";e.filter("startFrom",function(){return function(e,t){return e?(t=+t,e.slice(t)):[]}})}(angular.module("widgetCore"))}(),function(){"use strict";!function(e){return e.service("kambiAPIService",["$http","$q",function(e,t){var n={};return n.configDefer=t.defer(),n.configSet=!1,n.offeringSet=!1,n.config={apiBaseUrl:null,channelId:null,currency:null,locale:null,market:null,offering:null,clientId:null,version:"v2"},n.setConfig=function(e){for(var t in e)e.hasOwnProperty(t)&&n.config.hasOwnProperty(t)&&(n.config[t]=e[t]);n.config.apiBaseUrl=n.config.apiBaseUrl.replace(/\{apiVersion}/gi,n.config.version),n.configSet=!0,n.configSet&&n.offeringSet&&n.configDefer.resolve()},n.setOffering=function(e){n.config.offering=e,n.offeringSet=!0,n.configSet&&n.offeringSet&&n.configDefer.resolve()},n.getGroupEvents=function(e){var t="/event/group/"+e+".json";return n.doRequest(t)},n.getLiveEvents=function(){var e="/event/live/open.json";return n.doRequest(e)},n.getBetoffersByGroup=function(e,t,r,i,a){var o="/betoffer/main/group/"+e+".json";return n.doRequest(o,{include:"participants"})},n.getGroupById=function(e,t){var r="/group/"+e+".json";return n.doRequest(r,{depth:t})},n.doRequest=function(r,i){return n.configDefer.promise.then(function(){if(null==n.config.offering)return t.reject("The offering has not been set, please provide it in the widget arguments");var a=n.config.apiBaseUrl+n.config.offering+r,o=i||{},s={lang:o.locale||n.config.locale,market:o.market||n.config.market,client_id:o.clientId||n.config.clientId,include:o.include||null,callback:"JSON_CALLBACK"};return e.jsonp(a,{params:s,cache:!1})})},n.getOutcomeLabel=function(e,t){switch(e.type){case"OT_ONE":return t.homeName;case"OT_CROSS":return"Draw";case"OT_TWO":return t.awayName;default:return e.label}},n}])}(angular.module("widgetCore"))}(),function(){"use strict";!function(e){return e.service("kambiWidgetService",["$rootScope","$window","$q",function(e,t,n){var r,i,a={};return t.KambiWidget&&(i=n.defer(),r=i.promise,t.KambiWidget.apiReady=function(e){a.api=e,i.resolve(e)},t.KambiWidget.receiveResponse=function(e){a.handleResponse(e)}),a.handleResponse=function(t){switch(t.type){case a.api.WIDGET_HEIGHT:e.$broadcast("WIDGET:HEIGHT",t.data);break;case a.api.BETSLIP_OUTCOMES:e.$broadcast("OUTCOMES:UPDATE",t.data);break;case a.api.WIDGET_ARGS:e.$broadcast("WIDGET:ARGS",t.data);break;case a.api.PAGE_INFO:e.$broadcast("PAGE:INFO",t.data);break;case a.api.CLIENT_ODDS_FORMAT:e.$broadcast("ODDS:FORMAT",t.data);break;case a.api.CLIENT_CONFIG:e.$broadcast("CLIENT:CONFIG",t.data);break;case a.api.USER_LOGGED_IN:e.$broadcast("USER:LOGGED_IN",t.data)}},a.requestWidgetHeight=function(){var e=n.defer();return r.then(function(e){e.request(e.WIDGET_HEIGHT)}),e.promise},a.setWidgetHeight=function(e){var t=n.defer();return r.then(function(t){t.set(t.WIDGET_HEIGHT,e)}),t.promise},a.enableWidgetTransition=function(e){var t=n.defer();return r.then(function(t){e?t.set(t.WIDGET_ENABLE_TRANSITION):t.set(t.WIDGET_DISABLE_TRANSITION)}),t.promise},a.removeWidget=function(){var e=n.defer();return r.then(function(e){e.remove()}),e.promise},a.navigateToLiveEvent=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#event/live/"+e)}),t.promise},a.navigateToEvent=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#event/"+e)}),t.promise},a.navigateToGroup=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#group/"+e)}),t.promise},a.navigateToLiveEvents=function(){var e=n.defer();return r.then(function(e){e.navigateClient("#events/live")}),e.promise},a.addOutcomeToBetslip=function(e,t,i,a){var o=n.defer();return r.then(function(n){var r=[];angular.isArray(e)?r=e:r.push(e);var o={outcomes:r};null!=t&&(angular.isArray(t)?o.stakes=t:o.stakes=[t]),o.couponType=1===r.length?n.BETSLIP_OUTCOMES_ARGS.TYPE_SINGLE:n.BETSLIP_OUTCOMES_ARGS.TYPE_COMBINATION,o.updateMode="replace"!==i?n.BETSLIP_OUTCOMES_ARGS.UPDATE_APPEND:n.BETSLIP_OUTCOMES_ARGS.UPDATE_REPLACE,null!=a&&(o.source=a),n.set(n.BETSLIP_OUTCOMES,o)}),o.promise},a.removeOutcomeFromBetslip=function(e){var t=n.defer();return r.then(function(t){var n=[];angular.isArray(e)?n=e:n.push(e),t.set(t.BETSLIP_OUTCOMES_REMOVE,{outcomes:n})}),t.promise},a.requestBetslipOutcomes=function(){var e=n.defer();return r.then(function(e){e.request(e.BETSLIP_OUTCOMES)}),e.promise},a.requestPageInfo=function(){var e=n.defer();return r.then(function(e){e.request(e.PAGE_INFO)}),e.promise},a.requestWidgetArgs=function(){var e=n.defer();return r.then(function(e){e.request(e.WIDGET_ARGS)}),e.promise},a.requestClientConfig=function(){var e=n.defer();return r.then(function(e){e.request(e.CLIENT_CONFIG)}),e.promise},a.requestOddsFormat=function(){var e=n.defer();return r.then(function(e){e.request(e.CLIENT_ODDS_FORMAT)}),e.promise},a}])}(angular.module("widgetCore"))}();
+!function(){"use strict";function e(t,n,r,i,a){t.apiConfigSet=!1,t.appArgsSet=!1,t.oddsFormat="decimal",t.defaultHeight=350,t.currentHeight=350,t.apiVersion="v2",t.streamingAllowedForPlayer=!1,t.defaultArgs={},t.init=function(){var e=i.defer(),a=t.$on("CLIENT:CONFIG",function(n,i){null!=i.oddsFormat&&t.setOddsFormat(i.oddsFormat),i.version=t.apiVersion,r.setConfig(i),t.apiConfigSet=!0,t.apiConfigSet&&t.appArgsSet&&e.resolve(),a()}),o=t.$on("WIDGET:ARGS",function(n,i){t.setArgs(i),null!=i&&i.hasOwnProperty("offering")&&r.setOffering(i.offering),t.appArgsSet=!0,t.apiConfigSet&&t.appArgsSet&&e.resolve(),o()});return n.setWidgetHeight(t.defaultHeight),n.requestWidgetHeight(),n.enableWidgetTransition(!0),n.requestClientConfig(),n.requestWidgetArgs(),n.requestBetslipOutcomes(),n.requestOddsFormat(),e.promise},t.getConfigValue=function(e){return r.config.hasOwnProperty(e)?r.config[e]:null},t.navigateToLiveEvent=function(e){n.navigateToLiveEvent(e)},t.getWidgetHeight=function(){n.requestWidgetHeight()},t.setWidgetHeight=function(e){t.currentHeight=e,n.setWidgetHeight(e)},t.setWidgetEnableTransition=function(e){n.enableWidgetTransition(e)},t.removeWidget=function(){n.removeWidget()},t.addOutcomeToBetslip=function(e){n.addOutcomeToBetslip(e.id)},t.removeOutcomeFromBetslip=function(e){n.removeOutcomeFromBetslip(e.id)},t.requestBetslipOutcomes=function(){n.requestBetslipOutcomes()},t.requestWidgetArgs=function(){n.requestWidgetArgs()},t.requestPageInfo=function(){n.requestPageInfo()},t.requestOddsFormat=function(){n.requestOddsFormat()},t.setOddsFormat=function(e){t.oddsFormat=e},t.findEvent=function(e,t){for(var n=0,r=e.length;r>n;++n)if(e[n].id===t)return e[n];return null},t.getOutcomeLabel=function(e,t){return r.getOutcomeLabel(e,t)},t.setArgs=function(e){var n=t.defaultArgs;for(var r in e)e.hasOwnProperty(r)&&n.hasOwnProperty(r)&&(n[r]=e[r]);t.args=n},t.setPages=function(e,n,r){var i=r||e.length,a=Math.ceil(i/n),o=0;for(t.pages=[];a>o;++o)t.pages.push({startFrom:n*o,page:o+1})},t.updateBetOfferOutcomes=function(e,t){for(var n=0,r=e.outcomes.length,i=t.length;r>n;++n){var a=0,o=-1;for(e.outcomes[n].selected=!1;i>a;a++)e.outcomes[n].id===t[a].id&&(e.outcomes[n].odds=t[a].odds,o=n),-1!==o&&(e.outcomes[o].selected=!0)}};try{angular.module("widgetCore.translate"),angular.extend(e,a("translateController",{$scope:t}))}catch(o){}t.$on("WIDGET:HEIGHT",function(e,n){t.currentHeight=n})}!function(t){return t.controller("widgetCoreController",["$scope","kambiWidgetService","kambiAPIService","$q","$controller",e])}(angular.module("widgetCore",[]))}(),function(){!function(e){"use strict";e.filter("startFrom",function(){return function(e,t){return e?(t=+t,e.slice(t)):[]}})}(angular.module("widgetCore"))}(),function(){"use strict";!function(e){return e.directive("kambiPaginationDirective",[function(){return{restrict:"E",scope:{list:"=list",listLimit:"=",pages:"=",startFrom:"=",activePage:"="},template:'<span ng-class="{disabled:activePage === 1}" ng-if="pages.length > 1" ng-click="pagePrev()" class="kw-page-link kw-pagination-arrow"><i class="ion-ios-arrow-left"></i></span><span ng-if="pages.length > 1" ng-repeat="page in getPagination()" ng-click="setActivePage(page)" ng-class="{active:page === activePage}" class="kw-page-link l-pack-center l-align-center">{{page}}</span><span ng-class="{disabled:activePage === pages.length}" ng-if="pages.length > 1" ng-click="pageNext()" class="kw-page-link kw-pagination-arrow"><i class="ion-ios-arrow-right"></i></span>',controller:["$scope",function(e){e.activePage=1,e.setPage=function(t){e.startFrom=t.startFrom,e.activePage=t.page},e.setActivePage=function(t){e.setPage(e.pages[t-1])},e.pagePrev=function(){e.activePage>1&&e.setPage(e.pages[e.activePage-2])},e.pageNext=function(){e.activePage<e.pages.length&&e.setPage(e.pages[e.activePage])},e.pageCount=function(){return Math.ceil(e.list.length/e.listLimit)},e.getPagination=function(){var t=[],n=5,r=e.activePage,i=e.pageCount(),a=1,o=i;i>n&&(a=Math.max(r-Math.floor(n/2),1),o=a+n-1,o>i&&(o=i,a=o-n+1));for(var s=a;o>=s;s++)t.push(s);return 0!==i&&r>i&&e.setActivePage(1),t}}]}}])}(angular.module("widgetCore"))}(),function(){"use strict";!function(e){return e.service("kambiAPIService",["$http","$q","$rootScope",function(e,t,n){var r={};return r.configDefer=t.defer(),r.configSet=!1,r.offeringSet=!1,r.config={apiBaseUrl:null,apiUrl:null,channelId:null,currency:null,locale:null,market:null,offering:null,clientId:null,version:null},r.setConfig=function(e){for(var t in e)if(e.hasOwnProperty(t)&&r.config.hasOwnProperty(t))switch(r.config[t]=e[t],t){case"locale":n.$broadcast("LOCALE:CHANGE",e[t])}r.configSet=!0,r.configSet&&r.offeringSet&&r.configDefer.resolve()},r.setOffering=function(e){r.config.offering=e,r.offeringSet=!0,r.configSet&&r.offeringSet&&r.configDefer.resolve()},r.getGroupEvents=function(e){var t="/event/group/"+e+".json";return r.doRequest(t)},r.getEventsByFilterParameters=function(e,t,n,i,a,o){var s="/listView/";return s+=null!=e?r.parseFilterParameter(e):"all/",s+=null!=t?r.parseFilterParameter(t):"all/",s+=null!=n?r.parseFilterParameter(n):"all/",s+="all/",s+=null!=a?r.parseFilterParameter(e):"all/",r.doRequest(s,o,"v3")},r.parseFilterParameter=function(e){var t="";if(null!=e)if(angular.isArray(e)){for(var n=0,r=e.length;r>n;++n){if(angular.isArray(e[n])){var i=0,a=e[n].length;for(t+="[";a>i;++i)t+=e[n][i],a-1>i&&(t+=",");t+="]"}else t+=e[n];r-1>n&&(t+=",")}t+="/"}else angular.isstring(e)&&(t+=e);else t+="all/";return t},r.getEventsByFilter=function(e,t){var n="/listView/"+e;return r.doRequest(n,t,"v3")},r.getLiveEvents=function(){var e="/event/live/open.json";return r.doRequest(e)},r.getBetoffersByGroup=function(e,t,n,i,a){var o="/betoffer/main/group/"+e+".json";return r.doRequest(o,{include:"participants"})},r.getGroupById=function(e,t){var n="/group/"+e+".json";return r.doRequest(n,{depth:t})},r.doRequest=function(n,i,a){return r.configDefer.promise.then(function(){if(null==r.config.offering)return t.reject("The offering has not been set, please provide it in the widget arguments");var o=r.config.apiBaseUrl.replace("{apiVersion}",null!=a?a:r.config.version),s=o+r.config.offering+n,u=i||{},c={lang:u.locale||r.config.locale,market:u.market||r.config.market,client_id:u.clientId||r.config.clientId,include:u.include||null,callback:"JSON_CALLBACK"};return e.jsonp(s,{params:c,cache:!1})})},r.getOutcomeLabel=function(e,t){switch(e.type){case"OT_ONE":return t.homeName;case"OT_CROSS":return"Draw";case"OT_TWO":return t.awayName;default:return e.label}},r}])}(angular.module("widgetCore"))}(),function(){"use strict";!function(e){return e.service("kambiWidgetService",["$rootScope","$window","$q",function(e,t,n){var r,i,a={};return t.KambiWidget&&(i=n.defer(),r=i.promise,t.KambiWidget.apiReady=function(e){a.api=e,i.resolve(e)},t.KambiWidget.receiveResponse=function(e){a.handleResponse(e)}),a.handleResponse=function(t){switch(t.type){case a.api.WIDGET_HEIGHT:e.$broadcast("WIDGET:HEIGHT",t.data);break;case a.api.BETSLIP_OUTCOMES:e.$broadcast("OUTCOMES:UPDATE",t.data);break;case a.api.WIDGET_ARGS:e.$broadcast("WIDGET:ARGS",t.data);break;case a.api.PAGE_INFO:e.$broadcast("PAGE:INFO",t.data);break;case a.api.CLIENT_ODDS_FORMAT:e.$broadcast("ODDS:FORMAT",t.data);break;case a.api.CLIENT_CONFIG:e.$broadcast("CLIENT:CONFIG",t.data);break;case a.api.USER_LOGGED_IN:e.$broadcast("USER:LOGGED_IN",t.data)}},a.requestWidgetHeight=function(){var e=n.defer();return r.then(function(e){e.request(e.WIDGET_HEIGHT)}),e.promise},a.setWidgetHeight=function(e){var t=n.defer();return r.then(function(t){t.set(t.WIDGET_HEIGHT,e)}),t.promise},a.enableWidgetTransition=function(e){var t=n.defer();return r.then(function(t){e?t.set(t.WIDGET_ENABLE_TRANSITION):t.set(t.WIDGET_DISABLE_TRANSITION)}),t.promise},a.removeWidget=function(){var e=n.defer();return r.then(function(e){e.remove()}),e.promise},a.navigateToLiveEvent=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#event/live/"+e)}),t.promise},a.navigateToEvent=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#event/"+e)}),t.promise},a.navigateToGroup=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#group/"+e)}),t.promise},a.navigateToLiveEvents=function(){var e=n.defer();return r.then(function(e){e.navigateClient("#events/live")}),e.promise},a.addOutcomeToBetslip=function(e,t,i,a){var o=n.defer();return r.then(function(n){var r=[];angular.isArray(e)?r=e:r.push(e);var o={outcomes:r};null!=t&&(angular.isArray(t)?o.stakes=t:o.stakes=[t]),o.couponType=1===r.length?n.BETSLIP_OUTCOMES_ARGS.TYPE_SINGLE:n.BETSLIP_OUTCOMES_ARGS.TYPE_COMBINATION,o.updateMode="replace"!==i?n.BETSLIP_OUTCOMES_ARGS.UPDATE_APPEND:n.BETSLIP_OUTCOMES_ARGS.UPDATE_REPLACE,null!=a&&(o.source=a),n.set(n.BETSLIP_OUTCOMES,o)}),o.promise},a.removeOutcomeFromBetslip=function(e){var t=n.defer();return r.then(function(t){var n=[];angular.isArray(e)?n=e:n.push(e),t.set(t.BETSLIP_OUTCOMES_REMOVE,{outcomes:n})}),t.promise},a.requestBetslipOutcomes=function(){var e=n.defer();return r.then(function(e){e.request(e.BETSLIP_OUTCOMES)}),e.promise},a.requestPageInfo=function(){var e=n.defer();return r.then(function(e){e.request(e.PAGE_INFO)}),e.promise},a.requestWidgetArgs=function(){var e=n.defer();return r.then(function(e){e.request(e.WIDGET_ARGS)}),e.promise},a.requestClientConfig=function(){var e=n.defer();return r.then(function(e){e.request(e.CLIENT_CONFIG)}),e.promise},a.requestOddsFormat=function(){var e=n.defer();return r.then(function(e){e.request(e.CLIENT_ODDS_FORMAT)}),e.promise},a}])}(angular.module("widgetCore"))}();

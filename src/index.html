@@ -48,18 +48,18 @@
          <!--Competitors and path-->
          <div class="kw-event-name-container l-flexbox l-vertical l-pack-center ">
             <!--Competitors-->
-            <div class="kw-event-name l-flexbox" ng-click="navigateToLiveEvent(event.id)">
+            <div class="kw-event-name l-flexbox" ng-click="navigateToLiveEvent(event.event.id)">
                <div class="l-flexbox">
-                  <span class="text-truncate">{{event.homeName}}</span>
+                  <span class="text-truncate">{{event.event.homeName}}</span>
                </div>
                <div class="kw-event-name-divider l-pl-5 l-pr-5">-</div>
                <div class="l-flexbox">
-                  <span class="text-truncate">{{event.awayName}}</span>
+                  <span class="text-truncate">{{event.event.awayName}}</span>
                </div>
             </div>
             <!--Event path-->
             <div class="kw-event-path l-flexbox">
-               <div class="l-flexbox" ng-class="{'text-truncate': $last}" ng-repeat="p in event.path">
+               <div class="l-flexbox" ng-class="{'text-truncate': $last}" ng-repeat="p in event.event.path">
                   {{p.name}}
                   <span ng-if="!$last" class="kw-event-path-divider l-pl-5 l-pr-5">{{!$last?'/':''}}</span>
                </div>
@@ -69,16 +69,16 @@
          <!--Outcomes-->
          <div class="kw-event-outcomes l-flexbox l-mt-10">
             <div class="kw-event-outcome l-flex-1 l-flexbox l-horizontal"
-                 ng-if="event.betoffer.outcomes.length <= 3"
-                 ng-repeat="outcome in event.betoffer.outcomes"
-                 ng-click="selectOutcome(outcome, event.betoffer.outcomes)"
+                 ng-if="event.betOffers[0].outcomes.length <= 3"
+                 ng-repeat="outcome in event.betOffers[0].outcomes"
+                 ng-click="selectOutcome(outcome, event.betOffers[0].outcomes)"
                  ng-class="{selected: outcome.selected===true} ">
-               <span class="kw-event-outcome-label text-truncate l-flex-2 l-pr-5">{{getOutcomeLabel(outcome, event)}}</span>
+               <span class="kw-event-outcome-label text-truncate l-flex-2 l-pr-5">{{getOutcomeLabel(outcome, event.event)}}</span>
                <span class="kw-event-outcome-odds l-flex-1 l-flexbox l-align-start l-pack-end"><strong>{{outcome.odds/1000}}</strong></span>
             </div>
             <div class="l-flexbox l-expander l-flex-1 l-pack-center l-align-center"
-                 ng-if="event.betoffer.outcomes.length > 3">
-               {{event.betoffer.outcomes.length }} outcomes
+                 ng-if="event.betOffers[0].outcomes.length > 3">
+               {{event.betOffers[0].outcomes.length }} outcomes
             </div>
          </div>
       </div>

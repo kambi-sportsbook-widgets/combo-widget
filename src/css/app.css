@@ -231,6 +231,62 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   white-space: nowrap;
 }
 
+.l-m-0 {
+  margin: 0px;
+}
+
+.l-p-0 {
+  padding: 0px;
+}
+
+.l-m-5 {
+  margin: 5px;
+}
+
+.l-p-5 {
+  padding: 5px;
+}
+
+.l-m-10 {
+  margin: 10px;
+}
+
+.l-p-10 {
+  padding: 10px;
+}
+
+.l-m-15 {
+  margin: 15px;
+}
+
+.l-p-15 {
+  padding: 15px;
+}
+
+.l-m-20 {
+  margin: 20px;
+}
+
+.l-p-20 {
+  padding: 20px;
+}
+
+.l-m-25 {
+  margin: 25px;
+}
+
+.l-p-25 {
+  padding: 25px;
+}
+
+.l-m-30 {
+  margin: 30px;
+}
+
+.l-p-30 {
+  padding: 30px;
+}
+
 .l-mb-0 {
   margin-bottom: 0px;
 }
@@ -455,6 +511,10 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   padding-left: 30px;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
@@ -501,6 +561,7 @@ strong.stronger {
   line-height: 36px;
   overflow: hidden;
   position: relative;
+  min-height: 37px;
 }
 
 .kw-footer {

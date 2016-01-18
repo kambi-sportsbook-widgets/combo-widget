@@ -1,6 +1,6 @@
 # combo-widget
 
-Displays the offers from a group and sorts them according to their lowest outcome and then combines them with their related event
+Displays the offers from a set of filtered events and sorts them according to their lowest outcome
 
 ## Configuration example:
 
@@ -13,7 +13,7 @@ __`client-widgets.js`__
     "order": 1,
     "widgetId": "Combo widget",
     "args": {
-        "groupId": 1000461733,
+        "filter": 'football/all/all/,
         "defaultListLimit": 3,
         "selectionLimit": 12
     }
@@ -23,7 +23,7 @@ __`client-widgets.js`__
 ```
 
 ### The widget accepts the following parameter/s:
-1. `groupId` - integer - the sports group id
+1. `filter` - string - the filter for the events
 2. `defaultListLimit` - integer - default setting for the size of the list, used when resetting
 3. `selectionLimit` - integer - the maximum allowed selections, the bet slip supports up to 12 outcomes
 
