@@ -1,6 +1,12 @@
+2016-01-20
+==========
+
+  * KSBWI-65: Added translations
+
 2016-01-18
 ==========
 
+  * no message
   * Fixing readme again
   * Fixed readme mistake
   * Changed core library version to 0.9.7
