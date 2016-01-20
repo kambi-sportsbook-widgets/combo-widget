@@ -1,6 +1,6 @@
 (function () {
    var gulp, awspublish, rename, concat, uglify, notify, jshint, stripDebug, del, sourcemaps, minifycss, htmlReplace, gulpDoxx, sass, buildTemp, replace,
-      install, npmLibs;
+      install, npmLibs, path, foreach, gulpFile, json_merger;
 
    gulp = require('gulp');
 
@@ -36,10 +36,19 @@
 
    install = require('gulp-install');
 
+   path = require('path');
+
+   gulpFile = require('gulp-file');
+
+   foreach = require('gulp-foreach');
+
+   json_merger = require('json_merger');
+
    buildTemp = '.buildTemp';
 
    npmLibs = [
-      './node_modules/kambi-sportsbook-widget-library/dist/js/app.min.js'
+      './node_modules/kambi-sportsbook-widget-library/dist/js/app.min.js',
+      './node_modules/kambi-sportsbook-widget-core-translate/dist/translate.js'
    ];
 
    gulp.task('default', ['build', 'clean-build'], function () {
@@ -145,7 +154,7 @@
       return gulp.start('build');
    });
 
-   gulp.task('build', ['js-concat', 'css'], function () {
+   gulp.task('build', ['js-concat', 'css', 'translations'], function () {
       return gulp.src('./src/index.html')
          .pipe(htmlReplace({
             css: 'css/app.min.css',
@@ -171,6 +180,25 @@
          .pipe(rename('app.min.js'))
          .pipe(gulp.dest('./dist/js'));
    });
+
+   gulp.task('translations', function () {
+      return gulp.src('./src/i18n/*.json')
+         .pipe(foreach(function ( stream, file ) {
+            var name = path.basename(file.path);
+            var filePath = file.cwd+'/node_modules/kambi-sportsbook-widget-core-translate/dist/i18n/' + name;
+            var srcJson = JSON.parse(file.contents.toString());
+            var coreJson = json_merger.fromFile(filePath);
+            var result = extendObj(srcJson, coreJson);
+            gulpFile(name, JSON.stringify(result), { src: true })
+               .pipe(gulp.dest('dist/i18n'));
+            return stream;
+         }));
+   });
+
+   function extendObj(obj, src) {
+      Object.keys(src).forEach(function(key) { obj[key] = src[key]; });
+      return obj;
+   }
 
 
 }).call(this);

@@ -4,6 +4,7 @@
 
    arrDependencies = [
       'widgetCore',
+      'widgetCore.translate',
       'ngAnimate'
    ];
 
