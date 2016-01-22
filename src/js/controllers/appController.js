@@ -186,25 +186,21 @@
        */
       $scope.calculateCombinedOdds = function () {
          var i = 0, result = 1;
-         switch ( $scope.oddsFormat ) {
-            case 'american':
-               // Todo: Implement american odds calculation
-               break;
-            case 'fractional':
-               // Todo: Implement fractional odds calculation
-               break;
-            default:
-               for ( ; i < $scope.listLimit; ++i ) {
-                  var j = 0, outcomesLen = $scope.events[i].betOffers[0].outcomes.length;
-                  for ( ; j < outcomesLen; ++j ) {
-                     if ( $scope.events[i].betOffers[0].outcomes[j].selected ) {
-                        result = result * $scope.events[i].betOffers[0].outcomes[j].odds / 1000;
-                     }
+         var outcomes = [];
+         if( $scope.events.length > 0) {
+            for ( ; i < $scope.listLimit; ++i ) {
+               var j = 0, outcomesLen = $scope.events[i].betOffers[0].outcomes.length;
+               for ( ; j < outcomesLen; ++j ) {
+                  if ( $scope.events[i].betOffers[0].outcomes[j].selected ) {
+                     outcomes.push($scope.events[i].betOffers[0].outcomes[j]);
                   }
                }
-               break;
+            }
+            result = $scope.multiplyOdds(outcomes);
+         } else {
+            result = '';
          }
-         $scope.combinedOdds = Math.round(result * 100) / 100;
+         $scope.combinedOdds = result;
       };
 
       /**
@@ -304,6 +300,11 @@
       $scope.init().then(function () {
          // Load the data from the api
          $scope.getBetoffersByFilter($scope.args.filter);
+      });
+
+      // Watcher for the oddsFormat, when the format changes we need to recalculate the odds in the new format
+      $scope.$watch('oddsFormat', function() {
+         $scope.calculateCombinedOdds();
       });
 
 

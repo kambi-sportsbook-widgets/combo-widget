@@ -28,7 +28,7 @@
     "gulp-uglify": "^1.4.2",
     "json_merger": "^1.0.0",
     "kambi-sportsbook-widget-core-translate": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-core-translate.git",
-    "kambi-sportsbook-widget-library": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-library.git#0.9.7",
+    "kambi-sportsbook-widget-library": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-library.git#0.9.8",
     "path": "^0.12.7"
   },
   "scripts": {

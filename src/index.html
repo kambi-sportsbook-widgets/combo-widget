@@ -33,6 +33,7 @@
    <script src="../node_modules/kambi-sportsbook-widget-library/src/js/filters/startFrom.js"></script>
    <script src="../node_modules/kambi-sportsbook-widget-library/src/js/services/kambiWidgetService.js"></script>
    <script src="../node_modules/kambi-sportsbook-widget-library/src/js/services/kambiAPIService.js"></script>
+   <script src="../node_modules/kambi-sportsbook-widget-library/src/js/services/coreUtilsService.js"></script>
    <script src="../node_modules/kambi-sportsbook-widget-core-translate/dist/translate.js"></script>
    <!-- endbuild -->
    <script src="https://c3-static.kambi.com/sb-mobileclient/widget-api/1.0.0.7/kambi-widget-api.js"></script>
@@ -44,9 +45,7 @@
    <!--Main-->
    <main class="l-flexbox l-vertical l-flexed l-pack-start">
       <div class="kw-event l-flexbox l-vertical l-pb-15 l-pt-15 l-pl-15 l-pr-15 anim-fade-in"
-           ng-repeat="event in events | startFrom: startFrom | limitTo : listLimit"
-         >
-
+           ng-repeat="event in events | startFrom: startFrom | limitTo : listLimit">
          <!--Competitors and path-->
          <div class="kw-event-name-container l-flexbox l-vertical l-pack-center ">
             <!--Competitors-->
@@ -76,7 +75,7 @@
                  ng-click="selectOutcome(outcome, event.betOffers[0].outcomes)"
                  ng-class="{selected: outcome.selected===true} ">
                <span class="kw-event-outcome-label text-truncate l-flex-2 l-pr-5">{{getOutcomeLabel(outcome, event.event)| translate}}</span>
-               <span class="kw-event-outcome-odds l-flex-1 l-flexbox l-align-start l-pack-end"><strong>{{outcome.odds/1000}}</strong></span>
+               <span class="kw-event-outcome-odds l-flex-1 l-flexbox l-align-start l-pack-end"><strong>{{getFormattedOdds(outcome)}}</strong></span>
             </div>
             <div class="l-flexbox l-expander l-flex-1 l-pack-center l-align-center"
                  ng-if="event.betOffers[0].outcomes.length > 3">
@@ -90,7 +89,10 @@
       <span class="kw-btn kw-plain" ng-click="selectNextOutcome()"><i class="ion-plus"></i></span>
       <span class="kw-btn kw-plain" ng-click="resetSelection()"><i class="ion-refresh l-mr-5"></i>{{'Reset'| translate}}</span>
       <span class="l-flexed"></span>
-      <span class="kw-btn kw-plain" ng-click="addOutcomesToBetslip()">{{'Add to betslip'| translate}} - {{combinedOdds}}</span>
+      <span class="kw-btn kw-plain" ng-click="addOutcomesToBetslip()">
+         <span class="l-pr-5">{{'Add to betslip'| translate}}</span>
+         <span class="kw-event-outcome-odds"><strong>{{combinedOdds}}</strong></span>
+      </span>
    </footer>
 </div>
 </body>
