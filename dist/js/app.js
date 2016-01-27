@@ -333,7 +333,7 @@
 
 }).call(this);
 
-!function(){"use strict";function e(t,n,r,i,a,o){t.apiConfigSet=!1,t.appArgsSet=!1,t.oddsFormat="decimal",t.defaultHeight=350,t.currentHeight=350,t.apiVersion="v2",t.streamingAllowedForPlayer=!1,t.defaultArgs={},t.init=function(){var e=a.defer(),i=t.$on("CLIENT:CONFIG",function(n,a){null!=a.oddsFormat&&t.setOddsFormat(a.oddsFormat),a.version=t.apiVersion,r.setConfig(a),t.apiConfigSet=!0,t.apiConfigSet&&t.appArgsSet&&e.resolve(),i()}),o=t.$on("WIDGET:ARGS",function(n,i){t.setArgs(i),null!=i&&i.hasOwnProperty("offering")&&r.setOffering(i.offering),t.appArgsSet=!0,t.apiConfigSet&&t.appArgsSet&&e.resolve(),o()});return n.setWidgetHeight(t.defaultHeight),n.requestWidgetHeight(),n.enableWidgetTransition(!0),n.requestClientConfig(),n.requestWidgetArgs(),n.requestBetslipOutcomes(),n.requestOddsFormat(),e.promise},t.getConfigValue=function(e){return r.config.hasOwnProperty(e)?r.config[e]:null},t.navigateToLiveEvent=function(e){n.navigateToLiveEvent(e)},t.getWidgetHeight=function(){n.requestWidgetHeight()},t.setWidgetHeight=function(e){t.currentHeight=e,n.setWidgetHeight(e)},t.setWidgetEnableTransition=function(e){n.enableWidgetTransition(e)},t.removeWidget=function(){n.removeWidget()},t.addOutcomeToBetslip=function(e){n.addOutcomeToBetslip(e.id)},t.removeOutcomeFromBetslip=function(e){n.removeOutcomeFromBetslip(e.id)},t.requestBetslipOutcomes=function(){n.requestBetslipOutcomes()},t.requestWidgetArgs=function(){n.requestWidgetArgs()},t.requestPageInfo=function(){n.requestPageInfo()},t.requestOddsFormat=function(){n.requestOddsFormat()},t.setOddsFormat=function(e){t.oddsFormat=e},t.getFormattedOdds=function(e){switch(t.oddsFormat){case"fractional":return e.oddsFractional;case"american":return e.oddsAmerican>0?"+"+e.oddsAmerican:e.oddsAmerican;default:return e.odds/1e3}},t.multiplyOdds=function(e){for(var n=0,r=1,a=e.length;a>n;++n)r=r*e[n].odds/1e3;switch(t.oddsFormat){case"american":r=Math.round(100*r)/100,2>r?r=Math.round(-100/(r-1)):(r=100*(r-1),r="+"+Math.round(r));break;case"fractional":r=3>=r?i.roundDown(r,100):10>=r?i.roundDown(r,10):14>=r?i.roundHalf(r):Math.floor(r),r=i.convertToFraction(Number(r-1).toFixed(2)),r=r.n+"/"+r.d,r="";break;default:r=Math.round(100*r)/100}return r},t.findEvent=function(e,t){for(var n=0,r=e.length;r>n;++n)if(e[n].id===t)return e[n];return null},t.getOutcomeLabel=function(e,t){return r.getOutcomeLabel(e,t)},t.setArgs=function(e){var n=t.defaultArgs;for(var r in e)e.hasOwnProperty(r)&&n.hasOwnProperty(r)&&(n[r]=e[r]);t.args=n},t.setPages=function(e,n,r){var i=r||e.length,a=Math.ceil(i/n),o=0;for(t.pages=[];a>o;++o)t.pages.push({startFrom:n*o,page:o+1})},t.updateBetOfferOutcomes=function(e,t){for(var n=0,r=e.outcomes.length,i=t.length;r>n;++n){var a=0,o=-1;for(e.outcomes[n].selected=!1;i>a;a++)e.outcomes[n].id===t[a].id&&(e.outcomes[n].odds=t[a].odds,o=n),-1!==o&&(e.outcomes[o].selected=!0)}};try{angular.module("widgetCore.translate"),angular.extend(e,o("translateController",{$scope:t}))}catch(s){}t.$on("WIDGET:HEIGHT",function(e,n){t.currentHeight=n}),t.$on("ODDS:FORMAT",function(e,n){t.setOddsFormat(n),t.$apply()})}!function(t){return t.controller("widgetCoreController",["$scope","kambiWidgetService","kambiAPIService","coreUtilsService","$q","$controller",e])}(angular.module("widgetCore",[]))}(),function(){"use strict";!function(e){return e.directive("kambiPaginationDirective",[function(){return{restrict:"E",scope:{list:"=list",listLimit:"=",pages:"=",startFrom:"=",activePage:"="},template:'<span ng-class="{disabled:activePage === 1}" ng-if="pages.length > 1" ng-click="pagePrev()" class="kw-page-link kw-pagination-arrow"><i class="ion-ios-arrow-left"></i></span><span ng-if="pages.length > 1" ng-repeat="page in getPagination()" ng-click="setActivePage(page)" ng-class="{active:page === activePage}" class="kw-page-link l-pack-center l-align-center">{{page}}</span><span ng-class="{disabled:activePage === pages.length}" ng-if="pages.length > 1" ng-click="pageNext()" class="kw-page-link kw-pagination-arrow"><i class="ion-ios-arrow-right"></i></span>',controller:["$scope",function(e){e.activePage=1,e.setPage=function(t){e.startFrom=t.startFrom,e.activePage=t.page},e.setActivePage=function(t){e.setPage(e.pages[t-1])},e.pagePrev=function(){e.activePage>1&&e.setPage(e.pages[e.activePage-2])},e.pageNext=function(){e.activePage<e.pages.length&&e.setPage(e.pages[e.activePage])},e.pageCount=function(){return Math.ceil(e.list.length/e.listLimit)},e.getPagination=function(){var t=[],n=5,r=e.activePage,i=e.pageCount(),a=1,o=i;i>n&&(a=Math.max(r-Math.floor(n/2),1),o=a+n-1,o>i&&(o=i,a=o-n+1));for(var s=a;o>=s;s++)t.push(s);return 0!==i&&r>i&&e.setActivePage(1),t}}]}}])}(angular.module("widgetCore"))}(),function(){!function(e){"use strict";e.filter("startFrom",function(){return function(e,t){return e?(t=+t,e.slice(t)):[]}})}(angular.module("widgetCore"))}(),function(){"use strict";!function(e){return e.service("coreUtilsService",[function(){var e={};return e.roundHalf=function(e){return Math.floor(2*e)/2},e.roundDown=function(e,t){return Math.floor(e*t)/t},e.convertToFraction=function(t){var n=t.toString().length-2,r=Math.pow(10,n),i=t*r,a=e.gcd(i,r);return i/=a,r/=a,{n:i,d:r}},e.gcd=function(t,n){return 1e-7>n?t:e.gcd(n,Math.floor(t%n))},e}])}(angular.module("widgetCore"))}(),function(){"use strict";!function(e){return e.service("kambiAPIService",["$http","$q","$rootScope",function(e,t,n){var r={};return r.configDefer=t.defer(),r.configSet=!1,r.offeringSet=!1,r.config={apiBaseUrl:null,apiUrl:null,channelId:null,currency:null,locale:null,market:null,offering:null,clientId:null,version:null},r.setConfig=function(e){for(var t in e)if(e.hasOwnProperty(t)&&r.config.hasOwnProperty(t))switch(r.config[t]=e[t],t){case"locale":n.$broadcast("LOCALE:CHANGE",e[t])}r.configSet=!0,r.configSet&&r.offeringSet&&r.configDefer.resolve()},r.setOffering=function(e){r.config.offering=e,r.offeringSet=!0,r.configSet&&r.offeringSet&&r.configDefer.resolve()},r.getGroupEvents=function(e){var t="/event/group/"+e+".json";return r.doRequest(t)},r.getEventsByFilterParameters=function(e,t,n,i,a,o){var s="/listView/";return s+=null!=e?r.parseFilterParameter(e):"all/",s+=null!=t?r.parseFilterParameter(t):"all/",s+=null!=n?r.parseFilterParameter(n):"all/",s+="all/",s+=null!=a?r.parseFilterParameter(e):"all/",r.doRequest(s,o,"v3")},r.parseFilterParameter=function(e){var t="";if(null!=e)if(angular.isArray(e)){for(var n=0,r=e.length;r>n;++n){if(angular.isArray(e[n])){var i=0,a=e[n].length;for(t+="[";a>i;++i)t+=e[n][i],a-1>i&&(t+=",");t+="]"}else t+=e[n];r-1>n&&(t+=",")}t+="/"}else angular.isstring(e)&&(t+=e);else t+="all/";return t},r.getEventsByFilter=function(e,t){var n="/listView/"+e;return r.doRequest(n,t,"v3")},r.getLiveEvents=function(){var e="/event/live/open.json";return r.doRequest(e)},r.getBetoffersByGroup=function(e,t,n,i,a){var o="/betoffer/main/group/"+e+".json";return r.doRequest(o,{include:"participants"})},r.getGroupById=function(e,t){var n="/group/"+e+".json";return r.doRequest(n,{depth:t})},r.doRequest=function(n,i,a){return r.configDefer.promise.then(function(){if(null==r.config.offering)return t.reject("The offering has not been set, please provide it in the widget arguments");var o=r.config.apiBaseUrl.replace("{apiVersion}",null!=a?a:r.config.version),s=o+r.config.offering+n,u=i||{},c={lang:u.locale||r.config.locale,market:u.market||r.config.market,client_id:u.clientId||r.config.clientId,include:u.include||null,callback:"JSON_CALLBACK"};return e.jsonp(s,{params:c,cache:!1})})},r.getOutcomeLabel=function(e,t){switch(e.type){case"OT_ONE":return t.homeName;case"OT_CROSS":return"Draw";case"OT_TWO":return t.awayName;default:return e.label}},r}])}(angular.module("widgetCore"))}(),function(){"use strict";!function(e){return e.service("kambiWidgetService",["$rootScope","$window","$q",function(e,t,n){var r,i,a={};return t.KambiWidget&&(i=n.defer(),r=i.promise,t.KambiWidget.apiReady=function(e){a.api=e,i.resolve(e)},t.KambiWidget.receiveResponse=function(e){a.handleResponse(e)}),a.handleResponse=function(t){switch(t.type){case a.api.WIDGET_HEIGHT:e.$broadcast("WIDGET:HEIGHT",t.data);break;case a.api.BETSLIP_OUTCOMES:e.$broadcast("OUTCOMES:UPDATE",t.data);break;case a.api.WIDGET_ARGS:e.$broadcast("WIDGET:ARGS",t.data);break;case a.api.PAGE_INFO:e.$broadcast("PAGE:INFO",t.data);break;case a.api.CLIENT_ODDS_FORMAT:e.$broadcast("ODDS:FORMAT",t.data);break;case a.api.CLIENT_CONFIG:e.$broadcast("CLIENT:CONFIG",t.data);break;case a.api.USER_LOGGED_IN:e.$broadcast("USER:LOGGED_IN",t.data)}},a.requestWidgetHeight=function(){var e=n.defer();return r.then(function(e){e.request(e.WIDGET_HEIGHT)}),e.promise},a.setWidgetHeight=function(e){var t=n.defer();return r.then(function(t){t.set(t.WIDGET_HEIGHT,e)}),t.promise},a.enableWidgetTransition=function(e){var t=n.defer();return r.then(function(t){e?t.set(t.WIDGET_ENABLE_TRANSITION):t.set(t.WIDGET_DISABLE_TRANSITION)}),t.promise},a.removeWidget=function(){var e=n.defer();return r.then(function(e){e.remove()}),e.promise},a.navigateToLiveEvent=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#event/live/"+e)}),t.promise},a.navigateToEvent=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#event/"+e)}),t.promise},a.navigateToGroup=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#group/"+e)}),t.promise},a.navigateToLiveEvents=function(){var e=n.defer();return r.then(function(e){e.navigateClient("#events/live")}),e.promise},a.addOutcomeToBetslip=function(e,t,i,a){var o=n.defer();return r.then(function(n){var r=[];angular.isArray(e)?r=e:r.push(e);var o={outcomes:r};null!=t&&(angular.isArray(t)?o.stakes=t:o.stakes=[t]),o.couponType=1===r.length?n.BETSLIP_OUTCOMES_ARGS.TYPE_SINGLE:n.BETSLIP_OUTCOMES_ARGS.TYPE_COMBINATION,o.updateMode="replace"!==i?n.BETSLIP_OUTCOMES_ARGS.UPDATE_APPEND:n.BETSLIP_OUTCOMES_ARGS.UPDATE_REPLACE,null!=a&&(o.source=a),n.set(n.BETSLIP_OUTCOMES,o)}),o.promise},a.removeOutcomeFromBetslip=function(e){var t=n.defer();return r.then(function(t){var n=[];angular.isArray(e)?n=e:n.push(e),t.set(t.BETSLIP_OUTCOMES_REMOVE,{outcomes:n})}),t.promise},a.requestBetslipOutcomes=function(){var e=n.defer();return r.then(function(e){e.request(e.BETSLIP_OUTCOMES)}),e.promise},a.requestPageInfo=function(){var e=n.defer();return r.then(function(e){e.request(e.PAGE_INFO)}),e.promise},a.requestWidgetArgs=function(){var e=n.defer();return r.then(function(e){e.request(e.WIDGET_ARGS)}),e.promise},a.requestClientConfig=function(){var e=n.defer();return r.then(function(e){e.request(e.CLIENT_CONFIG)}),e.promise},a.requestOddsFormat=function(){var e=n.defer();return r.then(function(e){e.request(e.CLIENT_ODDS_FORMAT)}),e.promise},a}])}(angular.module("widgetCore"))}();
+!function(){"use strict";function e(t,n,r,a,i,o){t.apiConfigSet=!1,t.appArgsSet=!1,t.pageInfoSet=!1,t.oddsFormat="decimal",t.defaultHeight=350,t.currentHeight=350,t.apiVersion="v2",t.streamingAllowedForPlayer=!1,t.defaultArgs={},t.init=function(){var e=i.defer(),a=t.$on("CLIENT:CONFIG",function(n,i){null!=i.oddsFormat&&t.setOddsFormat(i.oddsFormat),i.version=t.apiVersion,r.setConfig(i),t.apiConfigSet=!0,t.apiConfigSet&&t.appArgsSet&&t.pageInfoSet&&e.resolve(),a()}),o=t.$on("WIDGET:ARGS",function(n,a){t.setArgs(a),null!=a&&a.hasOwnProperty("offering")&&r.setOffering(a.offering),t.appArgsSet=!0,t.apiConfigSet&&t.appArgsSet&&t.pageInfoSet&&e.resolve(),o()}),s=t.$on("PAGE:INFO",function(n,r){t.setPageInfo(r),t.pageInfoSet=!0,t.apiConfigSet&&t.appArgsSet&&t.pageInfoSet&&e.resolve(),s()});return n.setWidgetHeight(t.defaultHeight),n.requestWidgetHeight(),n.enableWidgetTransition(!0),n.requestClientConfig(),n.requestWidgetArgs(),n.requestPageInfo(),n.requestBetslipOutcomes(),n.requestOddsFormat(),e.promise},t.getConfigValue=function(e){return r.config.hasOwnProperty(e)?r.config[e]:null},t.navigateToLiveEvent=function(e){n.navigateToLiveEvent(e)},t.getWidgetHeight=function(){n.requestWidgetHeight()},t.setWidgetHeight=function(e){t.currentHeight=e,n.setWidgetHeight(e)},t.setWidgetEnableTransition=function(e){n.enableWidgetTransition(e)},t.removeWidget=function(){n.removeWidget()},t.addOutcomeToBetslip=function(e){n.addOutcomeToBetslip(e.id)},t.removeOutcomeFromBetslip=function(e){n.removeOutcomeFromBetslip(e.id)},t.requestBetslipOutcomes=function(){n.requestBetslipOutcomes()},t.requestWidgetArgs=function(){n.requestWidgetArgs()},t.requestPageInfo=function(){n.requestPageInfo()},t.requestOddsFormat=function(){n.requestOddsFormat()},t.setOddsFormat=function(e){t.oddsFormat=e},t.getFormattedOdds=function(e){switch(t.oddsFormat){case"fractional":return e.oddsFractional;case"american":return e.oddsAmerican;default:return e.odds/1e3}},t.multiplyOdds=function(e){for(var n=0,r=1,i=e.length;i>n;++n)r=r*e[n].odds/1e3;switch(t.oddsFormat){case"american":r=Math.round(100*r)/100,r=2>r?Math.round(-100/(r-1)):Math.round(100*(r-1));break;case"fractional":r=3>=r?a.roundDown(r,100):10>=r?a.roundDown(r,10):14>=r?a.roundHalf(r):Math.floor(r),r=a.convertToFraction(Number(r-1).toFixed(2)),r=r.n+"/"+r.d,r="";break;default:r=Math.round(100*r)/100}return r},t.findEvent=function(e,t){for(var n=0,r=e.length;r>n;++n)if(e[n].id===t)return e[n];return null},t.getOutcomeLabel=function(e,t){return r.getOutcomeLabel(e,t)},t.setArgs=function(e){var n=t.defaultArgs;for(var r in e)e.hasOwnProperty(r)&&n.hasOwnProperty(r)&&(n[r]=e[r]);t.args=n},t.setPageInfo=function(e){"filter"===e.pageType&&"/"!==e.pageParam.substr(-1)&&(e.pageParam+="/"),t.pageInfo=e},t.setPages=function(e,n,r){var a=r||e.length,i=Math.ceil(a/n),o=0;for(t.pages=[];i>o;++o)t.pages.push({startFrom:n*o,page:o+1})},t.updateBetOfferOutcomes=function(e,t){for(var n=0,r=e.outcomes.length,a=t.length;r>n;++n){var i=0,o=-1;for(e.outcomes[n].selected=!1;a>i;i++)e.outcomes[n].id===t[i].id&&(e.outcomes[n].odds=t[i].odds,o=n),-1!==o&&(e.outcomes[o].selected=!0)}};try{angular.module("widgetCore.translate"),angular.extend(e,o("translateController",{$scope:t}))}catch(s){}t.$on("WIDGET:HEIGHT",function(e,n){t.currentHeight=n}),t.$on("ODDS:FORMAT",function(e,n){t.setOddsFormat(n),t.$apply()})}!function(t){return t.controller("widgetCoreController",["$scope","kambiWidgetService","kambiAPIService","coreUtilsService","$q","$controller",e])}(angular.module("widgetCore",[]))}(),function(){"use strict";!function(e){return e.directive("kambiPaginationDirective",[function(){return{restrict:"E",scope:{list:"=list",listLimit:"=",pages:"=",startFrom:"=",activePage:"="},template:'<span ng-class="{disabled:activePage === 1}" ng-if="pages.length > 1" ng-click="pagePrev()" class="kw-page-link kw-pagination-arrow"><i class="ion-ios-arrow-left"></i></span><span ng-if="pages.length > 1" ng-repeat="page in getPagination()" ng-click="setActivePage(page)" ng-class="{active:page === activePage}" class="kw-page-link l-pack-center l-align-center">{{page}}</span><span ng-class="{disabled:activePage === pages.length}" ng-if="pages.length > 1" ng-click="pageNext()" class="kw-page-link kw-pagination-arrow"><i class="ion-ios-arrow-right"></i></span>',controller:["$scope",function(e){e.activePage=1,e.setPage=function(t){e.startFrom=t.startFrom,e.activePage=t.page},e.setActivePage=function(t){e.setPage(e.pages[t-1])},e.pagePrev=function(){e.activePage>1&&e.setPage(e.pages[e.activePage-2])},e.pageNext=function(){e.activePage<e.pages.length&&e.setPage(e.pages[e.activePage])},e.pageCount=function(){return Math.ceil(e.list.length/e.listLimit)},e.getPagination=function(){var t=[],n=5,r=e.activePage,a=e.pageCount(),i=1,o=a;a>n&&(i=Math.max(r-Math.floor(n/2),1),o=i+n-1,o>a&&(o=a,i=o-n+1));for(var s=i;o>=s;s++)t.push(s);return 0!==a&&r>a&&e.setActivePage(1),t}}]}}])}(angular.module("widgetCore"))}(),function(){!function(e){"use strict";e.filter("startFrom",function(){return function(e,t){return e?(t=+t,e.slice(t)):[]}})}(angular.module("widgetCore"))}(),function(){"use strict";!function(e){return e.service("coreUtilsService",[function(){var e={};return e.roundHalf=function(e){return Math.floor(2*e)/2},e.roundDown=function(e,t){return Math.floor(e*t)/t},e.convertToFraction=function(t){var n=t.toString().length-2,r=Math.pow(10,n),a=t*r,i=e.gcd(a,r);return a/=i,r/=i,{n:a,d:r}},e.gcd=function(t,n){return 1e-7>n?t:e.gcd(n,Math.floor(t%n))},e}])}(angular.module("widgetCore"))}(),function(){"use strict";!function(e){return e.service("kambiAPIService",["$http","$q","$rootScope",function(e,t,n){var r={};return r.configDefer=t.defer(),r.configSet=!1,r.offeringSet=!1,r.config={apiBaseUrl:null,apiUrl:null,channelId:null,currency:null,locale:null,market:null,offering:null,clientId:null,version:null},r.setConfig=function(e){for(var t in e)if(e.hasOwnProperty(t)&&r.config.hasOwnProperty(t))switch(r.config[t]=e[t],t){case"locale":n.$broadcast("LOCALE:CHANGE",e[t])}r.configSet=!0,r.configSet&&r.offeringSet&&r.configDefer.resolve()},r.setOffering=function(e){r.config.offering=e,r.offeringSet=!0,r.configSet&&r.offeringSet&&r.configDefer.resolve()},r.getGroupEvents=function(e){var t="/event/group/"+e+".json";return r.doRequest(t)},r.getEventsByFilterParameters=function(e,t,n,a,i,o){var s="/listView/";return s+=null!=e?r.parseFilterParameter(e):"all/",s+=null!=t?r.parseFilterParameter(t):"all/",s+=null!=n?r.parseFilterParameter(n):"all/",s+="all/",s+=null!=i?r.parseFilterParameter(e):"all/",r.doRequest(s,o,"v3")},r.parseFilterParameter=function(e){var t="";if(null!=e)if(angular.isArray(e)){for(var n=0,r=e.length;r>n;++n){if(angular.isArray(e[n])){var a=0,i=e[n].length;for(t+="[";i>a;++a)t+=e[n][a],i-1>a&&(t+=",");t+="]"}else t+=e[n];r-1>n&&(t+=",")}t+="/"}else angular.isstring(e)&&(t+=e);else t+="all/";return t},r.getEventsByFilter=function(e,t){var n="/listView/"+e;return r.doRequest(n,t,"v3")},r.getLiveEventsByFilter=function(e,t){var n="/listView/"+e;return r.doRequest(n,t,"v3").then(function(e){var t=e.data.events;for(var n in t){if(!t[n].liveData)break;if(t[n].betOffers[0]&&(t[n].mainBetOffer=t[n].betOffers[0]),t[n].liveData.statistics){if(t[n].liveData.statistics.setBasedStats){var r=t[n].liveData.statistics.setBasedStats;t[n].liveData.statistics.sets=r,delete t[n].liveData.statistics.setBasedStats}if(t[n].liveData.statistics.footballStats){var a=t[n].liveData.statistics.footballStats;t[n].liveData.statistics.football=a,delete t[n].liveData.statistics.footballStats}}delete t[n].betOffers}return t.splice(n),e.data.liveEvents=t,delete e.data.events,e})},r.getLiveEvents=function(){var e="/event/live/open.json";return r.doRequest(e)},r.getBetoffersByGroup=function(e,t,n,a,i){var o="/betoffer/main/group/"+e+".json";return r.doRequest(o,{include:"participants"})},r.getGroupById=function(e,t){var n="/group/"+e+".json";return r.doRequest(n,{depth:t})},r.doRequest=function(n,a,i){return r.configDefer.promise.then(function(){if(null==r.config.offering)return t.reject("The offering has not been set, please provide it in the widget arguments");var o=r.config.apiBaseUrl.replace("{apiVersion}",null!=i?i:r.config.version),s=o+r.config.offering+n,u=a||{},c={lang:u.locale||r.config.locale,market:u.market||r.config.market,client_id:u.clientId||r.config.clientId,include:u.include||null,callback:"JSON_CALLBACK"};return e.jsonp(s,{params:c,cache:!1})})},r.getOutcomeLabel=function(e,t){switch(e.type){case"OT_ONE":return t.homeName;case"OT_CROSS":return"Draw";case"OT_TWO":return t.awayName;default:return e.label}},r}])}(angular.module("widgetCore"))}(),function(){"use strict";!function(e){return e.service("kambiWidgetService",["$rootScope","$window","$q",function(e,t,n){var r,a,i={};return t.KambiWidget&&(a=n.defer(),r=a.promise,t.KambiWidget.apiReady=function(e){i.api=e,a.resolve(e)},t.KambiWidget.receiveResponse=function(e){i.handleResponse(e)}),i.handleResponse=function(t){switch(t.type){case i.api.WIDGET_HEIGHT:e.$broadcast("WIDGET:HEIGHT",t.data);break;case i.api.BETSLIP_OUTCOMES:e.$broadcast("OUTCOMES:UPDATE",t.data);break;case i.api.WIDGET_ARGS:e.$broadcast("WIDGET:ARGS",t.data);break;case i.api.PAGE_INFO:e.$broadcast("PAGE:INFO",t.data);break;case i.api.CLIENT_ODDS_FORMAT:e.$broadcast("ODDS:FORMAT",t.data);break;case i.api.CLIENT_CONFIG:e.$broadcast("CLIENT:CONFIG",t.data);break;case i.api.USER_LOGGED_IN:e.$broadcast("USER:LOGGED_IN",t.data)}},i.requestWidgetHeight=function(){var e=n.defer();return r.then(function(e){e.request(e.WIDGET_HEIGHT)}),e.promise},i.setWidgetHeight=function(e){var t=n.defer();return r.then(function(t){t.set(t.WIDGET_HEIGHT,e)}),t.promise},i.enableWidgetTransition=function(e){var t=n.defer();return r.then(function(t){e?t.set(t.WIDGET_ENABLE_TRANSITION):t.set(t.WIDGET_DISABLE_TRANSITION)}),t.promise},i.removeWidget=function(){var e=n.defer();return r.then(function(e){e.remove()}),e.promise},i.navigateToLiveEvent=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#event/live/"+e)}),t.promise},i.navigateToEvent=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#event/"+e)}),t.promise},i.navigateToGroup=function(e){var t=n.defer();return r.then(function(t){t.navigateClient("#group/"+e)}),t.promise},i.navigateToLiveEvents=function(){var e=n.defer();return r.then(function(e){e.navigateClient("#events/live")}),e.promise},i.addOutcomeToBetslip=function(e,t,a,i){var o=n.defer();return r.then(function(n){var r=[];angular.isArray(e)?r=e:r.push(e);var o={outcomes:r};null!=t&&(angular.isArray(t)?o.stakes=t:o.stakes=[t]),o.couponType=1===r.length?n.BETSLIP_OUTCOMES_ARGS.TYPE_SINGLE:n.BETSLIP_OUTCOMES_ARGS.TYPE_COMBINATION,o.updateMode="replace"!==a?n.BETSLIP_OUTCOMES_ARGS.UPDATE_APPEND:n.BETSLIP_OUTCOMES_ARGS.UPDATE_REPLACE,null!=i&&(o.source=i),n.set(n.BETSLIP_OUTCOMES,o)}),o.promise},i.removeOutcomeFromBetslip=function(e){var t=n.defer();return r.then(function(t){var n=[];angular.isArray(e)?n=e:n.push(e),t.set(t.BETSLIP_OUTCOMES_REMOVE,{outcomes:n})}),t.promise},i.requestBetslipOutcomes=function(){var e=n.defer();return r.then(function(e){e.request(e.BETSLIP_OUTCOMES)}),e.promise},i.requestPageInfo=function(){var e=n.defer();return r.then(function(e){e.request(e.PAGE_INFO)}),e.promise},i.requestWidgetArgs=function(){var e=n.defer();return r.then(function(e){e.request(e.WIDGET_ARGS)}),e.promise},i.requestClientConfig=function(){var e=n.defer();return r.then(function(e){e.request(e.CLIENT_CONFIG)}),e.promise},i.requestOddsFormat=function(){var e=n.defer();return r.then(function(e){e.request(e.CLIENT_ODDS_FORMAT)}),e.promise},i}])}(angular.module("widgetCore"))}();
 (function () {
 
    'use strict';
@@ -357,7 +357,7 @@
       return $app
          .config(['$translateProvider', function ( $translateProvider ) {
             $translateProvider.preferredLanguage('en_GB');
-            $translateProvider.useSanitizeValueStrategy('escapeParameters');
+            $translateProvider.useSanitizeValueStrategy('escapeParameters'); // Set to escape otherwise will not escape special characters
             $translateProvider.useStaticFilesLoader({
                prefix: './i18n/',
                suffix: '.json'
@@ -371,9 +371,9 @@
 })();
 
 /*!
- * angular-translate - v2.8.1 - 2015-10-01
+ * angular-translate - v2.9.0 - 2016-01-24
  * 
- * Copyright (c) 2015 The angular-translate team, Pascal Precht; Licensed MIT
+ * Copyright (c) 2016 The angular-translate team, Pascal Precht; Licensed MIT
  */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -753,7 +753,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         }
       };
 
-  var version = '2.8.1';
+  var version = '2.9.0';
 
   // tries to determine the browsers language
   var getFirstBrowserLanguage = function () {
@@ -835,6 +835,9 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
   };
 
   var negotiateLocale = function (preferred) {
+    if(!preferred) {
+      return;
+    }
 
     var avail = [],
         locale = angular.lowercase(preferred),
@@ -845,6 +848,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
       avail.push(angular.lowercase($availableLanguageKeys[i]));
     }
 
+    // Check for an exact match in our list of available keys
     if (indexOf(avail, locale) > -1) {
       return preferred;
     }
@@ -868,16 +872,15 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
       }
     }
 
-    if (preferred) {
-      var parts = preferred.split('_');
+    // Check for a language code without region
+    var parts = preferred.split('_');
 
-      if (parts.length > 1 && indexOf(avail, angular.lowercase(parts[0])) > -1) {
-        return parts[0];
-      }
+    if (parts.length > 1 && indexOf(avail, angular.lowercase(parts[0])) > -1) {
+      return parts[0];
     }
 
-    // If everything fails, just return the preferred, unchanged.
-    return preferred;
+    // If everything fails, return undefined.
+    return;
   };
 
   /**
@@ -1532,7 +1535,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
     if (!$availableLanguageKeys.length) {
       $preferredLanguage = locale;
     } else {
-      $preferredLanguage = negotiateLocale(locale);
+      $preferredLanguage = negotiateLocale(locale) || locale;
     }
 
     return this;
@@ -1667,6 +1670,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
    *                                     is the translation id and the value the translation.
    * @param {object=} interpolateParams An object hash for dynamic values
    * @param {string} interpolationId The id of the interpolation to use
+   * @param {string} forceLanguage A language to be used instead of the current language
    * @returns {object} promise
    */
   this.$get = [
@@ -1684,7 +1688,10 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           fallbackIndex,
           startFallbackIteration;
 
-      var $translate = function (translationId, interpolateParams, interpolationId, defaultTranslationText) {
+      var $translate = function (translationId, interpolateParams, interpolationId, defaultTranslationText, forceLanguage) {
+
+        var uses = (forceLanguage && forceLanguage !== $uses) ? // we don't want to re-negotiate $uses
+              (negotiateLocale(forceLanguage) || forceLanguage) : $uses;
 
         // Duck detection: If the first argument is an array, a bunch of translations was requested.
         // The result is an object.
@@ -1703,7 +1710,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
                 deferred.resolve([translationId, value]);
               };
               // we don't care whether the promise was resolved or rejected; just store the values
-              $translate(translationId, interpolateParams, interpolationId, defaultTranslationText).then(regardless, regardless);
+              $translate(translationId, interpolateParams, interpolationId, defaultTranslationText, forceLanguage).then(regardless, regardless);
               return deferred.promise;
             };
             for (var i = 0, c = translationIds.length; i < c; i++) {
@@ -1728,7 +1735,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         var promiseToWaitFor = (function () {
           var promise = $preferredLanguage ?
             langPromises[$preferredLanguage] :
-            langPromises[$uses];
+            langPromises[uses];
 
           fallbackIndex = 0;
 
@@ -1760,10 +1767,14 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           // no promise to wait for? okay. Then there's no loader registered
           // nor is a one pending for language that comes from storage.
           // We can just translate.
-          determineTranslation(translationId, interpolateParams, interpolationId, defaultTranslationText).then(deferred.resolve, deferred.reject);
+          determineTranslation(translationId, interpolateParams, interpolationId, defaultTranslationText, uses).then(deferred.resolve, deferred.reject);
         } else {
           var promiseResolved = function () {
-            determineTranslation(translationId, interpolateParams, interpolationId, defaultTranslationText).then(deferred.resolve, deferred.reject);
+            // $uses may have changed while waiting
+            if (!forceLanguage) {
+              uses = $uses;
+            }
+            determineTranslation(translationId, interpolateParams, interpolationId, defaultTranslationText, uses).then(deferred.resolve, deferred.reject);
           };
           promiseResolved.displayName = 'promiseResolved';
 
@@ -2136,11 +2147,11 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         return resolveForFallbackLanguageInstant((startFallbackIteration>0 ? startFallbackIteration : fallbackIndex), translationId, interpolateParams, Interpolator);
       };
 
-      var determineTranslation = function (translationId, interpolateParams, interpolationId, defaultTranslationText) {
+      var determineTranslation = function (translationId, interpolateParams, interpolationId, defaultTranslationText, uses) {
 
         var deferred = $q.defer();
 
-        var table = $uses ? $translationTable[$uses] : $translationTable,
+        var table = uses ? $translationTable[uses] : $translationTable,
             Interpolator = (interpolationId) ? interpolatorHashMap[interpolationId] : defaultInterpolator;
 
         // if the translation id exists, we can just interpolate it
@@ -2150,7 +2161,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           // If using link, rerun $translate with linked translationId and return it
           if (translation.substr(0, 2) === '@:') {
 
-            $translate(translation.substr(2), interpolateParams, interpolationId, defaultTranslationText)
+            $translate(translation.substr(2), interpolateParams, interpolationId, defaultTranslationText, uses)
               .then(deferred.resolve, deferred.reject);
           } else {
             deferred.resolve(Interpolator.interpolate(translation, interpolateParams));
@@ -2165,7 +2176,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           // since we couldn't translate the inital requested translation id,
           // we try it now with one or more fallback languages, if fallback language(s) is
           // configured.
-          if ($uses && $fallbackLanguage && $fallbackLanguage.length) {
+          if (uses && $fallbackLanguage && $fallbackLanguage.length) {
             fallbackTranslation(translationId, interpolateParams, Interpolator, defaultTranslationText)
                 .then(function (translation) {
                   deferred.resolve(translation);
@@ -2192,9 +2203,9 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         return deferred.promise;
       };
 
-      var determineTranslationInstant = function (translationId, interpolateParams, interpolationId) {
+      var determineTranslationInstant = function (translationId, interpolateParams, interpolationId, uses) {
 
-        var result, table = $uses ? $translationTable[$uses] : $translationTable,
+        var result, table = uses ? $translationTable[uses] : $translationTable,
             Interpolator = defaultInterpolator;
 
         // if the interpolation id exists use custom interpolator
@@ -2208,7 +2219,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
 
           // If using link, rerun $translate with linked translationId and return it
           if (translation.substr(0, 2) === '@:') {
-            result = determineTranslationInstant(translation.substr(2), interpolateParams, interpolationId);
+            result = determineTranslationInstant(translation.substr(2), interpolateParams, interpolationId, uses);
           } else {
             result = Interpolator.interpolate(translation, interpolateParams);
           }
@@ -2222,7 +2233,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           // since we couldn't translate the inital requested translation id,
           // we try it now with one or more fallback languages, if fallback language(s) is
           // configured.
-          if ($uses && $fallbackLanguage && $fallbackLanguage.length) {
+          if (uses && $fallbackLanguage && $fallbackLanguage.length) {
             fallbackIndex = 0;
             result = fallbackTranslationInstant(translationId, interpolateParams, Interpolator);
           } else if ($missingTranslationHandlerFactory && !pendingLoader && missingTranslationHandlerTranslation) {
@@ -2383,6 +2394,22 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
       $translate.storage = function () {
         return Storage;
       };
+
+      /**
+       * @ngdoc function
+       * @name pascalprecht.translate.$translate#negotiateLocale
+       * @methodOf pascalprecht.translate.$translate
+       *
+       * @description
+       * Returns a language key based on available languages and language aliases. If a
+       * language key cannot be resolved, returns undefined.
+       *
+       * If no or a falsy key is given, returns undefined.
+       *
+       * @param {string} [key] Language key
+       * @return {string|undefined} Language key or undefined if no language key is found.
+       */
+      $translate.negotiateLocale = negotiateLocale;
 
       /**
        * @ngdoc function
@@ -2619,10 +2646,15 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
        *                                     each key is the translation id and the value the translation.
        * @param {object} interpolateParams Params
        * @param {string} interpolationId The id of the interpolation to use
+       * @param {string} forceLanguage A language to be used instead of the current language
        *
        * @return {string|object} translation
        */
-      $translate.instant = function (translationId, interpolateParams, interpolationId) {
+      $translate.instant = function (translationId, interpolateParams, interpolationId, forceLanguage) {
+
+        // we don't want to re-negotiate $uses
+        var uses = (forceLanguage && forceLanguage !== $uses) ? // we don't want to re-negotiate $uses
+              (negotiateLocale(forceLanguage) || forceLanguage) : $uses;
 
         // Detect undefined and null values to shorten the execution and prevent exceptions
         if (translationId === null || angular.isUndefined(translationId)) {
@@ -2634,7 +2666,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         if (angular.isArray(translationId)) {
           var results = {};
           for (var i = 0, c = translationId.length; i < c; i++) {
-            results[translationId[i]] = $translate.instant(translationId[i], interpolateParams, interpolationId);
+            results[translationId[i]] = $translate.instant(translationId[i], interpolateParams, interpolationId, forceLanguage);
           }
           return results;
         }
@@ -2653,8 +2685,8 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         if ($preferredLanguage) {
           possibleLangKeys.push($preferredLanguage);
         }
-        if ($uses) {
-          possibleLangKeys.push($uses);
+        if (uses) {
+          possibleLangKeys.push(uses);
         }
         if ($fallbackLanguage && $fallbackLanguage.length) {
           possibleLangKeys = possibleLangKeys.concat($fallbackLanguage);
@@ -2663,9 +2695,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           var possibleLangKey = possibleLangKeys[j];
           if ($translationTable[possibleLangKey]) {
             if (typeof $translationTable[possibleLangKey][translationId] !== 'undefined') {
-              result = determineTranslationInstant(translationId, interpolateParams, interpolationId);
-            } else if ($notFoundIndicatorLeft || $notFoundIndicatorRight) {
-              result = applyNotFoundIndicators(translationId);
+              result = determineTranslationInstant(translationId, interpolateParams, interpolationId, uses);
             }
           }
           if (typeof result !== 'undefined') {
@@ -2674,10 +2704,14 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         }
 
         if (!result && result !== '') {
-          // Return translation of default interpolator if not found anything.
-          result = defaultInterpolator.interpolate(translationId, interpolateParams);
-          if ($missingTranslationHandlerFactory && !pendingLoader) {
-            result = translateByHandler(translationId, interpolateParams);
+          if ($notFoundIndicatorLeft || $notFoundIndicatorRight) {
+            result = applyNotFoundIndicators(translationId);
+          } else {
+            // Return translation of default interpolator if not found anything.
+            result = defaultInterpolator.interpolate(translationId, interpolateParams);
+            if ($missingTranslationHandlerFactory && !pendingLoader) {
+              result = translateByHandler(translationId, interpolateParams);
+            }
           }
         }
 
@@ -2916,7 +2950,7 @@ angular.module('pascalprecht.translate')
  * @requires $compile
  * @requires $filter
  * @requires $interpolate
- * @restrict A
+ * @restrict AE
  *
  * @description
  * Translates given translation id either through attribute or DOM content.
@@ -3084,7 +3118,8 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
                 });
               }
             } else {
-              translationIds.translate = iElementText;
+              // do not assigne the translation id if it is empty.
+              translationIds.translate = !iElementText ? undefined : iElementText;
             }
           } else {
             translationIds.translate = translationId;
@@ -3125,6 +3160,7 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
 
         iAttr.$observe('translateDefault', function (value) {
           scope.defaultText = value;
+          updateTranslations();
         });
 
         if (translateValuesExist) {
@@ -3169,7 +3205,7 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
               translationId = translateNamespace + translationId;
             }
 
-            $translate(translationId, interpolateParams, translateInterpolation, defaultTranslationText)
+            $translate(translationId, interpolateParams, translateInterpolation, defaultTranslationText, scope.translateLanguage)
               .then(function (translation) {
                 applyTranslation(translation, scope, true, translateAttr);
               }, function (translationId) {
@@ -3212,6 +3248,7 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
         if (translateValuesExist || translateValueExist || iAttr.translateDefault) {
           scope.$watch('interpolateParams', updateTranslations, true);
         }
+        scope.$watch('translateLanguage', updateTranslations);
 
         // Ensures the text will be refreshed after the current language was changed
         // w/ $translate.use(...)
@@ -3278,7 +3315,7 @@ angular.module('pascalprecht.translate')
  */
 .directive('translateCloak', translateCloakDirective);
 
-function translateCloakDirective($translate) {
+function translateCloakDirective($translate, $rootScope) {
 
   'use strict';
 
@@ -3296,17 +3333,21 @@ function translateCloakDirective($translate) {
       applyCloak();
 
       return function linkFn(scope, iElement, iAttr) {
-        // Register a watcher for the defined translation allowing a fine tuned cloak
         if (iAttr.translateCloak && iAttr.translateCloak.length) {
+          // Register a watcher for the defined translation allowing a fine tuned cloak
           iAttr.$observe('translateCloak', function (translationId) {
             $translate(translationId).then(removeCloak, applyCloak);
+          });
+          // Register for change events as this is being another indicicator revalidating the cloak)
+          $rootScope.$on('$translateChangeSuccess', function () {
+            $translate(iAttr.translateCloak).then(removeCloak, applyCloak);
           });
         }
       };
     }
   };
 }
-translateCloakDirective.$inject = ['$translate'];
+translateCloakDirective.$inject = ['$translate', '$rootScope'];
 
 translateCloakDirective.displayName = 'translateCloakDirective';
 
@@ -3405,6 +3446,73 @@ translateNamespaceDirective.displayName = 'translateNamespaceDirective';
 
 angular.module('pascalprecht.translate')
 /**
+ * @ngdoc directive
+ * @name pascalprecht.translate.directive:translateLanguage
+ * @restrict A
+ *
+ * @description
+ * Forces the language to the directives in the underlying scope.
+ *
+ * @param {string=} translate language that will be negotiated.
+ *
+ * @example
+   <example module="ngView">
+    <file name="index.html">
+      <div>
+
+        <div>
+            <h1 translate>HELLO</h1>
+        </div>
+
+        <div translate-language="de">
+            <h1 translate>HELLO</h1>
+        </div>
+
+      </div>
+    </file>
+    <file name="script.js">
+      angular.module('ngView', ['pascalprecht.translate'])
+
+      .config(function ($translateProvider) {
+
+        $translateProvider
+          .translations('en',{
+            'HELLO': 'Hello world!'
+          })
+          .translations('de',{
+            'HELLO': 'Hallo Welt!'
+          })
+          .translations(.preferredLanguage('en');
+
+      });
+
+    </file>
+   </example>
+ */
+.directive('translateLanguage', translateLanguageDirective);
+
+function translateLanguageDirective() {
+
+  'use strict';
+
+  return {
+    restrict: 'A',
+    scope: true,
+    compile: function () {
+      return function linkFn(scope, iElement, iAttrs) {
+        iAttrs.$observe('translateLanguage', function (newTranslateLanguage) {
+          scope.translateLanguage = newTranslateLanguage;
+        });
+      };
+    }
+  };
+}
+
+translateLanguageDirective.displayName = 'translateLanguageDirective';
+
+
+angular.module('pascalprecht.translate')
+/**
  * @ngdoc filter
  * @name pascalprecht.translate.filter:translate
  * @requires $parse
@@ -3461,13 +3569,13 @@ function translateFilterFactory($parse, $translate) {
 
   'use strict';
 
-  var translateFilter = function (translationId, interpolateParams, interpolation) {
+  var translateFilter = function (translationId, interpolateParams, interpolation, forceLanguage) {
 
     if (!angular.isObject(interpolateParams)) {
       interpolateParams = $parse(interpolateParams)(this);
     }
 
-    return $translate.instant(translationId, interpolateParams, interpolation);
+    return $translate.instant(translationId, interpolateParams, interpolation, forceLanguage);
   };
 
   if ($translate.statefulFilter()) {
@@ -3510,9 +3618,9 @@ return 'pascalprecht.translate';
 }));
 
 /*!
- * angular-translate - v2.8.1 - 2015-10-01
+ * angular-translate - v2.9.0 - 2016-01-24
  * 
- * Copyright (c) 2015 The angular-translate team, Pascal Precht; Licensed MIT
+ * Copyright (c) 2016 The angular-translate team, Pascal Precht; Licensed MIT
  */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -3584,8 +3692,7 @@ function $translateStaticFilesLoader($q, $http) {
         });
     };
 
-    var deferred = $q.defer(),
-        promises = [],
+    var promises = [],
         length = options.files.length;
 
     for (var i = 0; i < length; i++) {
@@ -3596,7 +3703,7 @@ function $translateStaticFilesLoader($q, $http) {
       }));
     }
 
-    $q.all(promises)
+    return $q.all(promises)
       .then(function (data) {
         var length = data.length,
             mergedData = {};
@@ -3607,12 +3714,8 @@ function $translateStaticFilesLoader($q, $http) {
           }
         }
 
-        deferred.resolve(mergedData);
-      }, function (data) {
-        deferred.reject(data);
+        return mergedData;
       });
-
-    return deferred.promise;
   };
 }
 $translateStaticFilesLoader.$inject = ['$q', '$http'];

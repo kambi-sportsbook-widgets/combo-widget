@@ -41,10 +41,10 @@
 <body class="kw-body">
 <div class="kw-card l-flexbox l-vertical l-expander" ng-controller="appController">
    <!--Header-->
-   <header class="kw-header l-pl-15">{{'Combo builder'| translate}}</header>
+   <header class="kw-header l-pl-16">{{'Combo builder'| translate}}</header>
    <!--Main-->
    <main class="l-flexbox l-vertical l-flexed l-pack-start">
-      <div class="kw-event l-flexbox l-vertical l-pb-15 l-pt-15 l-pl-15 l-pr-15 anim-fade-in"
+      <div class="kw-event l-flexbox l-vertical l-pb-12 l-pt-12 l-pl-16 l-pr-16 anim-fade-in"
            ng-repeat="event in events | startFrom: startFrom | limitTo : listLimit">
          <!--Competitors and path-->
          <div class="kw-event-name-container l-flexbox l-vertical l-pack-center ">
@@ -53,7 +53,7 @@
                <div class="l-flexbox">
                   <span class="text-truncate">{{event.event.homeName}}</span>
                </div>
-               <div class="kw-event-name-divider l-pl-5 l-pr-5">-</div>
+               <div class="kw-event-name-divider l-pl-6 l-pr-6">-</div>
                <div class="l-flexbox">
                   <span class="text-truncate">{{event.event.awayName}}</span>
                </div>
@@ -62,19 +62,19 @@
             <div class="kw-event-path l-flexbox">
                <div class="l-flexbox" ng-class="{'text-truncate': $last}" ng-repeat="p in event.event.path">
                   {{p.name}}
-                  <span ng-if="!$last" class="kw-event-path-divider l-pl-5 l-pr-5">{{!$last?'/':''}}</span>
+                  <span ng-if="!$last" class="kw-event-path-divider l-pl-6 l-pr-6">{{!$last?'/':''}}</span>
                </div>
             </div>
          </div>
 
          <!--Outcomes-->
-         <div class="kw-event-outcomes l-flexbox l-mt-10">
+         <div class="kw-event-outcomes l-flexbox l-mt-12">
             <div class="kw-event-outcome l-flex-1 l-flexbox l-horizontal"
                  ng-if="event.betOffers[0].outcomes.length <= 3"
                  ng-repeat="outcome in event.betOffers[0].outcomes"
                  ng-click="selectOutcome(outcome, event.betOffers[0].outcomes)"
                  ng-class="{selected: outcome.selected===true} ">
-               <span class="kw-event-outcome-label text-truncate l-flex-2 l-pr-5">{{getOutcomeLabel(outcome, event.event)| translate}}</span>
+               <span class="kw-event-outcome-label text-truncate l-flex-2 l-pr-6">{{getOutcomeLabel(outcome, event.event)| translate}}</span>
                <span class="kw-event-outcome-odds l-flex-1 l-flexbox l-align-start l-pack-end"><strong>{{getFormattedOdds(outcome)}}</strong></span>
             </div>
             <div class="l-flexbox l-expander l-flex-1 l-pack-center l-align-center"
@@ -85,12 +85,12 @@
       </div>
    </main>
    <!--Footer-->
-   <footer class="l-flexbox l-pack-end l-align-center l-mr-15 l-ml-15 l-mb-10">
+   <footer class="l-flexbox l-pack-end l-align-center l-mr-16 l-ml-16 l-mb-12">
       <span class="kw-btn kw-plain" ng-click="selectNextOutcome()"><i class="ion-plus"></i></span>
-      <span class="kw-btn kw-plain" ng-click="resetSelection()"><i class="ion-refresh l-mr-5"></i>{{'Reset'| translate}}</span>
+      <span class="kw-btn kw-plain" ng-click="resetSelection()"><i class="ion-refresh l-mr-6"></i>{{'Reset'| translate}}</span>
       <span class="l-flexed"></span>
       <span class="kw-btn kw-plain" ng-click="addOutcomesToBetslip()">
-         <span class="l-pr-5">{{'Add to betslip'| translate}}</span>
+         <span class="l-pr-6">{{'Add to betslip'| translate}}</span>
          <span class="kw-event-outcome-odds"><strong>{{combinedOdds}}</strong></span>
       </span>
    </footer>
