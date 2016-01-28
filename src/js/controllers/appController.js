@@ -36,8 +36,6 @@
       $scope.lowerOddsLimit = 2;
 
 
-      $scope.args = angular.merge({}, $scope.defaultArgs);
-
       /**
        * Fetches the events based on the filter and sorts them according to their lowest outcome
        * @param {String} filter A string with the filter
