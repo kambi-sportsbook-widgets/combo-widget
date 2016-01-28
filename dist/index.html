@@ -73,7 +73,9 @@
    </main>
    <!--Footer-->
    <footer class="l-flexbox l-pack-end l-align-center l-mr-16 l-ml-16 l-mb-12">
-      <span class="kw-btn kw-plain" ng-click="selectNextOutcome()"><i class="ion-plus"></i></span>
+      <span class="kw-btn kw-plain" ng-click="selectNextOutcome()" ng-class="{disabled: listLimit >= args.selectionLimit || listLimit >= events.length }">
+         <i class="ion-plus"></i>
+      </span>
       <span class="kw-btn kw-plain" ng-click="resetSelection()"><i class="ion-refresh l-mr-6"></i>{{'Reset'| translate}}</span>
       <span class="l-flexed"></span>
       <span class="kw-btn kw-plain" ng-click="addOutcomesToBetslip()">
