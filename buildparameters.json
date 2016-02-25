@@ -1,0 +1,7 @@
+{
+   "htmlReplace": {
+      "corelib": "//kambi-cdn.globalmouth.com/lib/dist/js/app.min.js",
+      "translate": "//kambi-cdn.globalmouth.com/translate/dist/translate.min.js"
+   },
+   "awsPublishPath": "combo"
+}

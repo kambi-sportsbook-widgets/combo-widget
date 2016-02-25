@@ -298,6 +298,8 @@
       $scope.init().then(function () {
          // Load the data from the api
          $scope.getBetoffersByFilter($scope.args.filter);
+         // Reset currentHeight
+         $scope.currentHeight = 450;
       });
 
       // Watcher for the oddsFormat, when the format changes we need to recalculate the odds in the new format
