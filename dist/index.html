@@ -16,8 +16,11 @@
    <meta name="apple-mobile-web-app-status-bar-style" content="black">
    <meta name="apple-mobile-web-app-title" content="">
 
-   <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"/>
+   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500"/>
+   <link rel="stylesheet" type="text/css" href="//kambi-cdn.globalmouth.com/lib/dist/css/app-base-all.css"/>
+   <link rel="stylesheet" type="text/css" href="//kambi-cdn.globalmouth.com/lib/dist/css/widgets.css"/>
+   <link rel="stylesheet" type="text/css" href="//kambi-cdn.globalmouth.com/lib/dist/css/app-icons.css"/>
+
    <link rel="stylesheet" href="css/app.min.css">
    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.min.js"></script>
@@ -27,15 +30,17 @@
    <script src="https://c3-static.kambi.com/sb-mobileclient/widget-api/1.0.0.8/kambi-widget-api.js"></script>
 </head>
 <body class="kw-body">
-<div class="kw-card l-flexbox l-vertical l-expander" ng-controller="appController">
+<div class="KambiWidget-card-background-color KambiWidget-card-text-color KambiWidget-card-background-color--hoverable l-flexbox l-vertical l-expander"
+     ng-controller="appController">
    <!--Header-->
-   <header class="kw-header l-pl-16">{{'Combo builder'| translate}}</header>
+   <header class="kw-header KambiWidget-header l-pl-16">{{'Combo builder'| translate}}</header>
    <!--Main-->
    <main class="l-flexbox l-vertical l-flexed l-pack-start">
-      <div class="kw-event l-flexbox l-vertical l-pb-12 l-pt-12 l-pl-16 l-pr-16 anim-fade-in"
+      <div class="kw-event l-flexbox l-vertical l-pb-12 l-pt-12 anim-fade-in"
            ng-repeat="event in events | startFrom: startFrom | limitTo : listLimit">
+
          <!--Competitors and path-->
-         <div class="kw-event-name-container l-flexbox l-vertical l-pack-center ">
+         <div class="kw-event-name-container l-flexbox l-vertical l-pack-center l-pl-16 l-pr-16">
             <!--Competitors-->
             <div class="kw-event-name l-flexbox" ng-click="navigateToEvent(event.event.id)">
                <div class="l-flexbox">
@@ -56,28 +61,29 @@
          </div>
 
          <!--Outcomes-->
-         <div class="kw-event-outcomes l-flexbox l-mt-12">
-            <div class="kw-event-outcome l-flex-1 l-flexbox l-horizontal"
-                 ng-if="event.betOffers[0].outcomes.length <= 3"
-                 ng-repeat="outcome in event.betOffers[0].outcomes"
-                 ng-click="selectOutcome(outcome, event.betOffers[0].outcomes)"
-                 ng-class="{selected: outcome.selected===true} ">
-               <span class="kw-event-outcome-label text-truncate l-flex-2 l-pr-6">{{getOutcomeLabel(outcome, event.event)| translate}}</span>
-               <span class="kw-event-outcome-odds l-flex-1 l-flexbox l-align-start l-pack-end"><strong>{{getFormattedOdds(outcome)}}</strong></span>
-            </div>
-            <div class="l-flexbox l-expander l-flex-1 l-pack-center l-align-center"
-                 ng-if="event.betOffers[0].outcomes.length > 3">
-               {{event.betOffers[0].outcomes.length }} outcomes
-            </div>
+         <div class="kw-event-outcomes l-flexbox l-mt-12 l-pr-6">
+            <button ng-repeat="outcome in event.betOffers[0].outcomes" ng-if="event.betOffers[0].outcomes.length <= 3"
+                    ng-click="selectOutcome(outcome, event.betOffers[0].outcomes)" ng-class="{'KambiWidget-outcome--selected': outcome.selected===true} "
+                    type="button" role="button" class="KambiWidget-outcome kw-event-outcome kw-link l-ml-6 l-flex-1">
+               <div class="KambiWidget-outcome__flexwrap">
+                  <div class="KambiWidget-outcome__label-wrapper">
+                     <span class="KambiWidget-outcome__label">{{getOutcomeLabel(outcome, event.event)| translate}}</span>
+                     <span class="KambiWidget-outcome__line"></span>
+                  </div>
+                  <div class="KambiWidget-outcome__odds-wrapper">
+                     <span class="KambiWidget-outcome__odds"><strong>{{getFormattedOdds(outcome)}}</strong></span>
+                  </div>
+               </div>
+            </button>
          </div>
       </div>
    </main>
    <!--Footer-->
    <footer class="l-flexbox l-pack-end l-align-center l-mr-16 l-ml-16 l-mb-12">
       <span class="kw-btn kw-plain" ng-click="selectNextOutcome()" ng-class="{disabled: listLimit >= args.selectionLimit || listLimit >= events.length }">
-         <i class="ion-plus"></i>
+         <i class="icon-plus"></i>
       </span>
-      <span class="kw-btn kw-plain" ng-click="resetSelection()"><i class="ion-refresh l-mr-6"></i>{{'Reset'| translate}}</span>
+      <span class="kw-btn kw-plain" ng-click="resetSelection()"><i class="icon-rotate-right l-mr-6"></i>{{'Reset'| translate}}</span>
       <span class="l-flexed"></span>
       <span class="kw-btn kw-plain" ng-click="addOutcomesToBetslip()">
          <span class="l-pr-6">{{'Add to betslip'| translate}}</span>

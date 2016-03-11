@@ -86,7 +86,7 @@
          <div class="kw-event-outcomes l-flexbox l-mt-12 l-pr-6">
             <button ng-repeat="outcome in event.betOffers[0].outcomes" ng-if="event.betOffers[0].outcomes.length <= 3"
                     ng-click="selectOutcome(outcome, event.betOffers[0].outcomes)" ng-class="{'KambiWidget-outcome--selected': outcome.selected===true} "
-                    type="button" role="button" class="KambiWidget-outcome kw-link l-ml-6 l-flex-1">
+                    type="button" role="button" class="KambiWidget-outcome kw-event-outcome kw-link l-ml-6 l-flex-1">
                <div class="KambiWidget-outcome__flexwrap">
                   <div class="KambiWidget-outcome__label-wrapper">
                      <span class="KambiWidget-outcome__label">{{getOutcomeLabel(outcome, event.event)| translate}}</span>

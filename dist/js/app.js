@@ -52,7 +52,6 @@
       // Todo: Implement this?
       $scope.lowerOddsLimit = 2;
 
-
       /**
        * Fetches the events based on the filter and sorts them according to their lowest outcome
        * @param {String} filter A string with the filter
