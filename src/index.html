@@ -23,7 +23,7 @@
    <link rel="stylesheet" type="text/css" href="css/app.css"/>
    <!-- endbuild -->
    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.js"></script>
+   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.min.js"></script>
    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.min.js"></script>
    <!-- build:js -->
    <!-- This section will be replaced in the gulp build process -->
@@ -59,7 +59,7 @@
          <!--Competitors and path-->
          <div class="kw-event-name-container l-flexbox l-vertical l-pack-center ">
             <!--Competitors-->
-            <div class="kw-event-name l-flexbox" ng-click="navigateToLiveEvent(event.event.id)">
+            <div class="kw-event-name l-flexbox" ng-click="navigateToEvent(event.event.id)">
                <div class="l-flexbox">
                   <span class="text-truncate">{{event.event.homeName}}</span>
                </div>

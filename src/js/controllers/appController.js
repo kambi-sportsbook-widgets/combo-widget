@@ -292,6 +292,11 @@
          $scope.calculateCombinedOdds();
       };
 
+      // TODO: Use core library instead
+      $scope.navigateToEvent = function ( eventId ) {
+         $widgetService.navigateToEvent(eventId);
+      };
+
       // Call the init method in the coreWidgetController so that we setup everything using our overridden values
       // The init-method returns a promise that resolves when all of the configurations are set, for instance the $scope.args variables
       // so we can call our methods that require parameters from the widget settings after the init method is called
