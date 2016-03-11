@@ -1,21 +1,28 @@
 // Fade in animation for list items
 
+.anim-fade-in.ng-enter, .anim-fade-in.ng-leave.ng-leave-active {
+   opacity: 0;
+}
+
+.anim-fade-in.ng-enter.ng-enter-active {
+   opacity: 1;
+   -webkit-animation: zoomIn 0.1s;
+   -moz-animation: zoomIn 0.1s;
+   -ms-animation: zoomIn 0.1s;
+   animation: zoomIn 0.1s;
+   -webkit-animation-fill-mode: both;
+   animation-fill-mode: both;
+}
+
 .anim-fade-in {
    &.ng-enter {
-      -webkit-animation: zoomIn 0.3s;
-      -moz-animation: zoomIn 0.3s;
-      -ms-animation: zoomIn 0.3s;
-      animation: zoomIn 0.3s;
-      -webkit-animation-fill-mode: both;
-      animation-fill-mode: both;
+      transition: all 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
+      -webkit-transition: all 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
    }
-
-   &.ng-leave {
-      -webkit-animation: fadeOut 0.1s;
-      -moz-animation: fadeOut 0.1s;
-      -ms-animation: fadeOut 0.1s;
-      animation: fadeOut 0.1s;
-      -webkit-animation-fill-mode: both;
-      animation-fill-mode: both;
+   &.ng-enter-stagger {
+      transition-delay: 0.1s;
+      -webkit-transition-delay: 0.1s;
+      transition-duration: 0s;
+      -webkit-transition-duration: 0s;
    }
 }
