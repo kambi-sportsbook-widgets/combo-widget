@@ -64,7 +64,7 @@
          <!--Competitors and path-->
          <div class="kw-event-name-container l-flexbox l-vertical l-pack-center l-pl-16 l-pr-16">
             <!--Competitors-->
-            <div class="kw-event-name l-flexbox" ng-click="navigateToEvent(event.event.id)">
+            <div class="kw-event-name l-flexbox l-pb-6" ng-click="navigateToEvent(event.event.id)">
                <div class="l-flexbox">
                   <span class="text-truncate">{{event.event.homeName}}</span>
                </div>
@@ -74,9 +74,19 @@
                </div>
             </div>
             <!--Event path-->
-            <div class="kw-event-path KambiWidget-card-support-text-color l-flexbox">
-               <div class="l-flexbox" ng-class="{'text-truncate': $last}" ng-repeat="p in event.event.path">
-                  {{p.name}}
+            <!--<div class="kw-event-path KambiWidget-card-support-text-color l-flexbox">-->
+               <!--<div class="l-flexbox" ng-class="{'text-truncate': $last}" ng-repeat="p in event.event.path">-->
+                  <!--<span>{{p.name}}</span>-->
+                  <!--<span ng-if="!$last" class="kw-event-path-divider l-pl-6 l-pr-6">{{!$last?'/':''}}</span>-->
+               <!--</div>-->
+            <!--</div>-->
+
+            <div class="kw-event-path KambiWidget-card-support-text-color l-flexbox l-horizontal">
+               <div class="l-flexbox" ng-repeat="p in event.event.path"
+                    style="max-width: {{ 100 / event.event.path.length }}%">
+                     <span class="kw-event-path-name l-flexbox l-flex-3">
+                        <span class="text-truncate">{{p.name}}</span>
+                     </span>
                   <span ng-if="!$last" class="kw-event-path-divider l-pl-6 l-pr-6">{{!$last?'/':''}}</span>
                </div>
             </div>
