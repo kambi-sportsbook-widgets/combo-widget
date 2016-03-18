@@ -2,9 +2,8 @@
    "coreLibraryBaseUrl": "//kambi-cdn.globalmouth.com/lib/dist/",
    "thirdPartyBaseUrl": "//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/",
    "coreLibraryCSS": [
-      "css/app-base-all.css",
-      "css/widgets.css",
-      "css/app-icons.css"
+      "css/app-base-all.min.css",
+      "css/widgets.min.css"
    ],
    "coreLibraryJS": [
       "js/app.min.js"
