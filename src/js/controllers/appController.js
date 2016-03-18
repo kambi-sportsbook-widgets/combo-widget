@@ -2,7 +2,7 @@
 
    'use strict';
 
-   function appController( $scope, $widgetService, $apiService, $controller ) {
+   function appController ( $scope, $widgetService, $apiService, $controller ) {
 
       // Extend the core controller that takes care of basic setup and common functions
       angular.extend(appController, $controller('widgetCoreController', {
@@ -34,7 +34,6 @@
 
       // Todo: Implement this?
       $scope.lowerOddsLimit = 2;
-
 
       /**
        * Fetches the events based on the filter and sorts them according to their lowest outcome
@@ -126,25 +125,25 @@
        */
       $scope.quickSortBetEvents = function ( items, left, right ) {
 
-         function swap( items, firstIndex, secondIndex ) {
+         function swap ( items, firstIndex, secondIndex ) {
             var temp = items[firstIndex];
             items[firstIndex] = items[secondIndex];
             items[secondIndex] = temp;
          }
 
-         function partition( items, left, right ) {
+         function partition ( items, left, right ) {
             var pivot = items[Math.floor((right + left) / 2)],
                i = left,
                j = right;
 
             while ( i <= j ) {
                while ( items[i].betOffers[0].outcomes[items[i].betOffers[0].lowestOutcome].odds <
-                        pivot.betOffers[0].outcomes[pivot.betOffers[0].lowestOutcome].odds ) {
+               pivot.betOffers[0].outcomes[pivot.betOffers[0].lowestOutcome].odds ) {
                   i++;
                }
 
                while ( items[j].betOffers[0].outcomes[items[j].betOffers[0].lowestOutcome].odds >
-                        pivot.betOffers[0].outcomes[pivot.betOffers[0].lowestOutcome].odds ) {
+               pivot.betOffers[0].outcomes[pivot.betOffers[0].lowestOutcome].odds ) {
                   j--;
                }
 
@@ -178,14 +177,13 @@
          return items;
       };
 
-
       /**
        * Calculates the combined odds of the selected outcomes
        */
       $scope.calculateCombinedOdds = function () {
          var i = 0, result = 1;
          var outcomes = [];
-         if( $scope.events.length > 0) {
+         if ( $scope.events.length > 0 ) {
             for ( ; i < $scope.listLimit; ++i ) {
                var j = 0, outcomesLen = $scope.events[i].betOffers[0].outcomes.length;
                for ( ; j < outcomesLen; ++j ) {
@@ -213,7 +211,6 @@
                   outcomes.push($scope.events[i].betOffers[0].outcomes[j].id);
                }
             }
-
          }
          $widgetService.addOutcomeToBetslip(outcomes);
       };
@@ -308,11 +305,9 @@
       });
 
       // Watcher for the oddsFormat, when the format changes we need to recalculate the odds in the new format
-      $scope.$watch('oddsFormat', function() {
+      $scope.$watch('oddsFormat', function () {
          $scope.calculateCombinedOdds();
       });
-
-
    }
 
    (function ( $app ) {
