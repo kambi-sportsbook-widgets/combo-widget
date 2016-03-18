@@ -17,22 +17,30 @@
    <meta name="apple-mobile-web-app-title" content="">
 
    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500"/>
-   <link rel="stylesheet" type="text/css" href="//kambi-cdn.globalmouth.com/lib/dist/css/app-base-all.css"/>
-   <link rel="stylesheet" type="text/css" href="//kambi-cdn.globalmouth.com/lib/dist/css/widgets.css"/>
-   <link rel="stylesheet" type="text/css" href="//kambi-cdn.globalmouth.com/lib/dist/css/app-icons.css"/>
+   <!-- build:coreLibraryCSS -->
+   <!-- This section will be replaced in the gulp build process -->
+   <link rel="stylesheet" type="text/css" href="../node_modules/kambi-sportsbook-widget-library/dist/css/app-base-all.css"/>
+   <link rel="stylesheet" type="text/css" href="../node_modules/kambi-sportsbook-widget-library/dist/css/widgets.css"/>
+   <link rel="stylesheet" type="text/css" href="../node_modules/kambi-sportsbook-widget-library/dist/css/app-icons.css"/>
+   <!-- endbuild -->
 
    <!-- build:css -->
    <!-- This section will be replaced in the gulp build process -->
    <link rel="stylesheet" type="text/css" href="css/app.css"/>
    <!-- endbuild -->
+
+   <!-- build:thirdPartyLibs -->
    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.min.js"></script>
    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-sanitize.min.js"></script>
+   <!-- endbuild -->
+
    <!-- build:js -->
    <!-- This section will be replaced in the gulp build process -->
    <script src="js/app.js"></script>
    <script src="js/controllers/appController.js"></script>
    <!-- endbuild -->
+
    <!-- build:corelib -->
    <!-- This section will be replaced in the gulp build process -->
    <script src="../node_modules/kambi-sportsbook-widget-library/src/js/controllers/widgetCoreController.js"></script>
@@ -41,6 +49,7 @@
    <script src="../node_modules/kambi-sportsbook-widget-library/src/js/services/kambiAPIService.js"></script>
    <script src="../node_modules/kambi-sportsbook-widget-library/src/js/services/coreUtilsService.js"></script>
    <!-- endbuild -->
+
    <!-- build:translate -->
    <!-- This section will be replaced in the gulp build process -->
    <script src="../node_modules/kambi-sportsbook-widget-core-translate/dist/translate.js"></script>

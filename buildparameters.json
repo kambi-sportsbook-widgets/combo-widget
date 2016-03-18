@@ -1,6 +1,20 @@
 {
+   "coreLibraryBaseUrl": "//kambi-cdn.globalmouth.com/lib/dist/",
+   "thirdPartyBaseUrl": "//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/",
+   "coreLibraryCSS": [
+      "css/app-base-all.css",
+      "css/widgets.css",
+      "css/app-icons.css"
+   ],
+   "coreLibraryJS": [
+      "js/app.min.js"
+   ],
+   "thirdPartyLibs": [
+      "angular.min.js",
+      "angular-animate.min.js",
+      "angular-sanitize.min.js"
+   ],
    "htmlReplace": {
-      "corelib": "//kambi-cdn.globalmouth.com/lib/dist/js/app.min.js",
       "translate": "//kambi-cdn.globalmouth.com/translate/dist/translate.min.js"
    },
    "awsPublishPath": "combo"

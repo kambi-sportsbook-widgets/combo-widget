@@ -33,6 +33,12 @@ For setting up sass maps, follow this tutorial https://www.hackmonkey.com/2014/s
 
 To use Scss Lint, run "gem install scss_lint"
 
+# Build process
+
+1. Install node modules using "npm install"
+2. Edit the buildparameters.json file as needed. More details here https://github.com/kambi-sportsbook-widgets/widget-build-tools
+3. Run the default gulp task using the "gulp" command. 
+
 # Changelog
 
 changelog can be found [here](CHANGELOG.md)
