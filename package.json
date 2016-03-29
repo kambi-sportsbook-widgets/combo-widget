@@ -9,7 +9,7 @@
       "gulp": "^3.9.0",
       "kambi-sportsbook-widget-core-translate": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-core-translate.git",
       "kambi-sportsbook-widget-library": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-library.git",
-      "widget-build-tools": "git+ssh://git@github.com:kambi-sportsbook-widgets/widget-build-tools.git",
+      "widget-build-tools": "git+ssh://git@github.com:kambi-sportsbook-widgets/widget-build-tools.git#v0.1.0",
       "require-dir": "^0.3.0"
    },
    "scripts": {
