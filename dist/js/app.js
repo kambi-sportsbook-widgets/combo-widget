@@ -19,7 +19,7 @@
 
    'use strict';
 
-   function appController ( $scope, $widgetService, $apiService, $controller, $http ) {
+   function appController( $scope, $widgetService, $apiService, $controller ) {
 
       // Extend the core controller that takes care of basic setup and common functions
       angular.extend(appController, $controller('widgetCoreController', {
@@ -61,20 +61,8 @@
          // Loading flag
          $scope.loading = true;
          // Call the api and get the filtered events
-         //return $apiService.getEventsByFilter(filter)
-         var requestParams = {
-            lang: 'en_GB',
-            market: 'SE',
-            client_id: null,
-            include: null,
-            callback: 'JSON_CALLBACK'
-         };
-         return $http.jsonp('https://cti-api.kambi.com/offering/api/v3/leo/listView/football/all/all/', {
-            params: requestParams,
-            cache: false
-         })
+         return $apiService.getEventsByFilter(filter)
             .then(function ( response ) {
-               void 0;
                   $scope.events = [];
                   var sortedEvents = $scope.sortEventOffers(response.data.events);
                   var i = 0, len = sortedEvents.length, selectionCounter = 0, addedTeams = [];
@@ -154,13 +142,13 @@
        */
       $scope.quickSortBetEvents = function ( items, left, right ) {
 
-         function swap ( items, firstIndex, secondIndex ) {
+         function swap( items, firstIndex, secondIndex ) {
             var temp = items[firstIndex];
             items[firstIndex] = items[secondIndex];
             items[secondIndex] = temp;
          }
 
-         function partition ( items, left, right ) {
+         function partition( items, left, right ) {
             var pivot = items[Math.floor((right + left) / 2)],
                i = left,
                j = right;
@@ -329,10 +317,9 @@
       $scope.init().then(function () {
          // Load the data from the api
          $scope.getBetoffersByFilter($scope.args.filter);
-         // Reset currentHeight
-         $scope.currentHeight = 450;
-         // Set currentHeight
-         $scope.setWidgetHeight($scope.currentHeight);
+      }).finally(function () {
+         // Reset widget height to defaultHeight
+         $scope.setWidgetHeight($scope.defaultHeight);
       });
 
       // Watcher for the oddsFormat, when the format changes we need to recalculate the odds in the new format
@@ -342,7 +329,7 @@
    }
 
    (function ( $app ) {
-      return $app.controller('appController', ['$scope', 'kambiWidgetService', 'kambiAPIService', '$controller', '$http', appController]);
+      return $app.controller('appController', ['$scope', 'kambiWidgetService', 'kambiAPIService', '$controller', appController]);
    })(angular.module('comboWidget'));
 
 }).call(this);
