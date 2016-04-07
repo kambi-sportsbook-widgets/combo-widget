@@ -19,7 +19,7 @@
 
    'use strict';
 
-   function appController( $scope, $widgetService, $apiService, $controller ) {
+   function appController ( $scope, $widgetService, $apiService, $controller ) {
 
       // Extend the core controller that takes care of basic setup and common functions
       angular.extend(appController, $controller('widgetCoreController', {
@@ -142,13 +142,13 @@
        */
       $scope.quickSortBetEvents = function ( items, left, right ) {
 
-         function swap( items, firstIndex, secondIndex ) {
+         function swap ( items, firstIndex, secondIndex ) {
             var temp = items[firstIndex];
             items[firstIndex] = items[secondIndex];
             items[secondIndex] = temp;
          }
 
-         function partition( items, left, right ) {
+         function partition ( items, left, right ) {
             var pivot = items[Math.floor((right + left) / 2)],
                i = left,
                j = right;

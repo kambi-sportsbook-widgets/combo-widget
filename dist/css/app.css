@@ -40,11 +40,11 @@
 }
 
 .anim-fade-in.ng-enter.ng-enter-active {
-  opacity: 1;
-  -webkit-animation: zoomIn 0.1s;
+  animation: zoomIn 0.1s;
   -moz-animation: zoomIn 0.1s;
   -ms-animation: zoomIn 0.1s;
-  animation: zoomIn 0.1s;
+  -webkit-animation: zoomIn 0.1s;
+  opacity: 1;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
@@ -58,6 +58,11 @@
   -webkit-transition-delay: 0.1s;
   transition-duration: 0s;
   -webkit-transition-duration: 0s;
+}
+
+html {
+  min-width: 100%;
+  width: 1px;
 }
 
 .kw-event-name {
