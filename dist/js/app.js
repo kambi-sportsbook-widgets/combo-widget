@@ -30,7 +30,8 @@
       $scope.defaultArgs = {
          filter: 'football/all/all/',
          defaultListLimit: 3, // A default setting for the size of the list, used when resetting
-         selectionLimit: 12 // The maximum allowed selections, the bet slip supports up to 12 outcomes
+         selectionLimit: 12, // The maximum allowed selections, the bet slip supports up to 12 outcomes
+         replaceOutcomes: true // When selecting a different outcome in a betoffer that has already been added to the betslip, should we replace it?
       };
 
       // The bet offers and events to be loaded from the api
@@ -220,16 +221,35 @@
        * Adds the outcomes to the betslip
        */
       $scope.addOutcomesToBetslip = function () {
-         var i = 0, outcomes = [];
-         for ( ; i < $scope.listLimit; ++i ) {
-            var j = 0, outcomesLen = $scope.events[i].betOffers[0].outcomes.length;
-            for ( ; j < outcomesLen; ++j ) {
-               if ( $scope.events[i].betOffers[0].outcomes[j].selected ) {
-                  outcomes.push($scope.events[i].betOffers[0].outcomes[j].id);
+         // Create a removable listener that calls the api for the betslip betoffers
+         var betslipListener = $scope.$on('OUTCOMES:UPDATE', function ( event, betslipOffers ) {
+            // Remove the listener once we get the items from the betslip
+            betslipListener();
+
+            var i = 0, outcomes = [], remove = [], betslipLen = betslipOffers.outcomes.length, k = 0;
+            for ( ; i < $scope.listLimit; ++i ) {
+               var j = 0, outcomesLen = $scope.events[i].betOffers[0].outcomes.length;
+               for ( ; j < outcomesLen; ++j ) {
+                  if ( $scope.events[i].betOffers[0].outcomes[j].selected ) {
+                     outcomes.push($scope.events[i].betOffers[0].outcomes[j].id);
+                  }
+               }
+               if ( $scope.args.replaceOutcomes === true ) {
+                  k = 0;
+                  for ( ; k < betslipLen; ++k ) {
+                     if ( betslipOffers.outcomes[k].eventId === $scope.events[i].event.id && outcomes.indexOf(betslipOffers.outcomes[k].id) === -1 &&
+                        betslipOffers.outcomes[k].id !== outcomes ) {
+                        remove.push(betslipOffers.outcomes[k].id);
+                     }
+                  }
                }
             }
-         }
-         $widgetService.addOutcomeToBetslip(outcomes);
+            if ( $scope.args.replaceOutcomes === true ) {
+               $widgetService.removeOutcomeFromBetslip(remove);
+            }
+            $widgetService.addOutcomeToBetslip(outcomes);
+         });
+         $widgetService.requestBetslipOutcomes();
       };
 
       /**
