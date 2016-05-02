@@ -1,5 +1,5 @@
 {
-   "predef": [ "rivets", "Stapes", "Promise", "CoreLibrary", "fetch", "sightglass" ],
+   "esversion": 6,
    "bitwise": true,
    "camelcase": false,
    "curly": true,
@@ -11,7 +11,6 @@
    "globalstrict": false,
    "immed": true,
    "indent": 3,
-   "maxcomplexity": 10,
    "maxdepth": 8,
    "maxerr": false,
    "maxlen": 160,
