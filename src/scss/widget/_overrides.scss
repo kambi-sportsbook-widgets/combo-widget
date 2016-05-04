@@ -1,0 +1,123 @@
+// Temporary overrides
+// These classes will be moved to core-library
+
+.KambiWidget-card-background-color {
+   background-color: $color-4-1-card-background;
+}
+
+.KambiWidget-card-border-color {
+   border-color: $color-4-1-card-border;
+   border-style: solid;
+   border-width: 1px;
+   border-top-width: 0px;
+}
+
+.kw-header {
+   @extend .KambiWidget-card-border-color;
+   border-width: 0;
+   border-bottom-width: 1px;
+}
+
+// Temp default styles
+.KambiWidget-outcome {
+   height: 36px;
+   overflow: hidden;
+   display: block;
+   padding: 0;
+   border: none;
+   border-radius: 2px;
+   line-height: 3;
+   font-size: 12px;
+   text-align: left;
+   font-family: "kambi-roboto", sans-serif;
+   background: #0eb5ca;
+   -webkit-transition: background-color 0.2s ease-out, color 0.2s ease-out;
+   transition: background-color 0.2s ease-out, color 0.2s ease-out; }
+.KambiWidget-outcome:hover {
+   background: #10cae2; }
+.KambiWidget-outcome:active {
+   background: #0ca0b2; }
+.KambiWidget-outcome:hover:active, .KambiWidget-outcome:focus {
+   outline: 0; }
+.KambiWidget-outcome__flexwrap {
+   padding: 0 7px;
+   display: -webkit-box;
+   display: -webkit-flex;
+   display: flex;
+   -webkit-box-pack: justify;
+   -webkit-justify-content: space-between;
+   justify-content: space-between; }
+.KambiWidget-outcome__label-wrapper {
+   -webkit-box-flex: 1;
+   -webkit-flex: 1 1 auto;
+   flex: 1 1 auto;
+   display: -webkit-box;
+   display: -webkit-flex;
+   display: flex;
+   -webkit-box-pack: start;
+   -webkit-justify-content: flex-start;
+   justify-content: flex-start;
+   padding: 0 3px;
+   overflow: hidden;
+   color: #ffffff;
+   opacity: 0.85; }
+.KambiWidget-outcome__label {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   display: block;
+   -webkit-box-flex: 0;
+   -webkit-flex: 0 1 auto;
+   flex: 0 1 auto; }
+.KambiWidget-outcome__line {
+   -webkit-box-flex: 0;
+   -webkit-flex: 0 0 auto;
+   flex: 0 0 auto;
+   display: block;
+   margin-left: 4px; }
+.KambiWidget-outcome__odds-wrapper {
+   padding: 0 3px;
+   -webkit-box-flex: 0;
+   -webkit-flex: 0 0 auto;
+   flex: 0 0 auto;
+   text-align: center;
+   -webkit-transform: translate3d(0, 0, 0);
+   transform: translate3d(0, 0, 0); }
+.KambiWidget-outcome--no-label .KambiWidget-outcome__odds-wrapper {
+   -webkit-box-flex: 1;
+   -webkit-flex: 1 0 auto;
+   flex: 1 0 auto; }
+.KambiWidget-outcome__odds {
+   font-weight: bold;
+   color: #ffffff;
+   text-shadow: none;
+   position: relative; }
+.KambiWidget-outcome--selected {
+   background: #feec5c; }
+.KambiWidget-outcome--selected:hover {
+   background: #feef75; }
+.KambiWidget-outcome--selected:active {
+   background: #fee943; }
+.KambiWidget-outcome--selected .KambiWidget-outcome__odds {
+   color: #333333; }
+.KambiWidget-outcome--selected .KambiWidget-outcome__label-wrapper {
+   color: #333333; }
+.KambiWidget-outcome:disabled,
+.KambiWidget-outcome--suspended {
+   background: #bbb;
+   color: #888888; }
+.KambiWidget-outcome:disabled:hover,
+.KambiWidget-outcome--suspended:hover {
+   background: #bbb;
+   color: #888888; }
+.KambiWidget-outcome:disabled:active,
+.KambiWidget-outcome--suspended:active {
+   background: #bbb;
+   color: #888888; }
+.KambiWidget-outcome:disabled .KambiWidget-outcome__label-wrapper,
+.KambiWidget-outcome--suspended .KambiWidget-outcome__label-wrapper {
+   color: #959595; }
+.KambiWidget-outcome--suspended {
+   cursor: default; }
+.KambiWidget-outcome--suspended .KambiWidget-outcome__odds-wrapper {
+   display: none; }

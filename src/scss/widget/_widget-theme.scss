@@ -1,3 +1,14 @@
+.kw-event-path {
+   div:not(:first-child):before {
+      content: "/";
+      margin-left: 6px;
+      margin-right: 6px;
+   }
+   div:last-child {
+      @include flexbox; // overrides display: inline-block rule in Kambi CSS
+   }
+}
+
 .kw-event-name {
    font-size: 14px;
 }
