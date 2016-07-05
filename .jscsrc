@@ -38,5 +38,8 @@
       "with",
       "return",
       "typeof"
+   ],
+   "excludeFiles": [
+      "src/js/_lib/**"
    ]
 }
