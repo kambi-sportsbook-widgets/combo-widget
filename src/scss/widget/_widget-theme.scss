@@ -16,3 +16,26 @@
 .kw-event-path-name {
    @include flex(0 1 auto);
 }
+
+//Footer button
+
+.kw-btn-outer {
+   @include flex(0 1 auto);
+
+   .kw-btn {
+      display: block;
+      overflow: hidden;
+   }
+
+   .kw-btn-label {
+      overflow: hidden;
+      @include flex(1 1 auto);
+
+      > span {
+         @include flex(0 1 auto);
+         display: block;
+      }
+   }
+}
+
+

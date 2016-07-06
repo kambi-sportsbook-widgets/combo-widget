@@ -76,23 +76,37 @@
    </main>
    <!--Footer -->
    <footer class="l-flexbox l-align-center l-mr-16 l-ml-16 l-mb-12">
-      <div class="l-flexbox l-align-center l-horizontal">
-         <div class="kw-btn kw-plain"
-              rv-on-click="selectNextOutcome"
-              rv-class-disabled="listLimit | disablePlusIcon">
-            <i class="icon-plus"></i>
+      <div class="l-flexbox l-flex-1">
+         <!--Btn1-->
+         <div class="l-flexbox">
+            <div class="kw-btn kw-plain"
+                 rv-on-click="selectNextOutcome"
+                 rv-class-disabled="listLimit | disablePlusIcon">
+               <i class="icon-plus"></i>
+            </div>
          </div>
-         <div class="kw-btn kw-plain" rv-on-click="resetSelection"><i class="icon-rotate-right l-mr-6"></i>{'Reset' | translate}</div>
-      </div>
-      <div class="l-flexbox l-flexed l-pack-end">
-         <div class="kw-btn kw-plain l-flexbox l-horizontal" rv-on-click="addOutcomesToBetslip">
-            <div class="l-pr-6" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{'Add to betslip' | translate}</div>
-            <div class="kw-event-outcome-odds "><strong>{combinedOdds}</strong></div>
+         <!--Btn2-->
+         <div class="l-flexbox">
+            <div class="kw-btn kw-plain" rv-on-click="resetSelection"><i class="icon-rotate-right l-mr-6"></i>{'Reset' | translate}</div>
+         </div>
+         <!--Btn3-->
+         <div class="l-flexbox l-flex-1 l-pack-end">
+            <div class="kw-btn-outer l-flexbox l-align-center l-flex-1">
+               <div class="kw-btn kw-plain l-flex-1" rv-on-click="addOutcomesToBetslip">
+                  <div class="l-flexbox l-pack-justify">
+                     <div class="kw-btn-label l-flexbox l-pack-start l-mr-6">
+                        <span class="text-truncate">{'Add to betslip' | translate}</span>
+                     </div>
+                     <div class="kw-event-outcome-odd">
+                        <strong>{combinedOdds}</strong>
+                     </div>
+                  </div>
+               </div>
+            </div>
          </div>
       </div>
    </footer>
 </div>
-
 
 <!-- build:js -->
 <!-- This section will be replaced in the gulp build process -->
