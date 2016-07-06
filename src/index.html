@@ -29,7 +29,7 @@
 
    <!-- build:kambi-widget-api -->
    <!-- This section will be replaced in the gulp build process -->
-   <script src="https://c3-static.kambi.com/sb-mobileclient/widget-api/1.0.0.10/kambi-widget-api.js"></script>
+   <script src="https://c3-static.kambi.com/sb-mobileclient/widget-api/1.0.0.13/kambi-widget-api.js"></script>
    <!-- endbuild -->
 </head>
 <body class="kw-body">
@@ -68,40 +68,28 @@
          <!--Outcomes-->
          <div class="kw-event-outcomes l-flexbox l-mt-12 l-pr-6">
             <div rv-if="event.betOffers | checkBetOffers" class="l-flexbox l-flex-1">
-               <button rv-each-outcome="event.betOffers.outcomes"
-                     rv-on-click="selectOutcome"
-                     rv-custom-class="outcome.selected"
-                     rv-toggle-class="KambiWidget-outcome--selected"
-                     type="button"
-                     role="button"
-                     class="KambiWidget-outcome kw-event-outcome kw-link l-ml-6 l-flex-1">
-                  <div class="KambiWidget-outcome__flexwrap">
-                     <div class="KambiWidget-outcome__label-wrapper">
-                        <span class="KambiWidget-outcome__label">TODO <!--{{getOutcomeLabel(outcome, event.event)| translate}}--></span>
-                        <span class="KambiWidget-outcome__line"></span>
-                     </div>
-                     <div class="KambiWidget-outcome__odds-wrapper">
-                        <span class="KambiWidget-outcome__odds"><strong>TODO<!--{{getFormattedOdds(outcome)}}--></strong></span>
-                     </div>
-                  </div>
-               </button>
+               <custom-outcome-component rv-each-outcome="event.betOffers.outcomes" outcome-attr="outcome" event-attr="event">
+               </custom-outcome-component>
             </div>
          </div>
       </div>
    </main>
    <!--Footer -->
-   <footer class="l-flexbox l-pack-end l-align-center l-mr-16 l-ml-16 l-mb-12">
-      <span class="kw-btn kw-plain"
-            rv-on-click="selectNextOutcome"
-            rv-class-disabled="listLimit | disablePlusIcon">
-         <i class="icon-plus"></i>
-      </span>
-      <span class="kw-btn kw-plain" rv-on-click="resetSelection"><i class="icon-rotate-right l-mr-6"></i>{'Reset' | translate}</span>
-      <span class="l-flexed"></span>
-      <span class="kw-btn kw-plain" rv-on-click="addOutcomesToBetslip">
-         <span class="l-pr-6">{'Add to betslip' | translate}</span>
-         <span class="kw-event-outcome-odds"><strong>{combinedOdds}</strong></span>
-      </span>
+   <footer class="l-flexbox l-align-center l-mr-16 l-ml-16 l-mb-12">
+      <div class="l-flexbox l-align-center l-horizontal">
+         <div class="kw-btn kw-plain"
+              rv-on-click="selectNextOutcome"
+              rv-class-disabled="listLimit | disablePlusIcon">
+            <i class="icon-plus"></i>
+         </div>
+         <div class="kw-btn kw-plain" rv-on-click="resetSelection"><i class="icon-rotate-right l-mr-6"></i>{'Reset' | translate}</div>
+      </div>
+      <div class="l-flexbox l-flexed l-pack-end">
+         <div class="kw-btn kw-plain l-flexbox l-horizontal" rv-on-click="addOutcomesToBetslip">
+            <div class="l-pr-6" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{'Add to betslip' | translate}</div>
+            <div class="kw-event-outcome-odds "><strong>{combinedOdds}</strong></div>
+         </div>
+      </div>
    </footer>
 </div>
 
@@ -116,8 +104,10 @@
 <script src="/node_modules/widget-core-library/src/transpiled/js/Module/offeringModule.js"></script>
 <script src="/node_modules/widget-core-library/src/transpiled/js/Module/statisticsModule.js"></script>
 <script src="/node_modules/widget-core-library/src/transpiled/js/Module/translationModule.js"></script>
+<script src="/node_modules/widget-core-library/src/transpiled/js/Module/utilModule.js"></script>
 <script src="/node_modules/widget-core-library/src/transpiled/js/Component/Component.js"></script>
 <script src="/node_modules/widget-core-library/src/transpiled/js/Component/PaginationComponent/PaginationComponent.js"></script>
+<script src="transpiled/js/CustomOutcomeComponent/CustomOutcomeComponent.js"></script>
 <script src="transpiled/js/app.js"></script>
 <!-- endbuild -->
 </body>

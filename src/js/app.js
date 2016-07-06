@@ -75,22 +75,6 @@
       },
 
       init () {
-         this.scope.events = [];
-
-         // The actual limit of the list
-         this.scope.listLimit = this.scope.args.defaultListLimit;
-
-         // Default Widget height, used when resetting the list
-         this.defaultHeight = 450;
-
-         // The actual height of the widget
-         this.currentHeight = 450;
-
-         // The height of a row, used when adding more events
-         this.rowHeight = 115;
-
-         // Loading flag
-         this.scope.loading = true;
 
          this.view.formatters['checkBetOffers'] = ( betOffers ) => {
             return betOffers.outcomes.length <= 3;
@@ -101,18 +85,57 @@
          };
 
          this.view.formatters['disablePlusIcon'] = ( listLimit ) => {
-            return listLimit >= this.scope.args.selectionLimit || listLimit >= this.scope.events.length;
+            return listLimit >= this.scope.args.selectionLimit;
          };
+
+         this.scope.events = [];
+
+         Stapes.on('CUSTOM:OUTCOME:SELECTED', ( data, event ) => {
+            this.scope.selectOutcome(data.outcomeId, data.betOfferId);
+         });
+
+         Stapes.on('CUSTOM:OUTCOME:DESELECTED', ( data, event ) => {
+            this.scope.selectOutcome(data.outcomeId, data.betOfferId);
+         });
+
+         CoreLibrary.widgetModule.events.on('ODDS:FORMAT', () => {
+            this.calculateCombinedOdds();
+         });
+
+         // The actual limit of the list
+         this.scope.listLimit = this.scope.args.defaultListLimit;
+
+         // The height of a row, used when adding more events
+         // this.rowHeight = 115;
+
+         // Default Widget height, used when resetting the list
+         // this.defaultHeight = 450;
+
+         // The actual height of the widget
+         // this.currentHeight = 450;
+
+         // CoreLibrary.widgetModule.setWidgetHeight(this.defaultHeight);
+         // CoreLibrary.widgetModule.adaptWidgetHeight();
+
+         // Loading flag
+         this.scope.loading = true;
 
          this.scope.navigateToEvent = ( eventId ) => {
             CoreLibrary.widgetModule.navigateToEvent(eventId);
          };
 
-         this.scope.selectOutcome = ( ev, scope ) => {
-            scope.event.betOffers.outcomes.forEach(( outcome ) => {
-               outcome.selected = false;
+         this.scope.selectOutcome = ( outcomeId, betOfferId ) => {
+            this.scope.events.forEach(( event ) => {
+               if ( event.betOffers.id === betOfferId ) {
+                  event.betOffers.outcomes.forEach(( outcome ) => {
+                     if ( outcome.id === outcomeId ) {
+                        outcome.selected = outcome.selected !== true;
+                     } else {
+                        outcome.selected = false;
+                     }
+                  });
+               }
             });
-            scope.outcome.selected = true;
             this.calculateCombinedOdds();
          };
 
@@ -132,8 +155,9 @@
                if ( hasSelected === false ) {
                   if ( selectedCount === this.scope.listLimit ) {
                      this.scope.listLimit = this.scope.listLimit + 1;
-                     this.currentHeight += this.rowHeight;
-                     CoreLibrary.widgetModule.setWidgetHeight(this.currentHeight);
+                     // this.currentHeight += this.rowHeight;
+                     // CoreLibrary.widgetModule.setWidgetHeight(this.currentHeight);
+                     CoreLibrary.widgetModule.adaptWidgetHeight();
                   }
                   this.scope.events[i].betOffers.outcomes[this.scope.events[i].betOffers.lowestOutcome].selected = true;
                   this.calculateCombinedOdds();
@@ -145,11 +169,13 @@
             return false;
          };
 
-         this.scope.addOutcomesToBetslip = function () {
+         this.scope.addOutcomesToBetslip = () => {
             // Create a removable listener that calls the api for the betslip betoffers
-            var betslipListener = this.scope.$on('OUTCOMES:UPDATE', function ( event, betslipOffers ) {
+            var betslipListener = ( betslipOffers, event ) => {
+               console.debug('listener');
+               console.debug(event, betslipOffers);
                // Remove the listener once we get the items from the betslip
-               betslipListener();
+               CoreLibrary.widgetModule.events.off('OUTCOMES:UPDATE', betslipListener);
 
                var i = 0, outcomes = [], remove = [], betslipLen = betslipOffers.outcomes.length, k = 0;
                for ( ; i < this.scope.listLimit; ++i ) {
@@ -173,17 +199,17 @@
                   CoreLibrary.widgetModule.removeOutcomeFromBetslip(remove);
                }
                CoreLibrary.widgetModule.addOutcomeToBetslip(outcomes);
-            });
+            };
+            CoreLibrary.widgetModule.events.on('OUTCOMES:UPDATE', betslipListener);
             CoreLibrary.widgetModule.requestBetslipOutcomes();
          };
 
          this.scope.resetSelection = () => {
             var selectionCounter = 0;
-            for (var i = 0; i < this.scope.events.length; ++i ) {
+            for ( var i = 0; i < this.scope.events.length; ++i ) {
                var outcomeLen = this.scope.events[i].betOffers.outcomes.length;
-               for (var j = 0; j < outcomeLen; ++j ) {
-                  if ( selectionCounter < this.scope.args.defaultListLimit &&
-                        j === this.scope.events[i].betOffers.lowestOutcome ) {
+               for ( var j = 0; j < outcomeLen; ++j ) {
+                  if ( selectionCounter < this.scope.args.defaultListLimit && j === this.scope.events[i].betOffers.lowestOutcome ) {
                      this.scope.events[i].betOffers.outcomes[j].selected = true;
                      selectionCounter = selectionCounter + 1;
                   } else {
@@ -194,7 +220,9 @@
             }
             // Reset the list size and height
             this.scope.listLimit = this.scope.args.defaultListLimit;
-            CoreLibrary.widgetModule.setWidgetHeight(this.defaultHeight);
+            // this.currentHeight = this.defaultHeight;
+            // CoreLibrary.widgetModule.setWidgetHeight(this.currentHeight);
+            CoreLibrary.widgetModule.adaptWidgetHeight();
             this.calculateCombinedOdds();
          };
 
@@ -202,7 +230,7 @@
          return CoreLibrary.offeringModule.getEventsByFilter(this.scope.args.filter)
             .then(( response ) => {
                this.scope.events = [];
-               for (var i = 0; i < response.events.length; i++) {
+               for ( var i = 0; i < response.events.length; i++ ) {
                   response.events[i].betOffers = response.events[i].betOffers[0];
                }
                var sortedEvents = this.sortEventOffers(response.events);
@@ -236,13 +264,14 @@
                      this.scope.events.push(sortedEvents[i]);
                   }
                }
+               CoreLibrary.widgetModule.adaptWidgetHeight();
                // Calculate the odds for the selected bets
                this.calculateCombinedOdds();
-            },
-            ( response ) => {
+            }, ( response ) => {
                console.warn('%c Failed to load betoffer data', 'color:red;');
                console.warn(response);
-            }).then(() => {
+            })
+            .then(() => {
                // Unset the loading flag
                this.scope.loading = false;
             });
@@ -259,7 +288,7 @@
          for ( ; i < len; ++i ) {
             // Find the lowest outcome odds in the offering, store the index of the lowest outcome in the object for reference, rather than sorting the outcomes
             if ( events[i].betOffers != null && events[i].betOffers.outcomes != null && events[i].betOffers.outcomes.length > 0 &&
-               events[i].betOffers.outcomes.length <= 3 ) {
+               events[i].betOffers.outcomes.length <= 3 && events[i].event.openForLiveBetting !== true ) {
                var j = 1, outcomesLen = events[i].betOffers.outcomes.length, lowestOutcome = 0;
                for ( ; j < outcomesLen; ++j ) {
                   if ( events[i].betOffers.outcomes[j].odds < events[i].betOffers.outcomes[lowestOutcome].odds ) {
@@ -281,20 +310,36 @@
          var i = 0, result = 1;
          var outcomes = [];
          if ( this.scope.events.length > 0 ) {
-            for ( ; i < this.scope.defaultListLimit; ++i ) {
+            for ( ; i < this.scope.events.length; ++i ) {
                var j = 0, outcomesLen = this.scope.events[i].betOffers.outcomes.length;
                for ( ; j < outcomesLen; ++j ) {
-                  if ( this.scope.events[i].betOffers.outcomes[j].selected ) {
+                  if ( this.scope.events[i].betOffers.outcomes[j].selected === true ) {
                      outcomes.push(this.scope.events[i].betOffers.outcomes[j]);
+                     result = result * (this.scope.events[i].betOffers.outcomes[j].odds / 1000);
                   }
                }
             }
-            result = '';
-            // TODO result = this.scope.multiplyOdds(outcomes);
+            this.getFormattedOdds(Math.floor(result * 1000))
+               .then(( odds ) => {
+                  this.scope.combinedOdds = odds;
+               });
          } else {
-            result = '';
+            this.scope.combinedOdds = '';
          }
-         this.scope.combinedOdds = result;
+      },
+
+      getFormattedOdds ( odds ) {
+         switch ( CoreLibrary.config.oddsFormat ) {
+            case 'fractional':
+               return CoreLibrary.widgetModule.requestOddsAsFractional(odds);
+            case 'american':
+               return CoreLibrary.widgetModule.requestOddsAsAmerican(odds);
+            default:
+               return new Promise(( resolve, reject ) => {
+                  var res = CoreLibrary.utilModule.getOddsDecimalValue(odds / 1000);
+                  resolve(res);
+               });
+         }
       }
    });
 
