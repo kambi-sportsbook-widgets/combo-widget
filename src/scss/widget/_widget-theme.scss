@@ -9,6 +9,11 @@
    }
 }
 
+.kw-header {
+   background-color: transparent;
+   font-size: 12px;
+}
+
 .kw-event-name {
    font-size: 14px;
 }
@@ -23,9 +28,6 @@
    @include flex(0 1 auto);
 
    .kw-btn {
-      &.add-to-betslip {
-         flex-basis: auto;
-      }
       display: block;
       overflow: hidden;
    }
@@ -41,4 +43,6 @@
    }
 }
 
-
+#add-to-betslip {
+   flex-basis: auto;
+}
