@@ -106,16 +106,10 @@
          this.scope.listLimit = this.scope.args.defaultListLimit;
 
          // The height of a row, used when adding more events
-         // this.rowHeight = 115;
+         this.rowHeight = 115;
 
-         // Default Widget height, used when resetting the list
-         // this.defaultHeight = 450;
-
-         // The actual height of the widget
-         // this.currentHeight = 450;
-
-         // CoreLibrary.widgetModule.setWidgetHeight(this.defaultHeight);
-         // CoreLibrary.widgetModule.adaptWidgetHeight();
+         this.headerHeight = 37;
+         this.footerHeight = 58;
 
          // Loading flag
          this.scope.loading = true;
@@ -159,7 +153,7 @@
                      this.scope.listLimit = this.scope.listLimit + 1;
                      // this.currentHeight += this.rowHeight;
                      // CoreLibrary.widgetModule.setWidgetHeight(this.currentHeight);
-                     CoreLibrary.widgetModule.adaptWidgetHeight();
+                     this.adjustHeight();
                   }
                   this.scope.events[i].betOffers.outcomes[this.scope.events[i].betOffers.lowestOutcome].selected = true;
                   this.calculateCombinedOdds();
@@ -224,7 +218,7 @@
             this.scope.listLimit = this.scope.args.defaultListLimit;
             // this.currentHeight = this.defaultHeight;
             // CoreLibrary.widgetModule.setWidgetHeight(this.currentHeight);
-            CoreLibrary.widgetModule.adaptWidgetHeight();
+            this.adjustHeight();
             this.calculateCombinedOdds();
          };
 
@@ -266,7 +260,7 @@
                      this.scope.events.push(sortedEvents[i]);
                   }
                }
-               CoreLibrary.widgetModule.adaptWidgetHeight();
+               this.adjustHeight();
                // Calculate the odds for the selected bets
                this.calculateCombinedOdds();
             }, ( response ) => {
@@ -342,6 +336,10 @@
                   resolve(res);
                });
          }
+      },
+
+      adjustHeight () {
+         CoreLibrary.widgetModule.setWidgetHeight(this.footerHeight + this.headerHeight + (this.scope.listLimit * this.rowHeight));
       }
    });
 

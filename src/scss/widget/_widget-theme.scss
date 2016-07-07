@@ -23,6 +23,9 @@
    @include flex(0 1 auto);
 
    .kw-btn {
+      &.add-to-betslip {
+         flex-basis: auto;
+      }
       display: block;
       overflow: hidden;
    }
