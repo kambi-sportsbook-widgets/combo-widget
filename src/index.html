@@ -16,12 +16,13 @@
    <meta name="apple-mobile-web-app-status-bar-style" content="black">
    <meta name="apple-mobile-web-app-title" content="">
 
-   <link rel="stylesheet" type="text/css" rv-href="widgetCss"/>
 
    <!-- build:css -->
    <!-- This section will be replaced in the gulp build process -->
    <link rel="stylesheet" type="text/css" href="transpiled/css/app.css"/>
    <!-- endbuild -->
+
+   <link rel="stylesheet" type="text/css" rv-href="widgetCss"/>
 
    <!-- build:third-party-libs -->
    <script src="https://s3-eu-west-1.amazonaws.com/kambi-widgets/widget-third-party/v1.2.0/thirdparty.js"></script>
@@ -35,7 +36,7 @@
 <body class="kw-body">
 <div class="KambiWidget-card-background-color KambiWidget-card-text-color l-flexbox l-vertical l-expander">
    <!--Header-->
-   <header class="kw-header KambiWidget-header l-pl-16">{'Combo builder'| translate}</header>
+   <header class="kw-header l-pl-16">{'Combo builder'| translate}</header>
    <!--Main-->
    <main class="l-flexbox l-vertical l-flexed l-pack-start">
       <div class="kw-event KambiWidget-card-background-color--hoverable l-flexbox l-vertical l-pb-12 l-pt-12"
@@ -44,7 +45,7 @@
          <!--Competitors and path-->
          <div class="kw-event-name-container l-flexbox l-vertical l-pack-center l-pl-16 l-pr-16">
             <!--Competitors-->
-            <div class="kw-event-name l-flexbox l-pb-6" rv-click="navigateToEvent(event.event.id)">
+            <div class="kw-event-name l-flexbox l-pb-6" rv-on-click="navigateToEvent">
                <div class="l-flexbox">
                   <span class="text-truncate">{event.event.homeName}</span>
                </div>
@@ -86,7 +87,7 @@
             </div>
          </div>
          <!--Btn2-->
-         <div class="l-flexbox">
+         <div class="l-flexbox l-mr-6 l-ml-6 ">
             <div class="kw-btn kw-plain" rv-on-click="resetSelection"><i class="icon-rotate-right l-mr-6"></i>{'Reset' | translate}</div>
          </div>
          <!--Btn3-->
@@ -95,7 +96,7 @@
                <div class="kw-btn kw-plain l-flex-1" rv-on-click="addOutcomesToBetslip">
                   <div class="l-flexbox l-pack-justify">
                      <div class="kw-btn-label l-flexbox l-pack-start l-mr-6">
-                        <span class="text-truncate">{'Add to betslip' | translate}</span>
+                        <span class="text-truncate" rv-title="addToBetslipString">{addToBetslipString}</span>
                      </div>
                      <div class="kw-event-outcome-odd">
                         <strong>{combinedOdds}</strong>

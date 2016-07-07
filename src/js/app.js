@@ -120,8 +120,10 @@
          // Loading flag
          this.scope.loading = true;
 
-         this.scope.navigateToEvent = ( eventId ) => {
-            CoreLibrary.widgetModule.navigateToEvent(eventId);
+         this.scope.addToBetslipString = CoreLibrary.translationModule.getTranslation('Add to betslip');
+
+         this.scope.navigateToEvent = ( clickEvent, eventData ) => {
+            CoreLibrary.widgetModule.navigateToEvent(eventData.event.event.id);
          };
 
          this.scope.selectOutcome = ( outcomeId, betOfferId ) => {
