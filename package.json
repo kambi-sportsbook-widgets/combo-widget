@@ -5,14 +5,12 @@
    "main": "dist/index.html",
    "dependencies": {},
    "devDependencies": {
-      "changelog": "latest",
       "gulp": "^3.9.0",
       "widget-core-library": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-core-library.git#v2.4.2",
       "widget-build-tools": "git+ssh://git@github.com:kambi-sportsbook-widgets/widget-build-tools.git#v1.2.1",
       "require-dir": "^0.3.0"
    },
    "scripts": {
-      "changelog": "changelog kambi-sportsbook-widgets/combo-widget all -m > CHANGELOG.md",
       "test": "echo \"Error: no test specified\" && exit 1"
    },
    "repository": {
