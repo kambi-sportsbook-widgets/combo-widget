@@ -1,6 +1,6 @@
 {
    "name": "combo-widget",
-   "version": "1.0.4-3",
+   "version": "1.0.4-4",
    "description": "A combo building widget for the Kambi sportsbook",
    "main": "dist/index.html",
    "dependencies": {},
