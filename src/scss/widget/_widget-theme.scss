@@ -46,3 +46,10 @@
 #add-to-betslip {
    flex-basis: auto;
 }
+
+html.kw-browser-internet-explorer {
+   height: 100%;
+   body {
+      height: 100%;
+   }
+}
