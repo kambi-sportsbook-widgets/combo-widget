@@ -1,0 +1,624 @@
+{
+   "countries": {
+      "DK": {
+         "country": "denmark",
+         "filters": {
+            "1": [
+               "england/premier_league",
+               "spain/primera_division",
+               "denmark/superligaen",
+               "denmark/1st_division",
+               "denmark/dbu_pokalen"
+            ],
+            "2": [
+               "germany/bundesliga",
+               "england/fa_cup",
+               "spain/copa_del_rey"
+            ],
+            "3": [
+               "germany/dfb_pokal",
+               "italy/serie_a"
+            ],
+            "4": [
+               "england/the_championship",
+               "france/ligue_1",
+               "coupe_de_france",
+               "portugal/primeira_liga",
+               "netherlands/eredivisie",
+               "sweden/allsvenskan",
+               "norway/tippeligaen"
+            ],
+            "5": [
+               "turkey/super_lig"
+            ]
+         }
+      },
+      "NO": {
+         "country": "norway",
+         "filters": {
+            "1": [
+               "spain/primera_division",
+               "norway/tippeligaen",
+               "norway/1st_division",
+               "norway/nm_cupen"
+            ]
+         },
+         "2": [
+            "germany/bundesliga",
+            "england/fa_cup",
+            "spain/copa_del_rey"
+         ],
+         "3": [
+            "germany/dfb_pokal",
+            "italy/serie_a"
+         ],
+         "4": [
+            "england/the_championship",
+            "france/ligue_1",
+            "coupe_de_france",
+            "portugal/primeira_liga",
+            "netherlands/eredivisie",
+            "sweden/allsvenskan",
+            "denmark/superligaen"
+         ],
+         "5": [
+            "turkey/super_lig"
+         ]
+      },
+      "FI": {
+         "country": "finland",
+         "filters": {
+            "1": [
+               "england/premier_league",
+               "spain/primera_division",
+               "finland/veikkausliiga",
+               "finland/suomen_cup"
+            ],
+            "2": [
+               "germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie",
+               "/football/sweden/allsvenskan",
+               "/football/denmark/superligaen",
+               "/football/norway/tippeligaen"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "SE": {
+         "country": "sweden",
+         "filters": {
+            "1": [
+               "/football/england/premier_league",
+               "/football/spain/primera_division",
+               "/football/sweden/allsvenskan",
+               "/football/sweden/superettan"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie",
+               "/football/denmark/superligaen",
+               "/football/norway/tippeligaen"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "BE": {
+         "country": "belgium",
+         "filters": {
+            "1": [
+               "/football/england/premier_league",
+               "/football/spain/primera_division",
+               "/football/belgium/eerste_klasse_a",
+               "/football/belgium/eerste_klasse_b",
+               "/football/belgium/beker_van_belgie"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "DE": {
+         "country": "germany",
+         "filters": {
+            "1": [
+               "/football/germany/bundesliga",
+               "/germany/2__bundesliga",
+               "/football/germany/dfb_pokal"
+            ],
+            "2": [
+               "/football/england/premier_league",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/italy/serie_a",
+               "/football/austria/bundesliga"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "FR": {
+         "country": "france",
+         "filters": {
+            "1": [
+               "/football/france/ligue_1"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/premier_league",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "GB": {
+         "country": "uk",
+         "filters": {
+            "1": [
+               "/football/england/premier_league",
+               "/football/england/the_championship",
+               "/football/england/fa_cup"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "ES": {
+         "country": "spain",
+         "filters": {
+            "1": [
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/premier_league",
+               "/football/england/fa_cup",
+               "/football/italy/serie_a"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/portugal/primeira_liga"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/netherlands/eredivisie"
+            ]
+         }
+      },
+      "GR": {
+         "country": "greece",
+         "filters": {
+            "1": [
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/premier_league",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/germany/2__bundesliga",
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "IT": {
+         "country": "italy",
+         "filters": {
+            "1": [
+               "/football/italy/serie_a",
+               "/football/italy/serie_b"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/premier_league",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal"
+            ],
+            "4": [
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "PT": {
+         "country": "portugal",
+         "filters": {
+            "1": [
+               "/football/portugal/primeira_liga"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/premier_league",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "CZ": {
+         "country": "czech",
+         "filters": {
+            "1": [
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/germany/2__bundesliga",
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "PL": {
+         "country": "poland",
+         "filters": {
+            "1": [
+               "/football/poland/ekstraklasa",
+               "/football/poland/puchar_polski"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/germany/2__bundesliga",
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "HU": {
+         "country": "hungary",
+         "filters": {
+            "1": [
+               "/football/england/premier_league",
+               "/football/hungary/nb_1"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "RO": {
+         "country": "romania",
+         "filters": {
+            "1": [
+               "/football/england/premier_league",
+               "/football/romania/liga_i",
+               "/football/romania/cupa_ligii"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "AU": {
+         "country": "australia",
+         "filters": {
+            "1": [
+               "/football/england/premier_league",
+               "/football/australia/a-league",
+               "/football/australia/new_south_wales_premier_league"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "EE": {
+         "country": "estonia",
+         "filters": {
+            "1": [
+               "/football/england/premier_league"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "LT": {
+         "country": "lithuania",
+         "filters": {
+            "1": [
+               "/football/england/premier_league"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "CA": {
+         "country": "canada",
+         "filters": {
+            "1": [
+               "/football/england/premier_league"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      },
+      "RU": {
+         "country": "russia",
+         "filters": {
+            "1": [
+               "/football/england/premier_league",
+               "/football/russia/premier_league",
+               "/football/russia/russia_cup",
+               "/football/russia/super_cup"
+            ],
+            "2": [
+               "/football/germany/bundesliga",
+               "/football/england/fa_cup",
+               "/football/spain/primera_division",
+               "/football/spain/copa_del_rey"
+            ],
+            "3": [
+               "/football/germany/dfb_pokal",
+               "/football/italy/serie_a"
+            ],
+            "4": [
+               "/football/england/the_championship",
+               "/football/france/ligue_1",
+               "/football/coupe_de_france",
+               "/football/portugal/primeira_liga",
+               "/football/netherlands/eredivisie"
+            ],
+            "5": [
+               "/football/turkey/super_lig"
+            ]
+         }
+      }
+   }
+}
