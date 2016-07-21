@@ -66,7 +66,7 @@
       defaultArgs: {
          filter: 'football/all/all/',
          defaultListLimit: 3, // A default setting for the size of the list, used when resetting
-         selectionLimit: 12, // The maximum allowed selections, the bet slip supports up to 12 outcomes
+         selectionLimit: 120, // The maximum allowed selections, the bet slip supports up to 12 outcomes
          replaceOutcomes: true // When selecting a different outcome in a betoffer that has already been added to the betslip, should we replace it?
       },
 
@@ -222,14 +222,54 @@
             this.calculateCombinedOdds();
          };
 
+         var arrayFilter = [];
+
+         // Merge the generic filters with the contidional filters
+         for ( var genericGroup in this.scope.args.genericFilters ) {
+            if ( this.scope.args.genericFilters.hasOwnProperty(genericGroup) ) {
+               this.scope.args.filters[genericGroup] = this.scope.args.filters[genericGroup].concat(this.scope.args.genericFilters[genericGroup]);
+            }
+         }
+
+         for ( var group in this.scope.args.filters ) {
+            if ( this.scope.args.filters.hasOwnProperty(group) ) {
+               var i = 0, len = this.scope.args.filters[group].length;
+               for ( ; i < len; ++i ) {
+                  if ( this.scope.args.ignoreFilters.indexOf(this.scope.args.filters[group][i]) === -1 ) {
+                     arrayFilter.push('/football/' + this.scope.args.filters[group][i] + '/');
+                  } else {
+                     console.debug('Ignoring', this.scope.args.filters[group][i])
+                  }
+               }
+            }
+         }
+         arrayFilter = arrayFilter.sort(( a, b ) => {
+            if ( a < b ) {
+               return -1;
+            }
+            if ( a > b ) {
+               return 1;
+            }
+            return 0;
+         });
+
+         var filterUrl = CoreLibrary.widgetModule.createFilterUrl(arrayFilter);
+         if ( filterUrl ) {
+            filterUrl = filterUrl.substring(8, filterUrl.length);
+         } else {
+            filterUrl = 'football/all/all'; // Try to get everything if we dont get anything from filters
+         }
+
          // Call the api and get the filtered events
-         return CoreLibrary.offeringModule.getEventsByFilter(this.scope.args.filter)
+         return CoreLibrary.offeringModule.getEventsByFilter(filterUrl)
             .then(( response ) => {
+
                this.scope.events = [];
                for ( var i = 0; i < response.events.length; i++ ) {
                   response.events[i].betOffers = response.events[i].betOffers[0];
                }
                var sortedEvents = this.sortEventOffers(response.events);
+               sortedEvents = this.prioSort(sortedEvents);
                var i = 0, len = sortedEvents.length, selectionCounter = 0, addedTeams = [];
                for ( ; i < len; ++i ) {
                   // Check that the participants are not a in a previously added event, since they can only be in one outcome on the betslip
@@ -274,7 +314,7 @@
       },
 
       /**
-       * Sorts the events bases on the lowest odds in the first offer, if it has any offer
+       * Sorts the events based on the lowest odds in the first offer, if it has any offer
        * If the event does not contain a bet offer then it is filtered out
        * @param {Array.<Object>} events An array of events, each containing events and betOffers.
        * @returns {Array} The sorted and filtered array
@@ -336,6 +376,59 @@
                   resolve(res);
                });
          }
+      },
+
+      /**
+       * Sorts the events based on date and priority
+       * @param {Array} events The events filtered and sorted according to betoffer
+       * @returns {Array} An array with the events sorted according to date, priority group, betoffer
+       */
+      prioSort ( events ) {
+         var eventGroups = {
+               twoDays: {},
+               more: {}
+            },
+            now = Date.now(),
+            sortedEvents = [],
+            i = 0, len = events.length;
+         for ( ; i < len; ++i ) {
+            var dateRange = 'twoDays';
+            if ( events[i].event.start - now > 172800000 ) { // 2 days
+               dateRange = 'more';
+            }
+            for ( var group in this.scope.args.filters ) {
+               if ( this.scope.args.filters.hasOwnProperty(group) ) {
+                  var compinedPath = [], x = 0, pathLen = events[i].event.path.length;
+                  for ( ; x < pathLen; ++x ) {
+                     if ( events[i].event.path[x].termKey !== 'football' ) {
+                        compinedPath.push(events[i].event.path[x].termKey);
+                     }
+                  }
+                  var y = 0, filterLen = this.scope.args.filters[group].length;
+                  for ( ; y < filterLen; ++y ) {
+                     if ( compinedPath.join('/') === this.scope.args.filters[group][y] ) {
+                        if ( eventGroups[dateRange].hasOwnProperty(group) ) {
+                           eventGroups[dateRange][group].push(events[i]);
+                        } else {
+                           eventGroups[dateRange][group] = [events[i]];
+                        }
+                     }
+                  }
+               }
+            }
+         }
+         console.log(eventGroups);
+         // Concatenate the events in the new order
+         for ( var dateRange in eventGroups ) {
+            if ( eventGroups.hasOwnProperty(dateRange) ) {
+               for ( group in eventGroups[dateRange] ) {
+                  if ( eventGroups[dateRange].hasOwnProperty(group) ) {
+                     sortedEvents = sortedEvents.concat(eventGroups[dateRange][group]);
+                  }
+               }
+            }
+         }
+         return sortedEvents;
       },
 
       adjustHeight () {
