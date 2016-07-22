@@ -310,6 +310,7 @@
             }, ( response ) => {
                console.warn('%c Failed to load betoffer data', 'color:red;');
                console.warn(response);
+               CoreLibrary.widgetModule.removeWidget();
             })
             .then(() => {
                // Unset the loading flag
