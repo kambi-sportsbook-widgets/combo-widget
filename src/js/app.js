@@ -66,7 +66,7 @@
       defaultArgs: {
          filter: 'football/all/all/',
          defaultListLimit: 3, // A default setting for the size of the list, used when resetting
-         selectionLimit: 120, // The maximum allowed selections, the bet slip supports up to 12 outcomes
+         selectionLimit: 12, // The maximum allowed selections, the bet slip supports up to 12 outcomes
          replaceOutcomes: true // When selecting a different outcome in a betoffer that has already been added to the betslip, should we replace it?
       },
 
@@ -300,6 +300,10 @@
                      this.scope.events.push(sortedEvents[i]);
                   }
                }
+               // Check that we have enough events to fill the defaultListLimit or remove the widget
+               if ( selectionCounter < this.scope.args.defaultListLimit ) {
+                  CoreLibrary.widgetModule.removeWidget();
+               }
                this.adjustHeight();
                // Calculate the odds for the selected bets
                this.calculateCombinedOdds();
@@ -417,7 +421,7 @@
                }
             }
          }
-         console.log(eventGroups);
+         // console.debug(eventGroups);
          // Concatenate the events in the new order
          for ( var dateRange in eventGroups ) {
             if ( eventGroups.hasOwnProperty(dateRange) ) {
