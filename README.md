@@ -14,7 +14,7 @@ var widgetSettings = {
        "order": 1,
        "widgetId": "Combo widget",
        "args": {
-           "filter": "football/all/all/",
+           "sport": "FOOTBALL",
            "defaultListLimit": 3,
            "selectionLimit": 12
        }
@@ -25,7 +25,7 @@ var widgetSettings = {
 ```
 
 ### The widget accepts the following parameter/s:
-1. `filter` - string - the filter request for the events
+1. `sport` - string - the sport name for events request
 2. `defaultListLimit` - integer - default setting for the size of the list, used when resetting the widget
 3. `selectionLimit` - integer - the maximum allowed selections, the bet slip supports up to 12 outcomes
 
