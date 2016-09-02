@@ -64,7 +64,7 @@
 
    var ComboWidget = CoreLibrary.Component.subclass({
       defaultArgs: {
-         filter: 'football/all/all/',
+         sport: 'TENNIS',
          defaultListLimit: 3, // A default setting for the size of the list, used when resetting
          selectionLimit: 12, // The maximum allowed selections, the bet slip supports up to 12 outcomes
          replaceOutcomes: true // When selecting a different outcome in a betoffer that has already been added to the betslip, should we replace it?
@@ -223,7 +223,30 @@
          };
 
          // Call the api and get the filtered events
-         return CoreLibrary.offeringModule.getEventsByFilter(this.scope.args.filter)
+         return CoreLibrary.offeringModule.getHighlight()
+            .then(( response ) => {
+               if (!Array.isArray(response.groups)) {
+                  throw new Error('Invalid response from highlights api');
+               }
+
+               // extract separate filters from higlights
+               var filters = response.groups
+                  .filter(( group ) => group.sport === this.scope.args.sport)
+                  .map(( group ) => group.pathTermId);
+
+               var filter;
+
+               try {
+                  // create single filter for Kambi API query
+                  filter = CoreLibrary.widgetModule.createFilterUrl(filters)
+                     .replace(/#.*filter\//, '');
+               } catch (e) {
+                  console.warn('Not showing highlights due to running in stand-alone mode');
+                  filter = this.scope.args.sport.toLowerCase() + '/all/all';
+               }
+
+               return CoreLibrary.offeringModule.getEventsByFilter(filter);
+            })
             .then(( response ) => {
                this.scope.events = [];
                for ( var i = 0; i < response.events.length; i++ ) {
