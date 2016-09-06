@@ -236,14 +236,9 @@
 
                var filter;
 
-               try {
-                  // create single filter for Kambi API query
-                  filter = CoreLibrary.widgetModule.createFilterUrl(filters)
-                     .replace(/#.*filter\//, '');
-               } catch (e) {
-                  console.warn('Not showing highlights due to running in stand-alone mode');
-                  filter = this.scope.args.sport.toLowerCase() + '/all/all';
-               }
+               // create single filter for Kambi API query
+               filter = CoreLibrary.widgetModule.createFilterUrl(filters)
+                  .replace(/#.*filter\//, '');
 
                return CoreLibrary.offeringModule.getEventsByFilter(filter);
             })
