@@ -64,6 +64,7 @@
 
    var ComboWidget = CoreLibrary.Component.subclass({
       defaultArgs: {
+         widgetTrackingName: 'gm-combo-widget',
          sport: 'FOOTBALL',
          defaultListLimit: 3, // A default setting for the size of the list, used when resetting
          selectionLimit: 12, // The maximum allowed selections, the bet slip supports up to 12 outcomes
@@ -75,6 +76,7 @@
       },
 
       init () {
+         CoreLibrary.setWidgetTrackingName(this.scope.args.widgetTrackingName);
 
          this.view.formatters['checkBetOffers'] = ( betOffers ) => {
             return betOffers.outcomes.length <= 3;
