@@ -1,49 +1,26 @@
 # combo-widget
 
-Displays the offers from a set of filtered events and sorts them according to their lowest outcome.
-The lowest outcome of each betoffer is selected by default
+![](https://github.com/kambi-sportsbook-widgets/combo-widget/blob/master/screenshot.png?raw=true)
 
-## Configuration example:
+Aggregates betoffers into a combination bet. The betoffers shown are from the events that are tied to the links in the highlight (popular) list of the sportsbook AND match the provided `sport` argument. The events are sorted based on the lowest outcome odds.
 
-__`widget-settings.js`__
+## Configuration
 
 ```json
-var widgetSettings = {
-...
-   {
-       "order": 1,
-       "widgetId": "Combo widget",
-       "args": {
-           "sport": "FOOTBALL",
-           "defaultListLimit": 3,
-           "selectionLimit": 12
-       }
-   },
-...
+"args": {
+   "sport": "FOOTBALL",
+   "defaultListLimit": 3,
+   "selectionLimit": 12,
+   "replaceOutcomes": true
 }
-
 ```
 
-### The widget accepts the following parameter/s:
 1. `sport` - string - the sport name for events request
-2. `defaultListLimit` - integer - default setting for the size of the list, used when resetting the widget
+2. `defaultListLimit` - integer - default starting size of the list
 3. `selectionLimit` - integer - the maximum allowed selections, the bet slip supports up to 12 outcomes
+4. `replaceOutcomes` When selecting a different outcome in a betoffer that has already been added to the betslip, should we replace it?
 
-# Other tools
 
-For setting up sass maps, follow this tutorial https://www.hackmonkey.com/2014/sep/configuring-css-source-maps-compass
+### Build Instructions
 
-To use Scss Lint, run "gem install scss_lint"
-
-# Build process
-
-### Non-bundled version ( loads the required third party libraries externally )
-1. Install node modules using "npm install"
-2. Edit the resourcepaths.json file as needed. More details here https://github.com/kambi-sportsbook-widgets/widget-build-tools
-3. Run the default gulp task using the "gulp" command. 
-4. The built widget is output to the dist folder.
-
-### Bundled version ( includes all third party libraries in the package
-1. Install node modules using "npm install"
-2. Run the default-bundle gulp task using the "gulp default-bundle" command.
-3. The built widget is output to the dist folder.
+Please refer to the [core-library](https://github.com/kambi-sportsbook-widgets/widget-core-library)

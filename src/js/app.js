@@ -294,7 +294,7 @@
       },
 
       /**
-       * Sorts the events bases on the lowest odds in the first offer, if it has any offer
+       * Sorts the events bases on the lowest outcome odds in the first offer, if it has any offer
        * If the event does not contain a bet offer then it is filtered out
        * @param {Array.<Object>} events An array of events, each containing events and betOffers.
        * @returns {Array} The sorted and filtered array
