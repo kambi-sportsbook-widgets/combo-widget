@@ -114,7 +114,7 @@
          this.footerHeight = 58;
 
          // Loading flag
-         this.scope.loading = true;
+         this.scope.loaded = false;
 
          this.scope.addToBetslipString = CoreLibrary.translationModule.getTranslation('Add to betslip');
 
@@ -289,7 +289,7 @@
             })
             .then(() => {
                // Unset the loading flag
-               this.scope.loading = false;
+               this.scope.loaded = true;
             });
       },
 
