@@ -1,3 +1,4 @@
+/*
 (function () {
 
    var Module = Stapes.subclass();
@@ -21,55 +22,6 @@
       }
    };
 
-   var OutcomeViewController = function ( attributes ) {
-      this.data = attributes;
-      this.selected = false;
-      this.label = '';
-      this.coreLibraryConfig = CoreLibrary.config;
-
-      var module = new Module();
-
-      this.betOffer = this.data.eventAttr.betOffers;
-
-      this.toggleOutcome = function ( event, scope ) {
-         if ( scope.selected === false ) {
-            module.emit('CUSTOM:OUTCOME:SELECTED', {
-               betOfferId: scope.betOffer.id,
-               outcomeId: scope.data.outcomeAttr.id
-            });
-         } else {
-            module.emit('CUSTOM:OUTCOME:DESELECTED', {
-               betOfferId: scope.betOffer.id,
-               outcomeId: scope.data.outcomeAttr.id
-            });
-         }
-      };
-
-      this.getLabel = function () {
-         if (this.data.customLabel) {
-            return this.data.customLabel;
-         }
-
-         if ( this.data.outcomeAttr != null ) {
-            if ( this.data.eventAttr != null ) {
-               return CoreLibrary.utilModule.getOutcomeLabel(this.data.outcomeAttr, this.data.eventAttr.event);
-            } else {
-               return this.data.outcomeAttr.label;
-            }
-         }
-      };
-
-      this.getOddsFormat = function () {
-         switch ( this.coreLibraryConfig.oddsFormat ) {
-            case 'fractional':
-               return this.data.outcomeAttr.oddsFractional;
-            case 'american':
-               return this.data.outcomeAttr.oddsAmerican;
-            default:
-               return CoreLibrary.utilModule.getOddsDecimalValue(this.data.outcomeAttr.odds / 1000);
-         }
-      };
-   };
 
    rivets.components['custom-outcome-component'] = {
       template: function () {
@@ -110,3 +62,4 @@
       }
    };
 })();
+*/

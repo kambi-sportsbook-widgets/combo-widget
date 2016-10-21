@@ -8,122 +8,15 @@
    <meta name="HandheldFriendly" content="True">
    <meta name="MobileOptimized" content="320">
    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-
    <meta name="fragment" content="!"/>
-
    <meta name="mobile-web-app-capable" content="yes">
    <meta name="apple-mobile-web-app-capable" content="yes">
    <meta name="apple-mobile-web-app-status-bar-style" content="black">
    <meta name="apple-mobile-web-app-title" content="">
-
-
-   <!-- build:css -->
-   <!-- This section will be replaced in the gulp build process -->
-   <link rel="stylesheet" type="text/css" href="transpiled/css/app.css"/>
-   <!-- endbuild -->
-
-   <link rel="stylesheet" type="text/css" rv-href="widgetCss"/>
-
-   <!-- build:third-party-libs -->
-   <script src="https://s3-eu-west-1.amazonaws.com/kambi-widgets/widget-third-party/v1.2.0/thirdparty.js"></script>
-   <!-- endbuild -->
-
-   <!-- build:kambi-widget-api -->
-   <!-- This section will be replaced in the gulp build process -->
-   <script src="https://c3-static.kambi.com/sb-mobileclient/widget-api/1.0.0.13/kambi-widget-api.js"></script>
-   <!-- endbuild -->
+   <!--link rel="stylesheet" type="text/css" rv-href="widgetCss"/-->
 </head>
-<body class="l-flexbox l-vertical kw-body KambiWidget-font" rv-cloak="loaded">
-<!--<div class="KambiWidget-card-background-color KambiWidget-card-text-color l-flexbox l-vertical">-->
-   <!--Header-->
-   <header class="kw-header l-pl-16">{'Combo builder'| translate}</header>
-   <!--Main-->
-   <main class="l-flexbox l-vertical l-flexed l-pack-start main">
-      <div class="kw-event KambiWidget-card-background-color--hoverable l-flexbox l-vertical l-pb-12 l-pt-12"
-           rv-each-event="events | eventFormatter listLimit">
-
-         <!--Competitors and path-->
-         <div class="kw-event-name-container l-flexbox l-vertical l-pack-center l-pl-16 l-pr-16">
-            <!--Competitors-->
-            <div class="kw-event-name l-flexbox l-pb-6" rv-on-click="navigateToEvent">
-               <div class="l-flexbox">
-                  <span class="text-truncate">{event.event.homeName}</span>
-               </div>
-               <div class="kw-event-name-divider l-pl-6 l-pr-6">-</div>
-               <div class="l-flexbox">
-                  <span class="text-truncate">{event.event.awayName}</span>
-               </div>
-            </div>
-
-            <div class="KambiWidget-card-support-text-color l-flexbox l-horizontal">
-               <div class="kw-event-path l-flexbox l-horizontal l-pack-center">
-                  <div class="l-flexbox" rv-each-p="event.event.path">
-                     <span class="kw-event-path-name l-flexbox">
-                        <span class="text-truncate">{p.name}</span>
-                     </span>
-                  </div>
-               </div>
-            </div>
-         </div>
-
-         <!--Outcomes-->
-         <div class="kw-event-outcomes l-flexbox l-mt-12 l-pr-6">
-            <div rv-if="event.betOffers | checkBetOffers" class="l-flexbox l-flex-1">
-               <custom-outcome-component rv-each-outcome="event.betOffers.outcomes" outcome-attr="outcome" event-attr="event">
-               </custom-outcome-component>
-            </div>
-         </div>
-      </div>
-   </main>
-   <!--Footer -->
-   <footer class="l-flexbox l-align-center l-mr-16 l-ml-16 l-mb-12">
-      <div class="l-flexbox l-flex-1">
-         <!--Btn1-->
-         <div class="l-flexbox">
-            <div class="kw-btn kw-plain"
-                 rv-on-click="selectNextOutcome"
-                 rv-class-disabled="listLimit | disablePlusIcon">
-               <i class="icon-plus"></i>
-            </div>
-         </div>
-         <!--Btn2-->
-         <div class="l-flexbox l-mr-6 l-ml-6 ">
-            <div class="kw-btn kw-plain" rv-on-click="resetSelection"><i class="icon-rotate-right l-mr-6"></i>{'Reset' | translate}</div>
-         </div>
-         <!--Btn3-->
-         <div class="l-flexbox l-flex-1 l-pack-end">
-            <div class="kw-btn-outer l-flexbox l-align-center l-flex-1">
-               <div class="kw-btn kw-plain l-flex-1" id="add-to-betslip" rv-on-click="addOutcomesToBetslip">
-                  <div class="l-flexbox l-pack-justify">
-                     <div class="kw-btn-label l-flexbox l-pack-start l-mr-6">
-                        <span class="text-truncate" rv-title="addToBetslipString">{addToBetslipString}</span>
-                     </div>
-                     <div class="kw-event-outcome-odd">
-                        <strong>{combinedOdds}</strong>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-   </footer>
-<!--</div>-->
-
-<!-- build:js -->
-<!-- This section will be replaced in the gulp build process -->
-<script src="/node_modules/widget-core-library/src/transpiled/js/coreLibrary.js"></script>
-<script>
-   CoreLibrary.development = true;
-</script>
-<script src="/node_modules/widget-core-library/src/transpiled/js/Module/widgetModule.js"></script>
-<script src="/node_modules/widget-core-library/src/transpiled/js/Module/offeringModule.js"></script>
-<script src="/node_modules/widget-core-library/src/transpiled/js/Module/statisticsModule.js"></script>
-<script src="/node_modules/widget-core-library/src/transpiled/js/Module/translationModule.js"></script>
-<script src="/node_modules/widget-core-library/src/transpiled/js/Module/utilModule.js"></script>
-<script src="/node_modules/widget-core-library/src/transpiled/js/Component/Component.js"></script>
-<script src="/node_modules/widget-core-library/src/transpiled/js/Component/PaginationComponent/PaginationComponent.js"></script>
-<script src="transpiled/js/CustomOutcomeComponent/CustomOutcomeComponent.js"></script>
-<script src="transpiled/js/app.js"></script>
-<!-- endbuild -->
+<!--style="{{defaultArgs.style}}"-->
+<body class="kw-body KambiWidget-font">
+<div id="root"></div>
 </body>
 </html>

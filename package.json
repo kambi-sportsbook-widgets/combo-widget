@@ -1,27 +1,35 @@
 {
-   "name": "combo-widget",
-   "version": "3.2.0",
-   "description": "A combo building widget for the Kambi sportsbook",
-   "main": "dist/index.html",
-   "dependencies": {},
-   "devDependencies": {
-      "gulp": "^3.9.0",
-      "widget-core-library": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-core-library.git#v2.12.0",
-      "widget-build-tools": "git+ssh://git@github.com:kambi-sportsbook-widgets/widget-build-tools.git#v1.4.5",
-      "require-dir": "^0.3.0"
-   },
-   "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-   },
-   "repository": {
-      "type": "git",
-      "url": "git+ssh://git@github.com/kambi-sportsbook-widgets/combo-widget.git"
-   },
-   "author": "Michael Blom <michael@globalmout.com>",
-   "contributors": [
-      "Andrei Teodorescu <andrei@globalmouth.com>",
-      "Daniel Hoffmann <daniel.hoffmann@globalmouth.com>"
-   ],
-   "license": "MIT",
-   "homepage": "https://github.com/kambi-sportsbook-widgets/combo-widget"
+  "name": "combo-widget",
+  "version": "3.2.0",
+  "description": "A combo building widget for the Kambi sportsbook",
+  "main": "dist/index.html",
+  "scripts": {
+    "clean": "kambi-widgets-cli clean",
+    "prestart": "npm run clean",
+    "start": "kambi-widgets-cli start",
+    "prebuild": "npm run clean",
+    "build": "kambi-widgets-cli build",
+    "preversion": "kambi-widgets-cli preversion",
+    "postversion": "kambi-widgets-cli postversion"
+  },
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "widget-components": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-components.git#master",
+    "widget-core-library": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-core-library.git"
+  },
+  "devDependencies": {
+    "widget-build-tools": "git+ssh://git@github.com:kambi-sportsbook-widgets/widget-build-tools.git"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kambi-sportsbook-widgets/combo-widget.git"
+  },
+  "author": "Michael Blom <michael@globalmout.com>",
+  "contributors": [
+    "Andrei Teodorescu <andrei@globalmouth.com>",
+    "Daniel Hoffmann <daniel.hoffmann@globalmouth.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/kambi-sportsbook-widgets/combo-widget"
 }
