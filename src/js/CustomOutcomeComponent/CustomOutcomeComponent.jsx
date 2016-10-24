@@ -1,29 +1,36 @@
 import React, { Component } from 'react';
 import { coreLibrary, widgetModule, statisticsModule, offeringModule } from 'widget-core-library';
-import { OutcomeComponent } from 'widget-components'
+import { OutcomeComponent } from 'widget-components';
 
 class CustomOutcomeComponent extends Component {
 
-   componentDidMount () {
-      this.refresh();
+   constructor(props) {
+      super(props);
+      this.state = {};
    }
 
-   getLabel () {
-
-      if (this.data.customLabel) {
-         return this.data.customLabel;
+   getTitle(event) {
+      if (this.props.title) {
+         return this.props.title;
       }
 
-      if (this.data.outcomeAttr != null) {
-         if (this.data.eventAttr != null) {
-            return coreLibrary.utilModule.getOutcomeLabel(this.data.outcomeAttr, this.data.eventAttr.event);
-         } else {
-            return this.data.outcomeAttr.label;
-         }
+      const path = event.event.path;
+
+      if (path.length >= 3) {
+         return path[2].name;
+      } else if (path.length >= 1) {
+         return path[0].name;
       }
    }
 
-   getCompetitionEvent (filter) {
+   init(attributes) {
+      this.data = attributes;
+      this.selected = false;
+      this.label = '';
+      this.betOffer = this.data.eventAttr.betOffers;
+   }
+
+   getCompetitionEvent(filter) {
       const criterionId = parseInt(this.props.criterionId, 10);
       // modify filter to match only competitions
       const competitionsFilter = (() => {
@@ -38,40 +45,74 @@ class CustomOutcomeComponent extends Component {
 
       // fetch competitions for previously prepared filter
       return offeringModule.getEventsByFilter(competitionsFilter)
-         .then((response) => {
-            if (!response || !Array.isArray(response.events)) {
-               throw new Error('Invalid response from Kambi API');
-            }
+      .then((response) => {
 
-            // if criterion identifier is not set just find first event which is a competition
-            if (Number.isNaN(criterionId)) {
-               return response.events.find(ev => ev.event.type === 'ET_COMPETITION');
-            }
+         if (!response || !Array.isArray(response.events)) {
+            throw new Error('Invalid response from Kambi API');
+         }
 
-            // search for event which is a competition and has a betOffer with given criterion identifier
-            return response.events.find((ev) => {
-               return ev.event.type === 'ET_COMPETITION' &&
-                  ev.betOffers.find(bo => bo.criterion.id === criterionId);
-            });
-         })
-         .then((event) => {
-            if (!event) {
-               throw new Error(`Competition not found for filter=${filter} and criterionId=${criterionId}`);
-            }
+         // if criterion identifier is not set just find first event which is a competition
+         if (Number.isNaN(criterionId)) {
+            return response.events.find(ev => ev.event.type === 'ET_COMPETITION');
+         }
 
-            // following request will respond with all betOffers
-            return offeringModule.getEvent(event.event.id);
-         })
-         .then((event) => {
-            if (event === null) {
-               throw new Error('Event not found');
-            }
-
-            return event;
+         // search for event which is a competition and has a betOffer with given criterion identifier
+         var events = response.events.find((ev) => {
+            return ev.event.type === 'ET_COMPETITION' &&
+               ev.betOffers.find(bo => bo.criterion.id === criterionId);
          });
+         console.log('events', events);
+         return events;
+      })
+      .then((event) => {
+         if (!event) {
+            throw new Error(`Competition not found for filter=${filter} and criterionId=${criterionId}`);
+         }
+
+         // following request will respond with all betOffers
+         return offeringModule.getEvent(event.event.id);
+      })
+      .then((event) => {
+         if (event === null) {
+            throw new Error('Event not found');
+         }
+
+         return event;
+      });
    }
 
-   get filter () {
+   componentDidMount() {
+      this.init();
+      this.refresh();
+   }
+
+   getOddsFormat() {
+      switch (coreLibrary.config.oddsFormat) {
+         case 'fractional':
+            return this.data.outcomeAttr.oddsFractional;
+         case 'american':
+            return this.data.outcomeAttr.oddsAmerican;
+         default:
+            return coreLibrary.utilModule.getOddsDecimalValue(this.data.outcomeAttr.odds / 1000);
+      }
+   }
+
+   getLabel() {
+
+      if (this.data.customLabel) {
+         return this.data.customLabel;
+      }
+
+      if (this.data.outcomeAttr != null) {
+         if (this.data.eventAttr != null) {
+            return coreLibrary.utilModule.getOutcomeLabel(this.data.outcomeAttr, this.data.eventAttr.event);
+         } else {
+            return this.data.outcomeAttr.label;
+         }
+      }
+   }
+
+   get filter() {
 
       if (this.props.filter) {
          return this.props.filter;
@@ -84,10 +125,8 @@ class CustomOutcomeComponent extends Component {
       return null;
    }
 
-   refresh () {
+   refresh() {
       const filter = this.filter;
-
-      console.log('filter', filter);
 
       if (!filter) {
          widgetModule.removeWidget();
@@ -97,39 +136,42 @@ class CustomOutcomeComponent extends Component {
          this.getCompetitionEvent(filter),
          statisticsModule.getLeagueTableStatistics(filter)
       ])
-         .then(([event, statistics]) => {
-            const criterionId = parseInt(this.props.criterionId, 10);
+      .then(([event, statistics]) => {
 
-            // don't look for bet offers if criterion identifier is not set
-            const betOffers = Number.isNaN(criterionId) ? []
-               : event.betOffers.filter(bo => bo.criterion.id === this.props.criterionId);
+         const criterionId = parseInt(this.props.criterionId, 10);
+         // don't look for bet offers if criterion identifier is not set
+         const betOffers = Number.isNaN(criterionId) ? []
+            : event.betOffers.filter(bo => bo.criterion.id === this.props.criterionId);
 
-            this.setState({
-               title: this.getTitle(event),
-               updated: (new Date(statistics.updated)).toString(),
-               event: event,
-               betOffers: betOffers,
-               participants: statistics.leagueTableRows.map((row) => {
-                  row.goalsDifference = row.goalsFor - row.goalsAgainst;
-                  row.outcomes = betOffers.map(bo => bo.outcomes.find(oc => oc.participantId === row.participantId));
-                  return row;
-               })
-            });
-         })
-         .catch((error) => {
-            console.error(error);
-            widgetModule.removeWidget();
+         this.setState({
+            title: this.getTitle(event),
+            updated: (new Date(statistics.updated)).toString(),
+            event: event,
+            betOffers: betOffers,
+            participants: statistics.leagueTableRows.map((row) => {
+               row.goalsDifference = row.goalsFor - row.goalsAgainst;
+               row.outcomes = betOffers.map(bo => bo.outcomes.find(oc => oc.participantId === row.participantId));
+               return row;
+            })
          });
+
+         console.log('state', this.state);
+      })
+      .catch((error) => {
+         console.error(error);
+         widgetModule.removeWidget();
+      });
    }
 
-   render () {
-      return <OutcomeComponent outcome={{}} withLabel />
+   render() {
+      return <OutcomeComponent outcome={{}} event={this.state.event} />
    }
 }
 
 CustomOutcomeComponent.propTypes = {
-   filter: React.PropTypes.object,
-   criterionId: React.PropTypes.string
+   filter: React.PropTypes.string,
+   criterionId: React.PropTypes.string,
+   title: React.PropTypes.string
 };
 
 export default CustomOutcomeComponent;
@@ -154,29 +196,6 @@ export default CustomOutcomeComponent;
  } else {
  el.classList.remove(cssClass);
  }
- };
-
- var OutcomeViewController = function (attributes) {
- this.data = attributes;
- this.selected = false;
- this.label = '';
- this.coreLibraryConfig = CoreLibrary.config;
-
- var module = new Module();
-
- this.betOffer = this.data.eventAttr.betOffers;
-
-
- this.getOddsFormat = function () {
- switch (this.coreLibraryConfig.oddsFormat) {
- case 'fractional':
- return this.data.outcomeAttr.oddsFractional;
- case 'american':
- return this.data.outcomeAttr.oddsAmerican;
- default:
- return CoreLibrary.utilModule.getOddsDecimalValue(this.data.outcomeAttr.odds / 1000);
- }
- };
  };
 
  rivets.components['custom-outcome-component'] = {
@@ -208,13 +227,4 @@ export default CustomOutcomeComponent;
  `;
  },
 
- initialize: function (el, attributes) {
- if (attributes.outcomeAttr == null) {
- return false;
- }
- el.classList.add('l-flexbox');
- el.classList.add('l-flex-1');
- return new OutcomeViewController(attributes);
- }
- };
  */
