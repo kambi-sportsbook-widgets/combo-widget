@@ -1,12 +1,13 @@
 import React from 'react';
 import { coreLibrary, widgetModule, utilModule, translationModule } from 'widget-core-library';
 import CustomOutcomeButton from './CustomOutcomeButton';
-
-const ROW_HEIGHT = 115;
-
-const HEADER_HEIGHT = 37;
-
-const FOOTER_HEIGHT = 58;
+import Header from './Header';
+import Main from './Main';
+import Event from './Event';
+import Footer from './Footer';
+import AddEventButton from './AddEventButton';
+import ResetSelectionButton from './ResetSelectionButton';
+import AddToBetslipButton from './AddToBetslipButton';
 
 const getFormattedOdds = function(odds) {
    switch (coreLibrary.config.oddsFormat) {
@@ -150,9 +151,7 @@ class ComboWidget extends React.Component {
    }
 
    adjustHeight() {
-      widgetModule.setWidgetHeight(
-         FOOTER_HEIGHT + HEADER_HEIGHT + (this.state.listLimit * ROW_HEIGHT)
-      );
+      widgetModule.setWidgetHeight(Header.HEIGHT + Footer.HEIGHT + (this.state.listLimit * Event.HEIGHT));
    }
 
    selectNextOutcome() {
@@ -248,93 +247,41 @@ class ComboWidget extends React.Component {
 
       return (
          <div>
-            <header className="kw-header l-pl-16">{t('Combo builder')}</header>
-            <main className="l-flexbox l-vertical l-flexed l-pack-start main">
+            <Header title={t('Combo builder')} />
+            <Main>
                {this.props.events.slice(0, this.state.listLimit).map((event) => {
                   return (
-                     <div key={event.event.id} className="kw-event KambiWidget-card-background-color--hoverable l-flexbox l-vertical l-pb-12 l-pt-12">
-                        <div className="kw-event-name-container l-flexbox l-vertical l-pack-center l-pl-16 l-pr-16">
-                           <div className="kw-event-name l-flexbox l-pb-6" onClick={navigateToEvent.bind(null, event)}>
-                              <div className="l-flexbox">
-                                 <span className="text-truncate">{event.event.homeName}</span>
-                              </div>
-                              <div className="kw-event-name-divider l-pl-6 l-pr-6">-</div>
-                              <div className="l-flexbox">
-                                 <span className="text-truncate">{event.event.awayName}</span>
-                              </div>
-                           </div>
-                           <div className="KambiWidget-card-support-text-color l-flexbox l-horizontal">
-                              <div className="kw-event-path l-flexbox l-horizontal l-pack-center">
-                                 {event.event.path.map((pathPart) => {
-                                    return (
-                                       <div key={pathPart.id} className="l-flexbox">
-                                          <span className="kw-event-path-name l-flexbox">
-                                             <span className="text-truncate">{pathPart.name}</span>
-                                          </span>
-                                       </div>
-                                    );
-                                 })}
-                              </div>
-                           </div>
-                        </div>
-                        <div className="kw-event-outcomes l-flexbox l-mt-12 l-pr-6">
-                           {
-                              event.betOffers.outcomes.length <= 3 &&
-                                 <div className="l-flexbox l-flex-1">
-                                    {event.betOffers.outcomes.map((outcome) => {
-                                       return (
-                                          <CustomOutcomeButton
-                                             key={outcome.id}
-                                             outcome={outcome}
-                                             event={event}
-                                          />
-                                       );
-                                    })}
-                                 </div>
-                           }
-                        </div>
-                     </div>
+                     <Event
+                        key={event.event.id}
+                        homeName={event.event.homeName}
+                        awayName={event.event.awayName}
+                        onClick={navigateToEvent.bind(null, event)}
+                        path={event.event.path.map(part => part.name)}
+                     >
+                        {event.betOffers.outcomes.map(outcome =>
+                           <CustomOutcomeButton
+                              key={outcome.id}
+                              outcome={outcome}
+                              event={event}
+                           />
+                        )}
+                     </Event>
                   );
                })}
-            </main>
-            <footer className="l-flexbox l-align-center l-mr-16 l-ml-16 l-mb-12">
-               <div className="l-flexbox l-flex-1">
-                  <div className="l-flexbox">
-                     <div
-                        className={['kw-btn', 'kw-plain'].concat(this.state.listLimit >= this.props.selectionLimit ? ['disabled'] : []).join(' ')}
-                        onClick={this.selectNextOutcome.bind(this)}
-                     >
-                        <i className="icon-plus" />
-                     </div>
-                  </div>
-                  <div className="l-flexbox l-mr-6 l-ml-6 ">
-                     <div
-                        className="kw-btn kw-plain"
-                        onClick={this.resetSelection.bind(this)}
-                     >
-                        <i className="icon-rotate-right l-mr-6" />{t('Reset')}
-                     </div>
-                  </div>
-                  <div className="l-flexbox l-flex-1 l-pack-end">
-                     <div className="kw-btn-outer l-flexbox l-align-center l-flex-1">
-                        <div
-                           className="kw-btn kw-plain l-flex-1"
-                           id="add-to-betslip"
-                           onClick={this.addOutcomesToBetslip.bind(this)}
-                        >
-                           <div className="l-flexbox l-pack-justify">
-                              <div className="kw-btn-label l-flexbox l-pack-start l-mr-6">
-                                 <span className="text-truncate" title={t('Add to betslip')}>{t('Add to betslip')}</span>
-                              </div>
-                              <div className="kw-event-outcome-odd">
-                                 <strong>{this.state.combinedOdds}</strong>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </footer>
+            </Main>
+            <Footer>
+               <AddEventButton
+                  action={this.selectNextOutcome.bind(this)}
+                  disabled={this.state.listLimit >= this.props.selectionLimit}
+               />
+               <ResetSelectionButton
+                  action={this.resetSelection.bind(this)}
+               />
+               <AddToBetslipButton
+                  odds={this.state.combinedOdds}
+                  action={this.addOutcomesToBetslip.bind(this)}
+               />
+            </Footer>
          </div>
       );
    }
