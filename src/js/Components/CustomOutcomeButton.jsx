@@ -36,6 +36,17 @@ class CustomOutcomeButton extends Component {
 
       // compute initial state
       this.state = getInitialState(props.outcome);
+
+      this.oddsFormatHandler = () => {
+         this.forceUpdate();
+      }
+   }
+
+   /**
+    * Called just before creating component's DOM.
+    */
+   componentWillMount() {
+      widgetModule.events.subscribe('ODDS:FORMAT', this.oddsFormatHandler);
    }
 
    /**
@@ -44,6 +55,13 @@ class CustomOutcomeButton extends Component {
     */
    componentWillReceiveProps(nextProps) {
       this.setState(getInitialState(nextProps.outcome));
+   }
+
+   /**
+    * Called before removing component.
+    */
+   componentWillUnmount() {
+      widgetModule.events.unsubscribe('ODDS:FORMAT', this.oddsFormatHandler);
    }
 
    /**
