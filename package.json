@@ -15,11 +15,11 @@
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "widget-components": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-components.git#master",
-    "widget-core-library": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-core-library.git"
+    "widget-components": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-components.git#v1.0.0",
+    "widget-core-library": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-core-library.git#v3.1.0"
   },
   "devDependencies": {
-    "widget-build-tools": "git+ssh://git@github.com:kambi-sportsbook-widgets/widget-build-tools.git"
+    "widget-build-tools": "git+ssh://git@github.com:kambi-sportsbook-widgets/widget-build-tools.git#v2.2.0"
   },
   "repository": {
     "type": "git",
