@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { coreLibrary, widgetModule, utilModule } from 'widget-core-library';
+import { coreLibrary, widgetModule, utilModule } from 'kambi-widget-core-library';
 
 /**
  * Converts map of CSS classes into className string

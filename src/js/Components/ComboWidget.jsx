@@ -1,5 +1,5 @@
 import React from 'react';
-import { coreLibrary, widgetModule, utilModule, translationModule } from 'widget-core-library';
+import { coreLibrary, widgetModule, utilModule, translationModule } from 'kambi-widget-core-library';
 import CustomOutcomeButton from './CustomOutcomeButton';
 import Header from './Header';
 import Main from './Main';

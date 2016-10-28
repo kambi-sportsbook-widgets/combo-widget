@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { coreLibrary, widgetModule } from 'widget-core-library';
+import { coreLibrary, widgetModule } from 'kambi-widget-core-library';
 import ComboWidget from './Components/ComboWidget';
 import store from './Store/store';
 

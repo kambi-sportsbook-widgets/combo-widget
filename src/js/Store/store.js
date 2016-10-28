@@ -1,4 +1,4 @@
-import { offeringModule, widgetModule } from 'widget-core-library';
+import { offeringModule, widgetModule } from 'kambi-widget-core-library';
 
 /**
  * Perform a quicksort on the bet offers based on their lowest outcome

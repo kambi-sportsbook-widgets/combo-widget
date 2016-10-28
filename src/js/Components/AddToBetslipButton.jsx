@@ -1,5 +1,5 @@
 import React from 'react';
-import { translationModule } from 'widget-core-library';
+import { translationModule } from 'kambi-widget-core-library';
 
 const AddToBetslipButton = ({ action, odds }) => {
    const t = translationModule.getTranslation.bind(translationModule);

@@ -13,13 +13,12 @@
     "postversion": "kambi-widgets-cli postversion"
   },
   "dependencies": {
+    "kambi-widget-core-library": "^3.2.1",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "widget-components": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-components.git#v1.0.0",
-    "widget-core-library": "git+ssh://git@github.com/kambi-sportsbook-widgets/widget-core-library.git#v3.1.0"
+    "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "widget-build-tools": "git+ssh://git@github.com:kambi-sportsbook-widgets/widget-build-tools.git#v2.2.0"
+    "kambi-widget-build-tools": "^2.2.8"
   },
   "repository": {
     "type": "git",
