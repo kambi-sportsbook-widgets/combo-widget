@@ -5,13 +5,8 @@ const ResetSelectionButton = ({ action }) => {
    const t = translationModule.getTranslation.bind(translationModule);
 
    return (
-      <div className="l-flexbox l-mr-6 l-ml-6 ">
-         <div
-            className="kw-btn kw-plain"
-            onClick={action}
-         >
-            <i className="icon-rotate-right l-mr-6" />{t('Reset')}
-         </div>
+      <div className="kw-button__reset" onClick={action}>
+         <i className="kw-button__reset__icon" />{t('Reset')}
       </div>
    );
 };

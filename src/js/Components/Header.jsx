@@ -2,7 +2,7 @@ import React from 'react';
 
 const Header = ({ title }) => {
    return (
-      <header className="kw-header l-pl-16">{title}</header>
+      <header className="kw-header">{title}</header>
    );
 };
 

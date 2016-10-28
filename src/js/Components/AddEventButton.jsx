@@ -1,14 +1,13 @@
 import React from 'react';
 
 const AddEventButton = ({ disabled, action }) => {
+   const className = ['kw-button__add']
+      .concat(disabled ? ['kw-button--disabled'] : [])
+      .join(' ');
+
    return (
-      <div className="l-flexbox">
-         <div
-            className={['kw-btn', 'kw-plain'].concat(disabled ? ['disabled'] : []).join(' ')}
-            onClick={action}
-         >
-            <i className="icon-plus" />
-         </div>
+      <div className={className} onClick={action}>
+         <i className="kw-button__add__icon" />
       </div>
    );
 };

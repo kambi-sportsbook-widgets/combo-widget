@@ -1,52 +1,138 @@
-.kw-event-path {
-   div:not(:first-child):before {
+.kw-header {
+   background-color: transparent;
+   font-size: 12px;
+   padding-left: 16px;
+}
+
+.kw-main {
+   @include flexbox;
+   @include flex-direction(column);
+   @include flex(1);
+   @include justify-content(flex-start);
+   flex-basis: auto;
+}
+
+.kw-event {
+   @include flexbox;
+   @include flex-direction(column);
+   padding: 12px 16px;
+}
+
+.kw-event__participants {
+   @include flexbox;
+   padding-bottom: 6px;
+   font-size: 14px;
+}
+
+.kw-event__participants__item {
+   white-space: nowrap;
+}
+
+.kw-event__participants__divider {
+   margin: 0 6px;
+}
+
+.kw-event__path {
+   @include flexbox;
+   @include flex-direction(row);
+
+   :not(:first-child):before {
       content: "/";
       margin-left: 6px;
       margin-right: 6px;
    }
-   div:last-child {
-      @include flexbox; // overrides display: inline-block rule in Kambi CSS
-   }
 }
 
-.kw-header {
-   background-color: transparent;
+.kw-event__path_part {
+   white-space: nowrap;
+}
+
+.kw-event__outcomes {
+   @include flexbox;
+   margin-top: 12px;
+   padding-right: 6px;
+}
+
+.kw-footer {
+   @include flexbox;
+   margin: 0 16px 12px 16px;
+}
+
+.kw-button {
+   @include border-radius(2px);
+   @include transition(background-color ease-out .2s, color ease-out .2s);
    font-size: 12px;
-}
+   line-height: 20px;
+   margin: 5px 5px 5px 0;
+   padding: 7px 10px;
 
-.kw-event-name {
-   font-size: 14px;
-}
+   background-color: white;
+   border: 1px solid #EEE;
+   color: $color-4-2-card-supportive-text;
 
-.kw-event-path-name {
-   @include flex(0 1 auto);
-}
-
-//Footer button
-
-.kw-btn-outer {
-   @include flex(0 1 auto);
-
-   .kw-btn {
-      display: block;
-      overflow: hidden;
+   &:last-child {
+      margin-right: 0;
    }
 
-   .kw-btn-label {
-      overflow: hidden;
-      @include flex(1 1 auto);
+   &:hover {
+      cursor: pointer;
+      background-color: $color-2-2-primary-background-hover;
+   }
 
-      > span {
-         @include flex(0 1 auto);
-         display: block;
-      }
+   &.selected {
+      background-color: $color-2-2-primary-background;
+      color: white;
    }
 }
 
-#add-to-betslip {
-   flex-basis: auto;
+.kw-button--disabled {
+   background-color: $color-4-1-card-background;
+
+   &:hover {
+      background-color: $color-4-1-card-background;
+      cursor: not-allowed;
+   }
 }
 
-.main {
-   flex-basis: auto;
+.kw-button__icon {
+   width: 10px;
+   height: 20px;
+   background: no-repeat center 6px;
+   background-size: 10px 10px;
+   float: left;
+}
+
+.kw-button__add {
+   @extend .kw-button;
+   @include flexbox;
+}
+
+.kw-button__add__icon {
+   @extend .kw-button__icon;
+   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAgMAAACdGdVrAAAADFBMVEUAAACZmZmZmZmZmZnk5WrOAAAAA3RSTlMAw8Xxr3ZsAAAAKElEQVQIW2NgYJD/wgAC9n/Ioer/A8Ffhv9ggJ2CKiHCMByU/g8GBgCR5zjDhSpsEQAAAABJRU5ErkJggg==');
+}
+
+.kw-button__reset {
+   @include flexbox;
+   @extend .kw-button;
+   margin-left: 6px;
+   margin-right: 6px;
+}
+
+.kw-button__reset__icon {
+   @extend .kw-button__icon;
+   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAk1BMVEUAAACZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZlO2tqaAAAAMHRSTlMAAQIDBg8QFxgaJicoLC0uLzNAUlxeX2FmgoWGiIuMlJW5vMDHys7g5ujp8/f5+/0iAeCXAAAAx0lEQVQYGW3B21aDMABFwRMCFi0qRq1CLQrekArd//91WsgCHjIjz14X9c/xs7ixGjmNoodfvP7RSnLobNOy0m7kQP/yAXjZxsbE2z0wFICkdIAmkXfxzkiyLbwZzcwHZ9IOGqOFYyTbQ6KFY6IcDlo4PJWQKaSBWCEdGIV0YBTSQKyQEjKF5FApxPaQKGQHtVGAbeHVaGaqO03SE9SJvKSBe03yE1BlsTFxdgD6K3lpy8r3pWb2qccbniOt2bxsuuPX/jbS5A8OlSFA7QJMxAAAAABJRU5ErkJggg==');
+   margin-right: 6px;
+}
+
+.kw-button__addtobetslip {
+   @extend .kw-button;
+   @include flexbox;
+   @include flex(0);
+   margin-left: auto;
+}
+
+.kw-button_addtobetslip__label {
+   white-space: nowrap;
+   margin-right: 6px;
 }

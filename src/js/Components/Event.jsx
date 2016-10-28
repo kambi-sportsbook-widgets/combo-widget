@@ -2,38 +2,17 @@ import React from 'react';
 
 const Event = ({ children, homeName, awayName, onClick, path }) => {
    return (
-      <div className="kw-event KambiWidget-card-background-color--hoverable l-flexbox l-vertical l-pb-12 l-pt-12">
-         <div className="kw-event-name-container l-flexbox l-vertical l-pack-center l-pl-16 l-pr-16">
-            <div className="kw-event-name l-flexbox l-pb-6" onClick={onClick}>
-               <div className="l-flexbox">
-                  <span className="text-truncate">{homeName}</span>
-               </div>
-               <div className="kw-event-name-divider l-pl-6 l-pr-6">-</div>
-               <div className="l-flexbox">
-                  <span className="text-truncate">{awayName}</span>
-               </div>
-            </div>
-            <div className="KambiWidget-card-support-text-color l-flexbox l-horizontal">
-               <div className="kw-event-path l-flexbox l-horizontal l-pack-center">
-                  {path.map((part, i) => {
-                     return (
-                        <div key={i} className="l-flexbox">
-                           <span className="kw-event-path-name l-flexbox">
-                              <span className="text-truncate">{part}</span>
-                           </span>
-                        </div>
-                     );
-                  })}
-               </div>
-            </div>
+      <div className="kw-event KambiWidget-card-background-color--hoverable">
+         <div className="kw-event__participants" onClick={onClick}>
+            <span className="kw-event__participants__item">{homeName}</span>
+            <span className="kw-event__participants__divider">-</span>
+            <span className="kw-event__participants__item">{awayName}</span>
          </div>
-         <div className="kw-event-outcomes l-flexbox l-mt-12 l-pr-6">
-            {
-               children.length <= 3 &&
-                  <div className="l-flexbox l-flex-1">
-                     {children}
-                  </div>
-            }
+         <div className="kw-event__path KambiWidget-card-support-text-color">
+            {path.map((part, i) => <span key={i} className="kw-event__path__part">{part}</span>)}
+         </div>
+         <div className="kw-event__outcomes">
+            {children.length <= 3 && children}
          </div>
       </div>
    );

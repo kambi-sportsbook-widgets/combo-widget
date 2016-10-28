@@ -288,9 +288,24 @@ class ComboWidget extends React.Component {
 }
 
 ComboWidget.propTypes = {
+   /**
+    * Events array
+    */
    events: React.PropTypes.array.isRequired,
+
+   /**
+    * How many events show on the beginning
+    */
    defaultListLimit: React.PropTypes.number,
+
+   /**
+    * How many event user can select
+    */
    selectionLimit: React.PropTypes.number,
+
+   /**
+    * Should Betslip list be cleaned before adding selected outcomes
+    */
    replaceOutcomes: React.PropTypes.bool
 };
 

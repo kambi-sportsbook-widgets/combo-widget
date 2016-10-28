@@ -2,7 +2,7 @@ import React from 'react';
 
 const Main = ({ children }) => {
    return (
-      <main className="l-flexbox l-vertical l-flexed l-pack-start main">
+      <main className="kw-main">
          {children}
       </main>
    );
