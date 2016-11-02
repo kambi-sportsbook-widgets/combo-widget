@@ -1,7 +1,7 @@
 import React from 'react';
 import { coreLibrary, widgetModule, utilModule, translationModule } from 'kambi-widget-core-library';
+import { Header } from 'kambi-widget-components';
 import CustomOutcomeButton from './CustomOutcomeButton';
-import Header from './Header';
 import Main from './Main';
 import Event from './Event';
 import Footer from './Footer';
@@ -151,6 +151,8 @@ class ComboWidget extends React.Component {
    }
 
    adjustHeight() {
+      console.warn('adjustHeight = Header.HEIGHT ' + Header.HEIGHT + ' Footer.HEIGHT ' + Footer.HEIGHT + ' Event.HEIGHT ' + Event.HEIGHT +
+         ' * ' + this.state.listLimit + ' = ' + (Header.HEIGHT + Footer.HEIGHT + (this.state.listLimit * Event.HEIGHT)));
       widgetModule.setWidgetHeight(Header.HEIGHT + Footer.HEIGHT + (this.state.listLimit * Event.HEIGHT));
    }
 
@@ -247,7 +249,9 @@ class ComboWidget extends React.Component {
 
       return (
          <div>
-            <Header title={t('Combo builder')} />
+            <Header>
+               <span>{t('Combo builder')}</span>
+            </Header>
             <Main>
                {this.props.events.slice(0, this.state.listLimit).map((event) => {
                   return (

@@ -15,6 +15,6 @@ Footer.propTypes = {
    children: React.PropTypes.arrayOf(React.PropTypes.element).isRequired,
 };
 
-Footer.HEIGHT = 58;
+Footer.HEIGHT = 62;
 
 export default Footer;
