@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 import { coreLibrary, widgetModule, utilModule } from 'kambi-widget-core-library';
-
-/**
- * Converts map of CSS classes into className string
- * @param {object<string, bool>} classNames Map of CSS classes
- * @returns {string}
- */
-const convertClassNames = (classNames) => {
-   return Object.keys(classNames)
-      .reduce((str, key) => str + (classNames[key] ? ` ${key}` : ''), '');
-};
+import { OutcomeButtonUI } from 'kambi-widget-components';
 
 /**
  * Returns initial state.
@@ -18,7 +9,7 @@ const convertClassNames = (classNames) => {
  */
 const getInitialState = (outcome) => {
    return {
-      selected: outcome.selected
+      selected: outcome.selected == null ? false : outcome.selected
    };
 };
 
@@ -34,6 +25,7 @@ class CustomOutcomeButton extends Component {
    constructor(props) {
       super(props);
 
+      this.toggleOutcome = this.toggleOutcome.bind(this);
       // compute initial state
       this.state = getInitialState(props.outcome);
 
@@ -45,7 +37,7 @@ class CustomOutcomeButton extends Component {
    /**
     * Called just before creating component's DOM.
     */
-   componentWillMount() {
+   componentDidMount() {
       widgetModule.events.subscribe('ODDS:FORMAT', this.oddsFormatHandler);
    }
 
@@ -109,47 +101,29 @@ class CustomOutcomeButton extends Component {
     * @returns {string}
     */
    get label() {
-      return utilModule.getOutcomeLabel(this.props.outcome, this.props.event);
+      return utilModule.getOutcomeLabel(this.props.outcome, this.props.event.event);
    }
 
-   /**
-    * Computed className based on current state
-    * @returns {string}
-    */
-   get className() {
-      return convertClassNames({
-         'KambiWidget-outcome': true,
-         'kw-link': true,
-         'l-flex-1': true,
-         'l-ml-6': true,
-         'KambiWidget-outcome--selected': this.state.selected,
-         'KambiWidget-outcome--suspended': this.betOffer ? this.betOffer.suspended : false
-      });
-   }
 
    /**
     * Returns component's template.
     * @returns {XML}
     */
    render() {
+      let suspended = false;
+      if (this.betOffer && this.betOffer.suspended) {
+         suspended = true;
+      }
       return (
-         <button
-            type="button"
-            role="button"
-            disabled={this.betOffer ? this.betOffer.suspended : false}
-            className={this.className}
-            onClick={this.toggleOutcome.bind(this)}
-         >
-            <div className="KambiWidget-outcome__flexwrap">
-               <div className="KambiWidget-outcome__label-wrapper">
-                  <span className="KambiWidget-outcome__label">{this.label}</span>
-                  <span className="KambiWidget-outcome__line" />
-               </div>
-               <div className="KambiWidget-outcome__odds-wrapper">
-                  <span className="KambiWidget-outcome__odds">{this.oddsFormatted}</span>
-               </div>
-            </div>
-         </button>
+         <div className={'l-ml-6 l-flexbox l-flex-1'}>
+            <OutcomeButtonUI
+               label={this.label}
+               odds={this.oddsFormatted}
+               suspended={suspended}
+               selected={this.state.selected}
+               onClick={this.toggleOutcome}
+            />
+         </div>
       );
    }
 }
