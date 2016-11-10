@@ -13,6 +13,7 @@
     "postversion": "kambi-widgets-cli postversion"
   },
   "dependencies": {
+    "kambi-widget-build-tools": "^2.2.10",
     "kambi-widget-components": "^1.3.3",
     "kambi-widget-core-library": "^3.2.3",
     "react": "^15.3.2",
