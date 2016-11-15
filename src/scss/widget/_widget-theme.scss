@@ -121,8 +121,6 @@
 
 .kw-button__addtobetslip {
    @extend .kw-button;
-   @include flexbox;
-   @include flex(0);
    margin-left: auto;
 }
 
