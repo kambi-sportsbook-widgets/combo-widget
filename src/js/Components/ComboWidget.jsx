@@ -151,8 +151,6 @@ class ComboWidget extends React.Component {
    }
 
    adjustHeight() {
-      console.warn('adjustHeight = Header.HEIGHT ' + Header.HEIGHT + ' Footer.HEIGHT ' + Footer.HEIGHT + ' Event.HEIGHT ' + Event.HEIGHT +
-         ' * ' + this.state.listLimit + ' = ' + (Header.HEIGHT + Footer.HEIGHT + (this.state.listLimit * Event.HEIGHT)));
       widgetModule.setWidgetHeight(Header.HEIGHT + Footer.HEIGHT + (this.state.listLimit * Event.HEIGHT));
    }
 
