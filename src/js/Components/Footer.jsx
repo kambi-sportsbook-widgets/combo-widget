@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = ({ children }) => {
    return (
-      <footer className="kw-footer">
+      <footer className='kw-footer'>
          {children}
       </footer>
    );

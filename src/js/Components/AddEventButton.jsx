@@ -7,7 +7,7 @@ const AddEventButton = ({ disabled, action }) => {
 
    return (
       <div className={className} onClick={action}>
-         <i className="kw-button__add__icon" />
+         <i className='kw-button__add__icon' />
       </div>
    );
 };

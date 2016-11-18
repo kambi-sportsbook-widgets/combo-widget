@@ -2,7 +2,7 @@ import React from 'react';
 
 const Main = ({ children }) => {
    return (
-      <main className="kw-main">
+      <main className='kw-main'>
          {children}
       </main>
    );
