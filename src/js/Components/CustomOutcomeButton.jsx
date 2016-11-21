@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { coreLibrary, widgetModule, utilModule } from 'kambi-widget-core-library';
+import { coreLibrary, utilModule, eventsModule } from 'kambi-widget-core-library';
 import { OutcomeButtonUI } from 'kambi-widget-components';
 
 /**
@@ -38,7 +38,7 @@ class CustomOutcomeButton extends Component {
     * Called just before creating component's DOM.
     */
    componentDidMount() {
-      widgetModule.events.subscribe('ODDS:FORMAT', this.oddsFormatHandler);
+      eventsModule.subscribe('ODDS:FORMAT', this.oddsFormatHandler);
    }
 
    /**
@@ -53,7 +53,7 @@ class CustomOutcomeButton extends Component {
     * Called before removing component.
     */
    componentWillUnmount() {
-      widgetModule.events.unsubscribe('ODDS:FORMAT', this.oddsFormatHandler);
+      eventsModule.unsubscribe('ODDS:FORMAT', this.oddsFormatHandler);
    }
 
    /**
@@ -61,12 +61,12 @@ class CustomOutcomeButton extends Component {
     */
    toggleOutcome() {
       if (this.state.selected) {
-         widgetModule.events.publish('CUSTOM:OUTCOME:DESELECTED', {
+         eventsModule.publish('CUSTOM:OUTCOME:DESELECTED', {
             betOfferId: this.betOffer.id,
             outcomeId: this.props.outcome.id
          });
       } else {
-         widgetModule.events.publish('CUSTOM:OUTCOME:SELECTED', {
+         eventsModule.publish('CUSTOM:OUTCOME:SELECTED', {
             betOfferId: this.betOffer.id,
             outcomeId: this.props.outcome.id
          });
