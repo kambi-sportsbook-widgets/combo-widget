@@ -172,7 +172,7 @@ class ComboWidget extends React.Component {
             return false;
          }
 
-         if (hasSelected === false) {
+         if (hasSelected === false && i >= this.state.listLimit) {
             if (selectedCount === this.state.listLimit) {
                this.setState({
                   listLimit: this.state.listLimit + 1
