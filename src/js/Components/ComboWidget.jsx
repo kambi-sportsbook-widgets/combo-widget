@@ -37,8 +37,6 @@ class ComboWidget extends React.Component {
    constructor(props) {
       super(props);
 
-      widgetModule.enableWidgetTransition(true);
-
       this.state = {
          listLimit: props.defaultListLimit,
          combinedOdds: ''
