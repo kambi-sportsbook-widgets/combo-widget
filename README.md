@@ -16,6 +16,7 @@ Arguments and default values:
    "selectionLimit": 12,
    "replaceOutcomes": true,
    "widgetTrackingName": "gm-combo-widget"
+   "range": [1,8]
 }
 ```
 
@@ -24,6 +25,7 @@ Arguments and default values:
 3. `selectionLimit` - integer - the maximum allowed selections, the bet slip supports up to 12 outcomes
 4. `replaceOutcomes` When selecting a different outcome in a betoffer that has already been added to the betslip, should we replace it?
 5. `widgetTrackingName` - string - tracking name for analytics purposes
+6. `oddsRange` - array - Filters out events if none of their bet outcomes is not with this range (Should be an array of 2 numbers for example `[1.5, 5.5]`)
 
 
 ### Build Instructions

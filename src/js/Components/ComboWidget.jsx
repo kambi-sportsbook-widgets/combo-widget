@@ -272,7 +272,7 @@ class ComboWidget extends React.Component {
             <Footer>
                <AddEventButton
                   action={this.selectNextOutcome.bind(this)}
-                  disabled={this.state.listLimit >= this.props.selectionLimit}
+                  disabled={this.state.listLimit >= this.props.selectionLimit || this.props.events.length <= this.state.listLimit}
                />
                <ResetSelectionButton
                   action={this.resetSelection.bind(this)}
