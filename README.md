@@ -16,7 +16,7 @@ Arguments and default values:
    "selectionLimit": 12,
    "replaceOutcomes": true,
    "widgetTrackingName": "gm-combo-widget"
-   "range": [1,8]
+   "oddsRange": [1,8]
 }
 ```
 
