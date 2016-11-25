@@ -109,7 +109,7 @@ const getEvents = function ( sport, defaultListLimit, range ) {
    // Check that we get a valid range, revert to default one if not
    if ( typeof range !== 'object' || range.length !== 2 || isNaN(range[0] + range[1]) ||
       (range[0] < 1 || range[1] < 1) || range[0] == range[1] ) {
-      console.error('Invalid oddsRange. Using default value:', coreLibrary.defaultArgs.oddsRange);
+      console.debug('Combo widget: Invalid oddsRange', range, '. Using default value:', coreLibrary.defaultArgs.oddsRange);
       range = coreLibrary.defaultArgs.oddsRange;
    }
 
