@@ -27,6 +27,10 @@ const navigateToEvent = function(event) {
    widgetModule.navigateToEvent(event.event.id);
 };
 
+const adjustHeight = () => {
+   widgetModule.adaptWidgetHeight();
+};
+
 class ComboWidget extends React.Component {
 
    /**
@@ -53,8 +57,11 @@ class ComboWidget extends React.Component {
       widgetModule.events.subscribe('CUSTOM:OUTCOME:DESELECTED', this.outcomeDeselectedHandler);
       widgetModule.events.subscribe('ODDS:FORMAT', this.oddsFormatHandler);
 
-      this.adjustHeight();
       this.calculateCombinedOdds();
+   }
+
+   componentDidMount() {
+      adjustHeight();
    }
 
    /**
@@ -68,7 +75,7 @@ class ComboWidget extends React.Component {
    }
 
    componentDidUpdate() {
-      this.adjustHeight();
+      adjustHeight();
    }
 
    componentWillUnmount() {
@@ -107,12 +114,10 @@ class ComboWidget extends React.Component {
 
          }
       }
-      // Reset the list size and height
+      // Reset the list size
       this.setState({
          listLimit: this.props.defaultListLimit
       });
-
-      this.adjustHeight();
 
       this.calculateCombinedOdds();
    }
@@ -148,10 +153,6 @@ class ComboWidget extends React.Component {
       }
    }
 
-   adjustHeight() {
-      widgetModule.setWidgetHeight(Header.HEIGHT + Footer.HEIGHT + (this.state.listLimit * Event.HEIGHT));
-   }
-
    selectNextOutcome() {
       const len = this.props.events.length;
       let selectedCount = 0,
@@ -182,8 +183,6 @@ class ComboWidget extends React.Component {
             this.props.events[i].betOffers.outcomes[this.props.events[i].betOffers.lowestOutcome].selected = true;
 
             this.calculateCombinedOdds();
-
-            this.adjustHeight();
 
             return true;
          } else {

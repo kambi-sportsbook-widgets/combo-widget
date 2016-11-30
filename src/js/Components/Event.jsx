@@ -45,6 +45,4 @@ Event.propTypes = {
    onClick: React.PropTypes.func.isRequired
 };
 
-Event.HEIGHT = 126;
-
 export default Event;
