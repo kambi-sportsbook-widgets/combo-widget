@@ -115,15 +115,13 @@ class CustomOutcomeButton extends Component {
          suspended = true;
       }
       return (
-         <div className={'l-ml-6 l-flexbox l-flex-1'}>
-            <OutcomeButtonUI
-               label={this.label}
-               odds={this.oddsFormatted}
-               suspended={suspended}
-               selected={this.state.selected}
-               onClick={this.toggleOutcome}
-            />
-         </div>
+         <OutcomeButtonUI
+            label={this.label}
+            odds={this.oddsFormatted}
+            suspended={suspended}
+            selected={this.state.selected}
+            onClick={this.toggleOutcome}
+         />
       );
    }
 }

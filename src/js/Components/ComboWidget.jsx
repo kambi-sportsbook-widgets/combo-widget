@@ -257,12 +257,21 @@ class ComboWidget extends React.Component {
                         onClick={navigateToEvent.bind(null, event)}
                         path={event.event.path.map(part => part.name)}
                      >
-                        {event.betOffers.outcomes.map(outcome =>
-                           <CustomOutcomeButton
-                              key={outcome.id}
-                              outcome={outcome}
-                              event={event}
-                           />
+                        {event.betOffers.outcomes.map((outcome, index) => {
+                           let style;
+                           if (index !== 0) {
+                              style = { marginLeft: '3px' };
+                           }
+                           return (
+                              <div className='l-flexbox l-flex-1' style={style}>
+                                 <CustomOutcomeButton
+                                    key={outcome.id}
+                                    outcome={outcome}
+                                    event={event}
+                                 />
+                              </div>
+                           )
+                        }
                         )}
                      </Event>
                   );
