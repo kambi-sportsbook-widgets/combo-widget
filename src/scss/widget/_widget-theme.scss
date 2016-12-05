@@ -129,3 +129,7 @@
    white-space: nowrap;
    margin-right: 6px;
 }
+
+button.KambiWidget-outcome {
+   margin: 0!important; // Safari bug
+}
