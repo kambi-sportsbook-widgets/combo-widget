@@ -5,7 +5,7 @@ const ResetSelectionButton = ({ action }) => {
    const t = translationModule.getTranslation.bind(translationModule);
 
    return (
-      <div className='kw-button__reset KambiWidget-action' onClick={action}>
+      <div className='kw-button__reset' onClick={action}>
          <i className='kw-button__reset__icon' />{t('Reset')}
       </div>
    );

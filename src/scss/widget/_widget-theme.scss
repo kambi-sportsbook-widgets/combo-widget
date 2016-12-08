@@ -53,6 +53,33 @@
    padding-bottom: 12px;
 }
 
+.kw-button {
+   @include border-radius(2px);
+   @include transition(background-color ease-out .2s, color ease-out .2s);
+   font-size: 12px;
+   line-height: 20px;
+   margin: 5px 5px 5px 0;
+   padding: 7px 10px;
+
+   background-color: white;
+   border: 1px solid #EEE;
+   color: $color-4-2-card-supportive-text;
+
+   &:last-child {
+      margin-right: 0;
+   }
+
+   &:hover {
+      cursor: pointer;
+      background-color: $color-2-2-primary-background-hover;
+   }
+
+   &.selected {
+      background-color: $color-2-2-primary-background;
+      color: white;
+   }
+}
+
 .kw-button--disabled {
    background-color: $color-4-1-card-background;
 
@@ -71,6 +98,7 @@
 }
 
 .kw-button__add {
+   @extend .kw-button;
    display: flex;
 }
 
@@ -81,6 +109,7 @@
 
 .kw-button__reset {
    display: flex;
+   @extend .kw-button;
    margin-left: 6px;
    margin-right: 6px;
 }
@@ -92,6 +121,7 @@
 }
 
 .kw-button__addtobetslip {
+   @extend .kw-button;
    margin-left: auto;
 }
 

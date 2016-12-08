@@ -195,8 +195,8 @@ class ComboWidget extends React.Component {
    addOutcomesToBetslip() {
       // Create a removable listener that calls the api for the betslip betoffers
       const betslipListener = (betslipOffers, event) => {
-         // console.debug('listener');
-         // console.debug(event, betslipOffers);
+         console.debug('listener');
+         console.debug(event, betslipOffers);
 
          // Remove the listener once we get the items from the betslip
          widgetModule.events.unsubscribe('OUTCOMES:UPDATE', betslipListener);

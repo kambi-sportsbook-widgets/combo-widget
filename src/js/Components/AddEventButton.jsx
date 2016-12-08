@@ -1,7 +1,9 @@
 import React from 'react';
 
 const AddEventButton = ({ disabled, action }) => {
-   const className = 'kw-button__add KambiWidget-action' + (disabled ? ':disabled' : '');
+   const className = ['kw-button__add']
+      .concat(disabled ? ['kw-button--disabled'] : [])
+      .join(' ');
 
    return (
       <div className={className} onClick={action}>
