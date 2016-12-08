@@ -5,7 +5,7 @@ const AddToBetslipButton = ({ action, odds }) => {
    const t = translationModule.getTranslation.bind(translationModule);
 
    return (
-      <div className='kw-button__addtobetslip' onClick={action}>
+      <div className='kw-button__addtobetslip KambiWidget-action' onClick={action}>
          <span className='kw-button_addtobetslip__label' title={t('Add to betslip')}>{t('Add to betslip')}</span>
          <strong>{odds}</strong>
       </div>
