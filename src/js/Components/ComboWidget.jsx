@@ -263,9 +263,8 @@ class ComboWidget extends React.Component {
                               style = { marginLeft: '3px' };
                            }
                            return (
-                              <div className='l-flexbox l-flex-1' style={style}>
+                              <div className='l-flexbox l-flex-1' style={style} key={outcome.id}>
                                  <CustomOutcomeButton
-                                    key={outcome.id}
                                     outcome={outcome}
                                     event={event}
                                  />
