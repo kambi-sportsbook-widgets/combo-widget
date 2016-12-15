@@ -1,13 +1,10 @@
 import React from 'react';
 import { coreLibrary, widgetModule, utilModule, translationModule } from 'kambi-widget-core-library';
-import { Header } from 'kambi-widget-components';
+import { Header, ActionButton } from 'kambi-widget-components';
 import CustomOutcomeButton from './CustomOutcomeButton';
 import Main from './Main';
 import Event from './Event';
 import Footer from './Footer';
-import AddEventButton from './AddEventButton';
-import ResetSelectionButton from './ResetSelectionButton';
-import AddToBetslipButton from './AddToBetslipButton';
 
 const getFormattedOdds = function(odds) {
    switch (coreLibrary.config.oddsFormat) {
@@ -277,17 +274,33 @@ class ComboWidget extends React.Component {
                })}
             </Main>
             <Footer>
-               <AddEventButton
-                  action={this.selectNextOutcome.bind(this)}
-                  disabled={this.state.listLimit >= this.props.selectionLimit || this.props.events.length <= this.state.listLimit}
-               />
-               <ResetSelectionButton
-                  action={this.resetSelection.bind(this)}
-               />
-               <AddToBetslipButton
-                  odds={this.state.combinedOdds}
-                  action={this.addOutcomesToBetslip.bind(this)}
-               />
+               <div className='kw-footer__add'>
+                  <ActionButton
+                     action={this.selectNextOutcome.bind(this)}
+                     type='secondary'
+                     disabled={
+                        this.state.listLimit >= this.props.selectionLimit || this.props.events.length <= this.state.listLimit
+                     }
+                  >
+                     ADD
+                  </ActionButton>
+               </div>
+               <div className='kw-footer__reset'>
+                  <ActionButton
+                     action={this.resetSelection.bind(this)}
+                     type='secondary'
+                  >
+                     { t('Reset') }
+                  </ActionButton>
+               </div>
+               <div className='kw-footer__addbetslip'>
+                  <ActionButton
+                     action={this.addOutcomesToBetslip.bind(this)}
+                     type='primary'
+                  >
+                     { t('Add to betslip') + ' ' + this.state.combinedOdds }
+                  </ActionButton>
+               </div>
             </Footer>
          </div>
       );

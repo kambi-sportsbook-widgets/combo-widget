@@ -24,7 +24,7 @@
 }
 
 .kw-event__participants__divider {
-   margin: 0 6px;
+   margin: 0 4px;
 }
 
 .kw-event__path {
@@ -33,8 +33,8 @@
 
    :not(:first-child):before {
       content: "/";
-      margin-left: 6px;
-      margin-right: 6px;
+      margin-left: 4px;
+      margin-right: 4px;
    }
 }
 
@@ -49,85 +49,31 @@
 
 .kw-footer {
    display: flex;
-   margin: 0 16px;
-   padding-bottom: 12px;
+   margin-top: 0;
+   margin-left: 16px;
+   margin-right: 16px;
+   margin-bottom: 12px;
 }
 
-.kw-button {
-   @include border-radius(2px);
-   @include transition(background-color ease-out .2s, color ease-out .2s);
-   font-size: 12px;
-   line-height: 20px;
-   margin: 5px 5px 5px 0;
-   padding: 7px 10px;
-
-   background-color: white;
-   border: 1px solid #EEE;
-   color: $color-4-2-card-supportive-text;
-
-   &:last-child {
-      margin-right: 0;
-   }
-
-   &:hover {
-      cursor: pointer;
-      background-color: $color-2-2-primary-background-hover;
-   }
-
-   &.selected {
-      background-color: $color-2-2-primary-background;
-      color: white;
-   }
+.kw-footer__add {
+   margin-top: 8px;
+   margin-left: 0;
+   margin-right: 0;
+   margin-bottom: 0;
 }
 
-.kw-button--disabled {
-   background-color: $color-4-1-card-background;
-
-   &:hover {
-      background-color: $color-4-1-card-background;
-      cursor: not-allowed;
-   }
+.kw-footer__reset {
+   margin-top: 8px;
+   margin-left: 8px;
+   margin-right: 0;
+   margin-bottom: 0;
 }
 
-.kw-button__icon {
-   width: 10px;
-   height: 20px;
-   background: no-repeat center 6px;
-   background-size: 10px 10px;
-   float: left;
-}
-
-.kw-button__add {
-   @extend .kw-button;
-   display: flex;
-}
-
-.kw-button__add__icon {
-   @extend .kw-button__icon;
-   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAgMAAACdGdVrAAAADFBMVEUAAACZmZmZmZmZmZnk5WrOAAAAA3RSTlMAw8Xxr3ZsAAAAKElEQVQIW2NgYJD/wgAC9n/Ioer/A8Ffhv9ggJ2CKiHCMByU/g8GBgCR5zjDhSpsEQAAAABJRU5ErkJggg==');
-}
-
-.kw-button__reset {
-   display: flex;
-   @extend .kw-button;
-   margin-left: 6px;
-   margin-right: 6px;
-}
-
-.kw-button__reset__icon {
-   @extend .kw-button__icon;
-   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAk1BMVEUAAACZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZlO2tqaAAAAMHRSTlMAAQIDBg8QFxgaJicoLC0uLzNAUlxeX2FmgoWGiIuMlJW5vMDHys7g5ujp8/f5+/0iAeCXAAAAx0lEQVQYGW3B21aDMABFwRMCFi0qRq1CLQrekArd//91WsgCHjIjz14X9c/xs7ixGjmNoodfvP7RSnLobNOy0m7kQP/yAXjZxsbE2z0wFICkdIAmkXfxzkiyLbwZzcwHZ9IOGqOFYyTbQ6KFY6IcDlo4PJWQKaSBWCEdGIV0YBTSQKyQEjKF5FApxPaQKGQHtVGAbeHVaGaqO03SE9SJvKSBe03yE1BlsTFxdgD6K3lpy8r3pWb2qccbniOt2bxsuuPX/jbS5A8OlSFA7QJMxAAAAABJRU5ErkJggg==');
-   margin-right: 6px;
-}
-
-.kw-button__addtobetslip {
-   @extend .kw-button;
+.kw-footer__addbetslip {
+   margin-top: 8px;
    margin-left: auto;
-}
-
-.kw-button_addtobetslip__label {
-   white-space: nowrap;
-   margin-right: 6px;
+   margin-right: 0;
+   margin-bottom: 0;
 }
 
 button.KambiWidget-outcome {
