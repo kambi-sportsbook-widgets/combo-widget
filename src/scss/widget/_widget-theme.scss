@@ -49,33 +49,30 @@
 
 .kw-footer {
    display: flex;
-   margin-top: 0;
+   margin-top: 12px;
    margin-left: 16px;
    margin-right: 16px;
    margin-bottom: 12px;
 }
 
 .kw-footer__add {
-   margin-top: 8px;
-   margin-left: 0;
-   margin-right: 0;
-   margin-bottom: 0;
+   margin: 0;
 }
 
 .kw-footer__reset {
-   margin-top: 8px;
+   margin-top: 0px;
    margin-left: 8px;
    margin-right: 0;
    margin-bottom: 0;
 }
 
 .kw-footer__addbetslip {
-   margin-top: 8px;
+   margin-top: 0;
    margin-left: auto;
    margin-right: 0;
    margin-bottom: 0;
 }
 
 button.KambiWidget-outcome {
-   margin: 0!important; // Safari bug
+   margin: 0 !important; // Safari bug
 }
