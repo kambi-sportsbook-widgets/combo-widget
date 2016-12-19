@@ -282,7 +282,7 @@ class ComboWidget extends React.Component {
                         this.state.listLimit >= this.props.selectionLimit || this.props.events.length <= this.state.listLimit
                      }
                   >
-                     ADD
+                     { t('Add') }
                   </ActionButton>
                </div>
                <div className='kw-footer__reset'>
@@ -298,7 +298,7 @@ class ComboWidget extends React.Component {
                      action={this.addOutcomesToBetslip.bind(this)}
                      type='primary'
                   >
-                     { t('Add to betslip') + ' ' + this.state.combinedOdds }
+                     { t('AddToBetslip') + ' ' + this.state.combinedOdds }
                   </ActionButton>
                </div>
             </Footer>
