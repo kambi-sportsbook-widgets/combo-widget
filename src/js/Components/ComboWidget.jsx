@@ -298,7 +298,9 @@ class ComboWidget extends React.Component {
                      action={this.addOutcomesToBetslip.bind(this)}
                      type='primary'
                   >
-                     { t('AddToBetslip') + ' ' + this.state.combinedOdds }
+                     <div style={{ textAlign: 'right', fontSize: '14px' }}>
+                        { t('AddToBetslip') + ' ' + this.state.combinedOdds }
+                     </div>
                   </ActionButton>
                </div>
             </Footer>
