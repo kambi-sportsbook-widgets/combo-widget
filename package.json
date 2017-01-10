@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "kambi-widget-components": "^1.11.1",
-    "kambi-widget-core-library": "^3.6.1",
+    "kambi-widget-core-library": "^3.6.5",
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
   },
