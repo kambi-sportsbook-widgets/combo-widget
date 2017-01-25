@@ -1,0 +1,11 @@
+:local(.closeSign) {
+   border-radius: 5px;
+   position: absolute;
+   right: 16px;
+   cursor: pointer;
+
+   &:after {
+      content: "\274c";
+      font-size: 15px;
+   }
+}

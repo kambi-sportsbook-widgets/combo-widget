@@ -24,6 +24,13 @@ const navigateToEvent = function(event) {
    widgetModule.navigateToEvent(event.event.id);
 };
 
+const removeEvent = function(event) {
+   this.props.events.splice(this.props.events.indexOf(event), 1);
+   this.setState({
+      events: this.props.events
+   });
+};
+
 const adjustHeight = () => {
    widgetModule.adaptWidgetHeight();
 };
@@ -40,6 +47,7 @@ class ComboWidget extends React.Component {
 
       this.state = {
          listLimit: props.defaultListLimit,
+         events: props.events,
          combinedOdds: ''
       };
 
@@ -53,7 +61,6 @@ class ComboWidget extends React.Component {
       widgetModule.events.subscribe('CUSTOM:OUTCOME:SELECTED', this.outcomeSelectedHandler);
       widgetModule.events.subscribe('CUSTOM:OUTCOME:DESELECTED', this.outcomeDeselectedHandler);
       widgetModule.events.subscribe('ODDS:FORMAT', this.oddsFormatHandler);
-
       this.calculateCombinedOdds();
    }
 
@@ -245,13 +252,14 @@ class ComboWidget extends React.Component {
                <span>{t('Combo builder')}</span>
             </Header>
             <Main>
-               {this.props.events.slice(0, this.state.listLimit).map((event) => {
+               {this.state.events.slice(0, this.state.listLimit).map((event) => {
                   return (
                      <Event
                         key={event.event.id}
                         homeName={event.event.homeName}
                         awayName={event.event.awayName}
                         onClick={navigateToEvent.bind(null, event)}
+                        onClose={removeEvent.bind(this, event)}
                         path={event.event.path.map(part => part.name)}
                      >
                         {event.betOffers.outcomes.map((outcome, index) => {
