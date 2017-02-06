@@ -13,8 +13,8 @@
     "postversion": "kambi-widgets-cli postversion"
   },
   "dependencies": {
-    "kambi-widget-components": "^1.11.1",
-    "kambi-widget-core-library": "^3.6.5",
+    "kambi-widget-components": "^1.12.3",
+    "kambi-widget-core-library": "^3.6.6",
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
   },
