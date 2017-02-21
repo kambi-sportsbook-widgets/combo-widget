@@ -4,7 +4,7 @@ import styles from './Event.scss';
 const Event = ({ children, homeName, awayName, onClose, onClick, path }) => {
    return (
       <div className='kw-event KambiWidget-card-background-color--hoverable'>
-         <div className={styles.closeSign} onClick={onClose} />
+         <div className={'KambiWidget-card-support-text-color '.concat(styles.closeSign)} onClick={onClose} />
          <div className='kw-event__participants' onClick={onClick}>
             <span className='kw-event__participants__item'>{homeName}</span>
             <span className='kw-event__participants__divider'>-</span>

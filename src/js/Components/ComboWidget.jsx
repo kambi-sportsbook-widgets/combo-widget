@@ -27,6 +27,7 @@ const navigateToEvent = function(event) {
 const removeEvent = function(event) {
    this.props.events.splice(this.props.events.indexOf(event), 1);
    this.setState({
+      numberElementsRemoved: this.state.numberElementsRemoved+1,
       events: this.props.events
    });
 };
@@ -46,6 +47,7 @@ class ComboWidget extends React.Component {
       super(props);
 
       this.state = {
+         numberElementsRemoved: 0,
          listLimit: props.defaultListLimit,
          events: props.events,
          combinedOdds: ''
@@ -120,7 +122,8 @@ class ComboWidget extends React.Component {
       }
       // Reset the list size
       this.setState({
-         listLimit: this.props.defaultListLimit
+         listLimit: this.props.defaultListLimit,
+         numberElementsRemoved: 0,
       });
 
       this.calculateCombinedOdds();
@@ -252,7 +255,7 @@ class ComboWidget extends React.Component {
                <span>{t('Combo builder')}</span>
             </Header>
             <Main>
-               {this.state.events.slice(0, this.state.listLimit).map((event) => {
+               {this.state.events.slice(0, this.state.listLimit - this.state.numberElementsRemoved).map((event) => {
                   return (
                      <Event
                         key={event.event.id}
