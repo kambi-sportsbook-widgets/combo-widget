@@ -14,7 +14,6 @@ coreLibrary.init({
 })
 .then(() => store.getEvents(coreLibrary.args.sport, coreLibrary.args.defaultListLimit, coreLibrary.args.oddsRange.sort()))
 .then((events) => {
-
    if (events.length <= 1) {
       throw new Error('Not enough events')
    }
@@ -31,6 +30,6 @@ coreLibrary.init({
    );
 })
 .catch((error) => {
+   console.error(error);
    widgetModule.removeWidget();
-   throw error;
 });
