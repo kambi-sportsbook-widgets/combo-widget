@@ -29,7 +29,9 @@ const removeEvent = function(event) {
       // does not remove the last event
       return;
    }
-
+   event.betOffers.outcomes.map((outcome) => {
+      delete outcome.selected;
+   });
    this.state.events.splice(this.state.events.indexOf(event), 1);
    this.setState({
       numberElementsRemoved: this.state.numberElementsRemoved + 1,
@@ -149,18 +151,18 @@ class ComboWidget extends React.Component {
       let result = 1;
       const outcomes = [];
 
-      if (this.props.events.length > 0) {
-         for (let i = 0; i < this.props.events.length; ++i) {
-            const outcomesLen = this.props.events[i].betOffers.outcomes.length;
+      if (this.state.events.length > 0) {
+         for (let i = 0; i < this.state.events.length; ++i) {
+            const outcomesLen = this.state.events[i].betOffers.outcomes.length;
             for (let j = 0; j < outcomesLen; ++j) {
-               if (this.props.events[i].betOffers.outcomes[j].selected === true) {
-                  outcomes.push(this.props.events[i].betOffers.outcomes[j]);
-                  result *= (this.props.events[i].betOffers.outcomes[j].odds / 1000);
+               if (this.state.events[i].betOffers.outcomes[j].selected === true) {
+                  outcomes.push(this.state.events[i].betOffers.outcomes[j]);
+                  result *= (this.state.events[i].betOffers.outcomes[j].odds / 1000);
                }
             }
          }
 
-         getFormattedOdds(Math.floor(result * 1000))
+         getFormattedOdds(Math.round(result * 1000))
             .then((odds) => {
                this.setState({
                   combinedOdds: odds
@@ -226,17 +228,17 @@ class ComboWidget extends React.Component {
             betslipLen = betslipOffers.outcomes.length;
 
          for (let i = 0; i < this.state.listLimit; ++i) {
-            const outcomesLen = this.props.events[i].betOffers.outcomes.length;
+            const outcomesLen = this.state.events[i].betOffers.outcomes.length;
 
             for (let j = 0; j < outcomesLen; ++j) {
-               if (this.props.events[i].betOffers.outcomes[j].selected) {
-                  outcomes.push(this.props.events[i].betOffers.outcomes[j].id);
+               if (this.state.events[i].betOffers.outcomes[j].selected) {
+                  outcomes.push(this.state.events[i].betOffers.outcomes[j].id);
                }
             }
 
             if (this.props.replaceOutcomes === true) {
                for (let k = 0; k < betslipLen; ++k) {
-                  if (betslipOffers.outcomes[k].eventId === this.props.events[i].event.id && outcomes.indexOf(betslipOffers.outcomes[k].id) === -1 &&
+                  if (betslipOffers.outcomes[k].eventId === this.state.events[i].event.id && outcomes.indexOf(betslipOffers.outcomes[k].id) === -1 &&
                      betslipOffers.outcomes[k].id !== outcomes ) {
                      remove.push(betslipOffers.outcomes[k].id);
                   }
