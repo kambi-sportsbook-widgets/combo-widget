@@ -24,6 +24,21 @@ const navigateToEvent = function(event) {
    widgetModule.navigateToEvent(event.event.id);
 };
 
+const removeEvent = function(event) {
+   if (this.state.listLimit - this.state.numberElementsRemoved <= 1) {
+      // does not remove the last event
+      return;
+   }
+
+   this.state.events.splice(this.state.events.indexOf(event), 1);
+   this.setState({
+      numberElementsRemoved: this.state.numberElementsRemoved + 1,
+      events: this.state.events
+   });
+
+   this.calculateCombinedOdds();
+};
+
 const adjustHeight = () => {
    widgetModule.adaptWidgetHeight();
 };
@@ -34,12 +49,13 @@ class ComboWidget extends React.Component {
     * Constructs.
     * @param {object} props Widget properties
     */
-
    constructor(props) {
       super(props);
 
       this.state = {
+         numberElementsRemoved: 0,
          listLimit: props.defaultListLimit,
+         events: props.events.slice(), // shallow copies the array
          combinedOdds: ''
       };
 
@@ -53,7 +69,6 @@ class ComboWidget extends React.Component {
       widgetModule.events.subscribe('CUSTOM:OUTCOME:SELECTED', this.outcomeSelectedHandler);
       widgetModule.events.subscribe('CUSTOM:OUTCOME:DESELECTED', this.outcomeDeselectedHandler);
       widgetModule.events.subscribe('ODDS:FORMAT', this.oddsFormatHandler);
-
       this.calculateCombinedOdds();
    }
 
@@ -85,6 +100,10 @@ class ComboWidget extends React.Component {
       this.props.events.forEach((event) => {
          if (event.betOffers.id === betOfferId) {
             event.betOffers.outcomes.forEach((outcome) => {
+               if (outcome.id === outcomeId && outcome.selected) {
+                  // prevents unselecting an outcome
+                  return;
+               }
                if (outcome.id === outcomeId) {
                   outcome.selected = outcome.selected !== true;
                } else {
@@ -113,9 +132,13 @@ class ComboWidget extends React.Component {
       }
       // Reset the list size
       this.setState({
-         listLimit: this.props.defaultListLimit
+         numberElementsRemoved: 0,
+         listLimit: this.props.defaultListLimit,
+         events: this.props.events.slice(), // shallow copies the array
+         combinedOdds: ''
       });
 
+      // calculateCombinedOdds triggers the rerendering
       this.calculateCombinedOdds();
    }
 
@@ -245,13 +268,14 @@ class ComboWidget extends React.Component {
                <span>{t('Combo builder')}</span>
             </Header>
             <Main>
-               {this.props.events.slice(0, this.state.listLimit).map((event) => {
+               {this.state.events.slice(0, this.state.listLimit - this.state.numberElementsRemoved).map((event) => {
                   return (
                      <Event
                         key={event.event.id}
                         homeName={event.event.homeName}
                         awayName={event.event.awayName}
                         onClick={navigateToEvent.bind(null, event)}
+                        onClose={removeEvent.bind(this, event)}
                         path={event.event.path.map(part => part.name)}
                      >
                         {event.betOffers.outcomes.map((outcome, index) => {

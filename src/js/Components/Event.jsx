@@ -1,8 +1,10 @@
 import React from 'react';
+import styles from './Event.scss';
 
-const Event = ({ children, homeName, awayName, onClick, path }) => {
+const Event = ({ children, homeName, awayName, onClose, onClick, path }) => {
    return (
       <div className='kw-event KambiWidget-card-background-color--hoverable'>
+         <div className={'KambiWidget-card-support-text-color '.concat(styles.closeSign)} onClick={onClose} />
          <div className='kw-event__participants' onClick={onClick}>
             <span className='kw-event__participants__item'>{homeName}</span>
             <span className='kw-event__participants__divider'>-</span>
@@ -42,7 +44,13 @@ Event.propTypes = {
    /**
     * Header click handler
     */
-   onClick: React.PropTypes.func.isRequired
+   onClick: React.PropTypes.func.isRequired,
+
+   /**
+    * Header on close handler
+    */
+
+   onClose: React.PropTypes.func.isRequired
 };
 
 export default Event;
