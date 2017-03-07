@@ -25,11 +25,18 @@ const navigateToEvent = function(event) {
 };
 
 const removeEvent = function(event) {
-   this.props.events.splice(this.props.events.indexOf(event), 1);
+   if (this.state.listLimit - this.state.numberElementsRemoved <= 1) {
+      // does not remove the last event
+      return;
+   }
+
+   this.state.events.splice(this.state.events.indexOf(event), 1);
    this.setState({
-      numberElementsRemoved: this.state.numberElementsRemoved+1,
-      events: this.props.events
+      numberElementsRemoved: this.state.numberElementsRemoved + 1,
+      events: this.state.events
    });
+
+   this.calculateCombinedOdds();
 };
 
 const adjustHeight = () => {
@@ -49,7 +56,7 @@ class ComboWidget extends React.Component {
       this.state = {
          numberElementsRemoved: 0,
          listLimit: props.defaultListLimit,
-         events: props.events,
+         events: props.events.slice(), // shallow copies the array
          combinedOdds: ''
       };
 
@@ -94,6 +101,10 @@ class ComboWidget extends React.Component {
       this.props.events.forEach((event) => {
          if (event.betOffers.id === betOfferId) {
             event.betOffers.outcomes.forEach((outcome) => {
+               if (outcome.id === outcomeId && outcome.selected) {
+                  // prevents unselecting an outcome
+                  return;
+               }
                if (outcome.id === outcomeId) {
                   outcome.selected = outcome.selected !== true;
                } else {
@@ -122,10 +133,14 @@ class ComboWidget extends React.Component {
       }
       // Reset the list size
       this.setState({
-         listLimit: this.props.defaultListLimit,
          numberElementsRemoved: 0,
+         listLimit: this.props.defaultListLimit,
+         events: this.props.events.slice(), // shallow copies the array
+         combinedOdds: ''
       });
 
+
+      // calculateCombinedOdds triggers the rerendering
       this.calculateCombinedOdds();
    }
 
