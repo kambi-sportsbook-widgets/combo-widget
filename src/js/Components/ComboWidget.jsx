@@ -49,7 +49,6 @@ class ComboWidget extends React.Component {
     * Constructs.
     * @param {object} props Widget properties
     */
-
    constructor(props) {
       super(props);
 
@@ -138,7 +137,6 @@ class ComboWidget extends React.Component {
          events: this.props.events.slice(), // shallow copies the array
          combinedOdds: ''
       });
-
 
       // calculateCombinedOdds triggers the rerendering
       this.calculateCombinedOdds();
