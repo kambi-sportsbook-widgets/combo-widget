@@ -2,9 +2,11 @@
 
 ![](https://github.com/kambi-sportsbook-widgets/combo-widget/blob/master/screenshot.png?raw=true)
 
-A widget that shows several betoffers in list, the user can add more betoffers from this list. When the user press the "Add to betslip" button the widget then aggregates betoffers into a combination bet and places it in the betslip.
+A widget that shows several betoffers in list, the user can add more betoffers to this list. When the user press the "ADD TO BETSLIP" button the widget then aggregates the betoffers shown in the widget into a combination bet and places it in the betslip.
 
 The betoffers shown are from the events that are tied to the links in the highlight (popular) list of the sportsbook AND match the provided `sport` argument. The events are sorted based on the lowest outcome odds.
+
+The user can remove bets by clicking the X icon in the top right corner of the widget
 
 ## Configuration
 
