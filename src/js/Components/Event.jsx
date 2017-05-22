@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './Event.scss';
 
 const Event = ({ children, homeName, awayName, onClose, onClick, path }) => {
@@ -24,33 +25,33 @@ Event.propTypes = {
    /**
     * Inner components
     */
-   children: React.PropTypes.arrayOf(React.PropTypes.element).isRequired,
+   children: PropTypes.arrayOf(PropTypes.element).isRequired,
 
    /**
     * Home participant name
     */
-   homeName: React.PropTypes.string.isRequired,
+   homeName: PropTypes.string.isRequired,
 
    /**
     * Away participant name
     */
-   awayName: React.PropTypes.string.isRequired,
+   awayName: PropTypes.string.isRequired,
 
    /**
     * Event path
     */
-   path: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+   path: PropTypes.arrayOf(PropTypes.string).isRequired,
 
    /**
     * Header click handler
     */
-   onClick: React.PropTypes.func.isRequired,
+   onClick: PropTypes.func.isRequired,
 
    /**
     * Header on close handler
     */
 
-   onClose: React.PropTypes.func.isRequired
+   onClose: PropTypes.func.isRequired
 };
 
 export default Event;

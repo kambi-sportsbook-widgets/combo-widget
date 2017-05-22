@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Footer = ({ children }) => {
    return (
@@ -12,7 +13,7 @@ Footer.propTypes = {
    /**
     * Inner components
     */
-   children: React.PropTypes.arrayOf(React.PropTypes.element).isRequired,
+   children: PropTypes.arrayOf(PropTypes.element).isRequired,
 };
 
 export default Footer;

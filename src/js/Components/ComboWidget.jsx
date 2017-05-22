@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { coreLibrary, widgetModule, utilModule, translationModule } from 'kambi-widget-core-library';
 import { Header, ActionButton } from 'kambi-widget-components';
 import CustomOutcomeButton from './CustomOutcomeButton';
@@ -339,22 +340,22 @@ ComboWidget.propTypes = {
    /**
     * Events array
     */
-   events: React.PropTypes.array.isRequired,
+   events: PropTypes.array.isRequired,
 
    /**
     * How many events show on the beginning
     */
-   defaultListLimit: React.PropTypes.number,
+   defaultListLimit: PropTypes.number,
 
    /**
     * How many event user can select
     */
-   selectionLimit: React.PropTypes.number,
+   selectionLimit: PropTypes.number,
 
    /**
     * Should Betslip list be cleaned before adding selected outcomes
     */
-   replaceOutcomes: React.PropTypes.bool
+   replaceOutcomes: PropTypes.bool
 };
 
 ComboWidget.defaultProps = {

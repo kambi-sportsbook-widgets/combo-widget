@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { coreLibrary, utilModule, eventsModule } from 'kambi-widget-core-library';
 import { OutcomeButtonUI } from 'kambi-widget-components';
 
@@ -130,12 +131,12 @@ CustomOutcomeButton.propTypes = {
    /**
     * Outcome entity
     */
-   outcome: React.PropTypes.object.isRequired,
+   outcome: PropTypes.object.isRequired,
 
    /**
     * Event entity
     */
-   event: React.PropTypes.object.isRequired,
+   event: PropTypes.object.isRequired,
 };
 
 export default CustomOutcomeButton;
