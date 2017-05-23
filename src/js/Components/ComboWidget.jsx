@@ -270,38 +270,8 @@ class ComboWidget extends React.Component {
             <Header>
                <span>{t('Combo builder')}</span>
             </Header>
-            <Main>
-               {this.state.events.slice(0, this.state.listLimit - this.state.numberElementsRemoved).map((event) => {
-                  return (
-                     <Event
-                        key={event.event.id}
-                        homeName={event.event.homeName}
-                        awayName={event.event.awayName}
-                        onClick={navigateToEvent.bind(null, event)}
-                        onClose={removeEvent.bind(this, event)}
-                        path={event.event.path.map(part => part.name)}
-                     >
-                        {event.betOffers.outcomes.map((outcome, index) => {
-                           let style;
-                           if (index !== 0) {
-                              style = { marginLeft: '3px' };
-                           }
-                           return (
-                              <div className='l-flexbox l-flex-1' style={style} key={outcome.id}>
-                                 <CustomOutcomeButton
-                                    outcome={outcome}
-                                    event={event}
-                                 />
-                              </div>
-                           )
-                        }
-                        )}
-                     </Event>
-                  );
-               })}
-            </Main>
-            <Footer>
-               <div className='kw-footer__add'>
+            <div className='kw-top-button'>
+               <div className='kw-top-button__add'>
                   <ActionButton
                      action={this.selectNextOutcome.bind(this)}
                      type='secondary'
@@ -312,7 +282,7 @@ class ComboWidget extends React.Component {
                      { t('Add') }
                   </ActionButton>
                </div>
-               <div className='kw-footer__reset'>
+               <div className='kw-top-button__reset'>
                   <ActionButton
                      action={this.resetSelection.bind(this)}
                      type='secondary'
@@ -320,17 +290,41 @@ class ComboWidget extends React.Component {
                      { t('Reset') }
                   </ActionButton>
                </div>
-               <div className='kw-footer__addbetslip'>
-                  <ActionButton
-                     action={this.addOutcomesToBetslip.bind(this)}
-                     type='primary'
+            </div>
+            {this.state.events.slice(0, this.state.listLimit - this.state.numberElementsRemoved).map((event) => {
+               return (
+                  <Event
+                     key={event.event.id}
+                     homeName={event.event.homeName}
+                     awayName={event.event.awayName}
+                     onClick={navigateToEvent.bind(null, event)}
+                     onClose={removeEvent.bind(this, event)}
+                     path={event.event.path.map(part => part.name)}
                   >
-                     <div style={{ textAlign: 'right', fontSize: '14px' }}>
-                        { t('AddToBetslip') + ' ' + this.state.combinedOdds }
-                     </div>
-                  </ActionButton>
+                     {event.betOffers.outcomes.map((outcome, index) => {
+                        let style;
+                        if (index !== 0) {
+                           style = { marginLeft: '3px' };
+                        }
+                        return (
+                           <div className='l-flexbox l-flex-1' style={style} key={outcome.id}>
+                              <CustomOutcomeButton
+                                 outcome={outcome}
+                                 event={event}
+                              />
+                           </div>
+                        )
+                     }
+                     )}
+                  </Event>
+               );
+            })}
+
+            <div className='kw-bottom-button'>
+               <div className='KambiWidget-action kw-bottom-button__add-to-betslip' onClick={this.addOutcomesToBetslip.bind(this)}>
+                  { t('AddToBetslip') + ' ' + this.state.combinedOdds }
                </div>
-            </Footer>
+            </div>
          </div>
       );
    }
