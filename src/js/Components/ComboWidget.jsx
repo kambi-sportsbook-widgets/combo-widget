@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { coreLibrary, widgetModule, utilModule, translationModule } from 'kambi-widget-core-library';
 import { Header, ActionButton } from 'kambi-widget-components';
 import CustomOutcomeButton from './CustomOutcomeButton';
-import Main from './Main';
 import Event from './Event';
-import Footer from './Footer';
+import styles from './ComboWidget.scss';
 
 const getFormattedOdds = function(odds) {
    switch (coreLibrary.config.oddsFormat) {
@@ -15,8 +14,7 @@ const getFormattedOdds = function(odds) {
          return widgetModule.requestOddsAsAmerican(odds);
       default:
          return new Promise(( resolve, reject ) => {
-            var res = utilModule.getOddsDecimalValue(odds / 1000);
-            resolve(res);
+            resolve(utilModule.getOddsDecimalValue(odds / 1000));
          });
    }
 };
@@ -218,9 +216,6 @@ class ComboWidget extends React.Component {
    addOutcomesToBetslip() {
       // Create a removable listener that calls the api for the betslip betoffers
       const betslipListener = (betslipOffers, event) => {
-         console.debug('listener');
-         console.debug(event, betslipOffers);
-
          // Remove the listener once we get the items from the betslip
          widgetModule.events.unsubscribe('OUTCOMES:UPDATE', betslipListener);
 
@@ -301,21 +296,14 @@ class ComboWidget extends React.Component {
                      onClose={removeEvent.bind(this, event)}
                      path={event.event.path.map(part => part.name)}
                   >
-                     {event.betOffers.outcomes.map((outcome, index) => {
-                        let style;
-                        if (index !== 0) {
-                           style = { marginLeft: '3px' };
-                        }
-                        return (
-                           <div className='l-flexbox l-flex-1' style={style} key={outcome.id}>
-                              <CustomOutcomeButton
-                                 outcome={outcome}
-                                 event={event}
-                              />
-                           </div>
-                        )
-                     }
-                     )}
+                     {event.betOffers.outcomes.map((outcome, index) => (
+                        <div className={styles.outcome} key={outcome.id}>
+                           <CustomOutcomeButton
+                              outcome={outcome}
+                              event={event}
+                           />
+                        </div>
+                     ))}
                   </Event>
                );
             })}
