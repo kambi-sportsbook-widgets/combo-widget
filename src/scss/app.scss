@@ -1,86 +1,87 @@
-@import '~kambi-widget-core-library/src/scss/core.scss';
+:global {
+   @import '~kambi-widget-core-library/src/scss/core.scss';
 
-
-.kw-main {
-   display: flex;
-   flex-direction: column;
-   flex: 1;
-   justify-content: flex-start;
-   flex-basis: auto;
-}
-
-.kw-event {
-   display: flex;
-   flex-direction: column;
-   padding: 12px 16px;
-}
-
-.kw-event__participants {
-   cursor: pointer;
-   display: flex;
-   padding-bottom: 6px;
-   font-size: 14px;
-}
-
-.kw-event__participants__item {
-   white-space: nowrap;
-}
-
-.kw-event__participants__divider {
-   margin: 0 4px;
-}
-
-.kw-event__path {
-   display: flex;
-   flex-direction: row;
-
-   :not(:first-child):before {
-      content: "/";
-      margin-left: 4px;
-      margin-right: 4px;
+   .kw-main {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: flex-start;
+      flex-basis: auto;
    }
-}
 
-.kw-event__path_part {
-   white-space: nowrap;
-}
+   .kw-event {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 16px;
+   }
 
-.kw-event__outcomes {
-   display: flex;
-   margin-top: 12px;
-}
+   .kw-event__participants {
+      cursor: pointer;
+      display: flex;
+      padding-bottom: 6px;
+      font-size: 14px;
+   }
 
-.kw-bottom-button {
-   margin-left: 16px;
-   margin-right: 16px;
-   margin-top: 12px;
-   margin-bottom: 12px;
-   cursor: pointer;
-}
+   .kw-event__participants__item {
+      white-space: nowrap;
+   }
 
-.kw-bottom-button__add-to-betslip {
-   font-size: 14px;
-}
+   .kw-event__participants__divider {
+      margin: 0 4px;
+   }
 
-.kw-top-button {
-   display: flex;
-   justify-content: flex-end;
-   margin-left: 16px;
-   margin-right: 16px;
-   margin-top: 12px;
-}
+   .kw-event__path {
+      display: flex;
+      flex-direction: row;
 
-.kw-top-button__add {
-   margin: 0;
-}
+      :not(:first-child):before {
+         content: "/";
+         margin-left: 4px;
+         margin-right: 4px;
+      }
+   }
 
-.kw-top-button__reset {
-   margin-top: 0px;
-   margin-left: 8px;
-   margin-right: 0;
-   margin-bottom: 0;
-}
+   .kw-event__path_part {
+      white-space: nowrap;
+   }
 
-button.KambiWidget-outcome {
-   margin: 0 !important; // Safari bug
+   .kw-event__outcomes {
+      display: flex;
+      margin-top: 12px;
+   }
+
+   .kw-bottom-button {
+      margin-left: 16px;
+      margin-right: 16px;
+      margin-top: 12px;
+      margin-bottom: 12px;
+      cursor: pointer;
+   }
+
+   .kw-bottom-button__add-to-betslip {
+      font-size: 14px;
+   }
+
+   .kw-top-button {
+      display: flex;
+      justify-content: flex-end;
+      margin-left: 16px;
+      margin-right: 16px;
+      margin-top: 12px;
+   }
+
+   .kw-top-button__add {
+      margin: 0;
+   }
+
+   .kw-top-button__reset {
+      margin-top: 0px;
+      margin-left: 8px;
+      margin-right: 0;
+      margin-bottom: 0;
+   }
+
+   button.KambiWidget-outcome {
+      margin: 0 !important; // Safari bug
+   }
 }
