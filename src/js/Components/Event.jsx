@@ -1,31 +1,30 @@
-import React from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import styles from './Event.scss';
 
-const Event = ({ children, homeName, awayName, onClose, onClick, path }) => {
-   return (
-      <div className='kw-event KambiWidget-card-background-color--hoverable'>
-         <div className={'KambiWidget-card-support-text-color '.concat(styles.closeSign)} onClick={onClose} />
-         <div className='kw-event__participants' onClick={onClick}>
-            <span className='kw-event__participants__item'>{homeName}</span>
-            <span className='kw-event__participants__divider'>-</span>
-            <span className='kw-event__participants__item'>{awayName}</span>
-         </div>
-         <div className='kw-event__path KambiWidget-card-support-text-color'>
-            {path.map((part, i) => <span key={i} className='kw-event__path__part'>{part}</span>)}
-         </div>
-         <div className='kw-event__outcomes'>
-            {children.length <= 3 && children}
-         </div>
+const Event = ({ children, homeName, awayName, onClose, onClick, path }) => (
+   <div className={`${styles.general} KambiWidget-card-background-color--hoverable`}>
+      <div className={`KambiWidget-card-support-text-color ${styles.closeSign}`} onClick={onClose} />
+      <div className={styles.participants} onClick={onClick}>
+         <span className={styles.item}>{homeName}</span>
+         <span className={styles.divider}>-</span>
+         <span className={styles.item}>{awayName}</span>
       </div>
-   );
-};
+      <div className={`${styles.path} KambiWidget-card-support-text-color`}>
+         {path.map((part, i) => <span key={i} className={styles.part}>{part}</span>)}
+      </div>
+      <div className={styles.outcomes}>
+         {children.length <= 3 && Children.map(children, child =>
+            <div className={styles.outcome}>{child}</div>)}
+      </div>
+   </div>
+);
 
 Event.propTypes = {
    /**
     * Inner components
     */
-   children: PropTypes.arrayOf(PropTypes.element).isRequired,
+   children: PropTypes.node.isRequired,
 
    /**
     * Home participant name

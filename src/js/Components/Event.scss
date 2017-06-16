@@ -1,3 +1,9 @@
+.general {
+   display: flex;
+   flex-direction: column;
+   padding: 12px 16px;
+}
+
 .closeSign {
    border-radius: 5px;
    position: absolute;
@@ -7,5 +13,50 @@
    &:after {
       content: "\2715";
       font-size: 16px;
+   }
+}
+
+.participants {
+   cursor: pointer;
+   display: flex;
+   padding-bottom: 6px;
+   font-size: 14px;
+
+   .item {
+      white-space: nowrap;
+   }
+
+   .divider {
+      margin: 0 4px;
+   }
+}
+
+.path {
+   display: flex;
+   flex-direction: row;
+
+   :not(:first-child):before {
+      content: "/";
+      margin-left: 4px;
+      margin-right: 4px;
+   }
+
+   .part {
+      white-space: nowrap;
+   }
+}
+
+.outcomes {
+   display: flex;
+   margin-top: 12px;
+
+   .outcome {
+      display: flex;
+      flex: 1;
+      min-width: 1px;
+   }
+
+   .outcome + .outcome {
+      margin-left: 3px;
    }
 }

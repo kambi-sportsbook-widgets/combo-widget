@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { coreLibrary, widgetModule, utilModule, translationModule } from 'kambi-widget-core-library';
 import { Header, ActionButton } from 'kambi-widget-components';
 import CustomOutcomeButton from './CustomOutcomeButton';
+import TopBar from './TopBar';
+import BottomBar from './BottomBar';
+import KambiActionButton from './KambiActionButton';
 import Event from './Event';
-import styles from './ComboWidget.scss';
 
 const getFormattedOdds = function(odds) {
    switch (coreLibrary.config.oddsFormat) {
@@ -64,6 +66,8 @@ class ComboWidget extends React.Component {
       this.outcomeSelectedHandler = data => this.selectOutcome(data.outcomeId, data.betOfferId);
       this.outcomeDeselectedHandler = data => this.selectOutcome(data.outcomeId, data.betOfferId);
       this.oddsFormatHandler = () => this.calculateCombinedOdds();
+
+      this.addOutcomesToBetslip = this.addOutcomesToBetslip.bind(this);
    }
 
    componentWillMount() {
@@ -265,29 +269,27 @@ class ComboWidget extends React.Component {
             <Header>
                <span>{t('Combo builder')}</span>
             </Header>
-            <div className='kw-top-button'>
-               <div className='kw-top-button__add'>
-                  <ActionButton
-                     action={this.selectNextOutcome.bind(this)}
-                     type='secondary'
-                     disabled={
-                        this.state.listLimit >= this.props.selectionLimit || this.props.events.length <= this.state.listLimit
-                     }
-                  >
-                     { t('Add') }
-                  </ActionButton>
-               </div>
-               <div className='kw-top-button__reset'>
-                  <ActionButton
-                     action={this.resetSelection.bind(this)}
-                     type='secondary'
-                  >
-                     { t('Reset') }
-                  </ActionButton>
-               </div>
-            </div>
-            {this.state.events.slice(0, this.state.listLimit - this.state.numberElementsRemoved).map((event) => {
-               return (
+
+            <TopBar>
+               <ActionButton
+                  action={this.selectNextOutcome.bind(this)}
+                  type='secondary'
+                  disabled={
+                     this.state.listLimit >= this.props.selectionLimit || this.props.events.length <= this.state.listLimit
+                  }
+               >
+                  { t('Add') }
+               </ActionButton>
+               <ActionButton
+                  action={this.resetSelection.bind(this)}
+                  type='secondary'
+               >
+                  { t('Reset') }
+               </ActionButton>
+            </TopBar>
+
+            {this.state.events.slice(0, this.state.listLimit - this.state.numberElementsRemoved)
+               .map(event => (
                   <Event
                      key={event.event.id}
                      homeName={event.event.homeName}
@@ -296,23 +298,21 @@ class ComboWidget extends React.Component {
                      onClose={removeEvent.bind(this, event)}
                      path={event.event.path.map(part => part.name)}
                   >
-                     {event.betOffers.outcomes.map((outcome, index) => (
-                        <div className={styles.outcome} key={outcome.id}>
-                           <CustomOutcomeButton
-                              outcome={outcome}
-                              event={event}
-                           />
-                        </div>
-                     ))}
+                     {event.betOffers.outcomes.map(outcome =>
+                        <CustomOutcomeButton
+                           key={outcome.id}
+                           outcome={outcome}
+                           event={event}
+                        />)}
                   </Event>
-               );
-            })}
+               ))}
 
-            <div className='kw-bottom-button'>
-               <div className='KambiWidget-action kw-bottom-button__add-to-betslip' onClick={this.addOutcomesToBetslip.bind(this)}>
-                  { t('AddToBetslip') + ' ' + this.state.combinedOdds }
-               </div>
-            </div>
+            <BottomBar>
+               <KambiActionButton
+                  label={t('AddToBetslip') + ' ' + this.state.combinedOdds}
+                  onClick={this.addOutcomesToBetslip}
+               />
+            </BottomBar>
          </div>
       );
    }
