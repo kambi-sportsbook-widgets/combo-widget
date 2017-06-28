@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { coreLibrary, widgetModule, utilModule, translationModule } from 'kambi-widget-core-library';
+import { coreLibrary, widgetModule, eventsModule, utilModule, translationModule } from 'kambi-widget-core-library';
 import { Header, ActionButton } from 'kambi-widget-components';
 import CustomOutcomeButton from './CustomOutcomeButton';
 import TopBar from './TopBar';
 import BottomBar from './BottomBar';
 import KambiActionButton from './KambiActionButton';
 import Event from './Event';
+
+const t = translationModule.getTranslation.bind(translationModule);
 
 const getFormattedOdds = function(odds) {
    switch (coreLibrary.config.oddsFormat) {
@@ -21,31 +23,6 @@ const getFormattedOdds = function(odds) {
    }
 };
 
-const navigateToEvent = function(event) {
-   widgetModule.navigateToEvent(event.event.id);
-};
-
-const removeEvent = function(event) {
-   if (this.state.listLimit - this.state.numberElementsRemoved <= 1) {
-      // does not remove the last event
-      return;
-   }
-   event.betOffers.outcomes.map((outcome) => {
-      delete outcome.selected;
-   });
-   this.state.events.splice(this.state.events.indexOf(event), 1);
-   this.setState({
-      numberElementsRemoved: this.state.numberElementsRemoved + 1,
-      events: this.state.events
-   });
-
-   this.calculateCombinedOdds();
-};
-
-const adjustHeight = () => {
-   widgetModule.adaptWidgetHeight();
-};
-
 class ComboWidget extends React.Component {
 
    /**
@@ -56,214 +33,195 @@ class ComboWidget extends React.Component {
       super(props);
 
       this.state = {
-         numberElementsRemoved: 0,
-         listLimit: props.defaultListLimit,
-         events: props.events.slice(), // shallow copies the array
-         combinedOdds: ''
+         combinedOdds: '',
+         events: this.initialStateEvents,
+         tail: this.props.defaultListLimit - 1
       };
 
-      // create event handlers
-      this.outcomeSelectedHandler = data => this.selectOutcome(data.outcomeId, data.betOfferId);
-      this.outcomeDeselectedHandler = data => this.selectOutcome(data.outcomeId, data.betOfferId);
-      this.oddsFormatHandler = () => this.calculateCombinedOdds();
-
       this.addOutcomesToBetslip = this.addOutcomesToBetslip.bind(this);
+      this.renderCombinedOdds = this.renderCombinedOdds.bind(this);
    }
 
+   /**
+    * Called before mounting component.
+    */
    componentWillMount() {
-      widgetModule.events.subscribe('CUSTOM:OUTCOME:SELECTED', this.outcomeSelectedHandler);
-      widgetModule.events.subscribe('CUSTOM:OUTCOME:DESELECTED', this.outcomeDeselectedHandler);
-      widgetModule.events.subscribe('ODDS:FORMAT', this.oddsFormatHandler);
-      this.calculateCombinedOdds();
+      widgetModule.events.subscribe('ODDS:FORMAT', this.renderCombinedOdds.bind(this));
+      this.renderCombinedOdds();
    }
 
+   /**
+    * Called after mounting component to DOM.
+    */
    componentDidMount() {
-      adjustHeight();
+      widgetModule.adaptWidgetHeight();
    }
 
    /**
     * Called after updating component's DOM.
     */
-   componentWillReceiveProps(nextProps) {
-      this.setState({
-         listLimit: nextProps.defaultListLimit,
-         combinedOdds: ''
-      });
-   }
-
-   componentDidUpdate() {
-      adjustHeight();
-   }
-
-   componentWillUnmount() {
-      widgetModule.events.unsubscribe('CUSTOM:OUTCOME:SELECTED', this.outcomeSelectedHandler);
-      widgetModule.events.unsubscribe('CUSTOM:OUTCOME:DESELECTED', this.outcomeDeselectedHandler);
-      widgetModule.events.unsubscribe('ODDS:FORMAT', this.oddsFormatHandler);
-   }
-
-   selectOutcome(outcomeId, betOfferId) {
-      this.props.events.forEach((event) => {
-         if (event.betOffers.id === betOfferId) {
-            event.betOffers.outcomes.forEach((outcome) => {
-               if (outcome.id === outcomeId && outcome.selected) {
-                  // prevents unselecting an outcome
-                  return;
-               }
-               if (outcome.id === outcomeId) {
-                  outcome.selected = outcome.selected !== true;
-               } else {
-                  outcome.selected = false;
-               }
-            });
-         }
-      });
-
-      this.calculateCombinedOdds();
-   }
-
-   resetSelection() {
-      let selectionCounter = 0;
-      for (let i = 0; i < this.props.events.length; ++i) {
-         const outcomeLen = this.props.events[i].betOffers.outcomes.length;
-         for (let j = 0; j < outcomeLen; ++j) {
-            if (selectionCounter < this.props.defaultListLimit && j === this.props.events[i].betOffers.lowestOutcome) {
-               this.props.events[i].betOffers.outcomes[j].selected = true;
-               selectionCounter++;
-            } else {
-               this.props.events[i].betOffers.outcomes[j].selected = false;
-            }
-
-         }
-      }
-      // Reset the list size
-      this.setState({
-         numberElementsRemoved: 0,
-         listLimit: this.props.defaultListLimit,
-         events: this.props.events.slice(), // shallow copies the array
-         combinedOdds: ''
-      });
-
-      // calculateCombinedOdds triggers the rerendering
-      this.calculateCombinedOdds();
+   componentWillReceiveProps() {
+      this.resetEvents();
    }
 
    /**
-    * Calculates the combined odds of the selected outcomes
+    * Called after state/props update.
     */
-   calculateCombinedOdds() {
-      let result = 1;
-      const outcomes = [];
-
-      if (this.state.events.length > 0) {
-         for (let i = 0; i < this.state.events.length; ++i) {
-            const outcomesLen = this.state.events[i].betOffers.outcomes.length;
-            for (let j = 0; j < outcomesLen; ++j) {
-               if (this.state.events[i].betOffers.outcomes[j].selected === true) {
-                  outcomes.push(this.state.events[i].betOffers.outcomes[j]);
-                  result *= (this.state.events[i].betOffers.outcomes[j].odds / 1000);
-               }
-            }
-         }
-
-         getFormattedOdds(Math.round(result * 1000))
-            .then((odds) => {
-               this.setState({
-                  combinedOdds: odds
-               });
-            });
-      } else {
-         this.setState({
-            combinedOdds: ''
-         });
-      }
+   componentDidUpdate() {
+      widgetModule.adaptWidgetHeight();
    }
 
-   selectNextOutcome() {
-      const len = this.props.events.length;
-      let selectedCount = 0,
-         alreadySelected = 0;
-
-      for (let i = 0; i < len; ++i) {
-         const outcomeLen = this.props.events[i].betOffers.outcomes.length;
-         let hasSelected = false;
-
-         for (let j = 0; j < outcomeLen; ++j) {
-            if (this.props.events[i].betOffers.outcomes[j].selected === true) {
-               hasSelected = true;
-               alreadySelected++;
-            }
-         }
-
-         if (alreadySelected >= this.props.selectionLimit) {
-            return false;
-         }
-
-         if (hasSelected === false && i >= this.state.listLimit) {
-            if (selectedCount === this.state.listLimit) {
-               this.setState({
-                  listLimit: this.state.listLimit + 1
-               });
-            }
-
-            this.props.events[i].betOffers.outcomes[this.props.events[i].betOffers.lowestOutcome].selected = true;
-
-            this.calculateCombinedOdds();
-
-            return true;
-         } else {
-            selectedCount++;
-         }
-      }
-      return false;
+   /**
+    * Called just before unmounting the component.
+    */
+   componentWillUnmount() {
+      widgetModule.events.unsubscribe('ODDS:FORMAT', this.oddsFormatHandler);
    }
 
+   /**
+    * Create initial state events array.
+    */
+   get initialStateEvents() {
+      return this.props.events.map((event, i) => ({
+         event,
+         visible: i < this.props.defaultListLimit,
+         selectedOutcomeIdx: event.betOffers.lowestOutcome,
+         get selectedOutcome() { return this.event.betOffers.outcomes[this.selectedOutcomeIdx] }
+      }));
+   }
+
+   /**
+    * Makes next event visible.
+    */
+   addEvent() {
+      if (this.visibleEvents.length >= this.props.selectionLimit) {
+         return;
+      }
+
+      this.state.events[++this.state.tail].visible = true;
+      this.setState({ events: this.state.events }, this.renderCombinedOdds);
+   }
+
+   /**
+    * Removes given event from the list.
+    * @param {object} event Event entity
+    */
+   removeEvent(event) {
+      if (this.visibleEvents.length <= 1) {
+         // do not remove last event
+         return;
+      }
+
+      this.state.events[this.props.events.indexOf(event)].visible = false;
+      this.setState({ events: this.state.events }, this.renderCombinedOdds);
+   }
+
+   /**
+    * Resets events list to initial state.
+    */
+   resetEvents() {
+      this.setState(
+         {
+            events: this.initialStateEvents,
+            tail: this.props.defaultListLimit - 1
+         },
+         this.renderCombinedOdds
+      );
+   }
+
+   /**
+    * Navigates to given event.
+    * @param {object} event
+    */
+   navigateToEvent(event) {
+      widgetModule.navigateToEvent(event.event.id);
+   }
+
+   /**
+    * Selects given outcome.
+    * @param {object} outcome Outcome instance
+    * @param {object} event Event instance
+    */
+   selectOutcome(outcome, event) {
+      this.state.events[this.props.events.indexOf(event)].selectedOutcomeIdx =
+         event.betOffers.outcomes.indexOf(outcome);
+      this.setState({ events: this.state.events }, this.renderCombinedOdds);
+   }
+
+   /**
+    * Adds selected outcomes to BetSlip.
+    */
    addOutcomesToBetslip() {
-      // Create a removable listener that calls the api for the betslip betoffers
-      const betslipListener = (betslipOffers, event) => {
-         // Remove the listener once we get the items from the betslip
-         widgetModule.events.unsubscribe('OUTCOMES:UPDATE', betslipListener);
+      const handler = (betslipOffers) => {
+         eventsModule.unsubscribe('OUTCOMES:UPDATE', handler);
 
-         const outcomes = [],
-            remove = [],
-            betslipLen = betslipOffers.outcomes.length;
+         const outcomeIds = this.state.events
+            .filter(stateEvent => stateEvent.visible)
+            .map(stateEvent => stateEvent.selectedOutcome.id);
 
-         for (let i = 0; i < this.state.listLimit; ++i) {
-            const outcomesLen = this.state.events[i].betOffers.outcomes.length;
+         if (this.props.replaceOutcomes) {
+            const removeIds = this.state.events
+               .filter(stateEvent => stateEvent.visible)
+               .map(stateEvent => betslipOffers.outcomes
+                  .filter(outcome => outcome.eventId === stateEvent.event.event.id && outcomeIds.indexOf(outcome.id) < 0))
+               .reduce((all, outcomes) => all.concat(outcomes), [])
+               .map(outcome => outcome.id);
 
-            for (let j = 0; j < outcomesLen; ++j) {
-               if (this.state.events[i].betOffers.outcomes[j].selected) {
-                  outcomes.push(this.state.events[i].betOffers.outcomes[j].id);
-               }
-            }
-
-            if (this.props.replaceOutcomes === true) {
-               for (let k = 0; k < betslipLen; ++k) {
-                  if (betslipOffers.outcomes[k].eventId === this.state.events[i].event.id && outcomes.indexOf(betslipOffers.outcomes[k].id) === -1 &&
-                     betslipOffers.outcomes[k].id !== outcomes ) {
-                     remove.push(betslipOffers.outcomes[k].id);
-                  }
-               }
-            }
+            widgetModule.removeOutcomeFromBetslip(removeIds);
          }
 
-         if (this.props.replaceOutcomes === true) {
-            widgetModule.removeOutcomeFromBetslip(remove);
-         }
-
-         widgetModule.addOutcomeToBetslip(outcomes);
+         widgetModule.addOutcomeToBetslip(outcomeIds);
       };
 
-      widgetModule.events.subscribe('OUTCOMES:UPDATE', betslipListener);
+      eventsModule.subscribe('OUTCOMES:UPDATE', handler);
       widgetModule.requestBetslipOutcomes();
    }
 
    /**
-    * Creates widget template.
+    * Visible events list
+    * @returns {object[]}
+    */
+   get visibleEvents() {
+      return this.state.events.filter(stateEvent => stateEvent.visible)
+         .map(stateEvent => stateEvent.event);
+   }
+
+   /**
+    * Combined odds for currently visible events
+    * @returns {number}
+    */
+   get combinedOdds() {
+      return this.state.events.reduce((result, stateEvent) => {
+         return stateEvent.visible
+            ? result * (stateEvent.selectedOutcome.odds / 1000)
+            : result;
+      }, 1);
+   }
+
+   /**
+    * Determines whether given outcome is currently selected.
+    * @param {object} outcome Outcome instance
+    * @param {object} event Event instance
+    * @returns {boolean}
+    */
+   isOutcomeSelected(outcome, event) {
+      return this.state.events[this.props.events.indexOf(event)].selectedOutcomeIdx
+         === event.betOffers.outcomes.indexOf(outcome);
+   }
+
+   /**
+    * Renders calculated combined odds.
+    */
+   renderCombinedOdds() {
+      getFormattedOdds(this.combinedOdds * 1000)
+         .then(combinedOdds => this.setState({ combinedOdds }));
+   }
+
+   /**
+    * Renders widget.
     * @returns {XML}
     */
    render() {
-      const t = translationModule.getTranslation.bind(translationModule);
-
       return (
          <div>
             <Header>
@@ -272,40 +230,41 @@ class ComboWidget extends React.Component {
 
             <TopBar>
                <ActionButton
-                  action={this.selectNextOutcome.bind(this)}
+                  action={this.addEvent.bind(this)}
                   type='secondary'
                   disabled={
-                     this.state.listLimit >= this.props.selectionLimit || this.props.events.length <= this.state.listLimit
+                     this.visibleEvents.length >= this.props.selectionLimit || this.props.events.length <= this.props.selectionLimit
                   }
                >
                   { t('Add') }
                </ActionButton>
                <ActionButton
-                  action={this.resetSelection.bind(this)}
+                  action={this.resetEvents.bind(this)}
                   type='secondary'
                >
                   { t('Reset') }
                </ActionButton>
             </TopBar>
 
-            {this.state.events.slice(0, this.state.listLimit - this.state.numberElementsRemoved)
-               .map(event => (
-                  <Event
-                     key={event.event.id}
-                     homeName={event.event.homeName}
-                     awayName={event.event.awayName}
-                     onClick={navigateToEvent.bind(null, event)}
-                     onClose={removeEvent.bind(this, event)}
-                     path={event.event.path.map(part => part.name)}
-                  >
-                     {event.betOffers.outcomes.map(outcome =>
-                        <CustomOutcomeButton
-                           key={outcome.id}
-                           outcome={outcome}
-                           event={event}
-                        />)}
-                  </Event>
-               ))}
+            {this.visibleEvents.map(event => (
+               <Event
+                  key={event.event.id}
+                  homeName={event.event.homeName}
+                  awayName={event.event.awayName}
+                  onClick={this.navigateToEvent.bind(this, event)}
+                  onClose={this.removeEvent.bind(this, event)}
+                  path={event.event.path.map(part => part.name)}
+               >
+                  {event.betOffers.outcomes.map(outcome =>
+                     <CustomOutcomeButton
+                        key={outcome.id}
+                        outcome={outcome}
+                        event={event}
+                        selected={this.isOutcomeSelected(outcome, event)}
+                        onClick={this.selectOutcome.bind(this, outcome, event)}
+                     />)}
+               </Event>
+            ))}
 
             <BottomBar>
                <KambiActionButton
@@ -343,7 +302,7 @@ ComboWidget.propTypes = {
 ComboWidget.defaultProps = {
    defaultListLimit: 2,
    selectionLimit: 12,
-   replaceOutcome: true
+   replaceOutcomes: true
 };
 
 export default ComboWidget;

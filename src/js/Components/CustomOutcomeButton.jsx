@@ -4,17 +4,6 @@ import { coreLibrary, utilModule, eventsModule } from 'kambi-widget-core-library
 import { OutcomeButtonUI } from 'kambi-widget-components';
 
 /**
- * Returns initial state.
- * @param {object} outcome Outcome entity
- * @returns {{selected: boolean}}
- */
-const getInitialState = (outcome) => {
-   return {
-      selected: outcome.selected == null ? false : outcome.selected
-   };
-};
-
-/**
  * Renders an outcome button.
  */
 class CustomOutcomeButton extends Component {
@@ -26,13 +15,7 @@ class CustomOutcomeButton extends Component {
    constructor(props) {
       super(props);
 
-      this.toggleOutcome = this.toggleOutcome.bind(this);
-      // compute initial state
-      this.state = getInitialState(props.outcome);
-
-      this.oddsFormatHandler = () => {
-         this.forceUpdate();
-      }
+      this.oddsFormatHandler = () => this.forceUpdate()
    }
 
    /**
@@ -43,35 +26,10 @@ class CustomOutcomeButton extends Component {
    }
 
    /**
-    * Called just before changing properties of component.
-    * @param {object} nextProps New properties
-    */
-   componentWillReceiveProps(nextProps) {
-      this.setState(getInitialState(nextProps.outcome));
-   }
-
-   /**
     * Called before removing component.
     */
    componentWillUnmount() {
       eventsModule.unsubscribe('ODDS:FORMAT', this.oddsFormatHandler);
-   }
-
-   /**
-    * Handles outcome button's click event.
-    */
-   toggleOutcome() {
-      if (this.state.selected) {
-         eventsModule.publish('CUSTOM:OUTCOME:DESELECTED', {
-            betOfferId: this.betOffer.id,
-            outcomeId: this.props.outcome.id
-         });
-      } else {
-         eventsModule.publish('CUSTOM:OUTCOME:SELECTED', {
-            betOfferId: this.betOffer.id,
-            outcomeId: this.props.outcome.id
-         });
-      }
    }
 
    /**
@@ -111,17 +69,13 @@ class CustomOutcomeButton extends Component {
     * @returns {XML}
     */
    render() {
-      let suspended = false;
-      if (this.betOffer && this.betOffer.suspended) {
-         suspended = true;
-      }
       return (
          <OutcomeButtonUI
             label={this.label}
             odds={this.oddsFormatted}
-            suspended={suspended}
-            selected={this.state.selected}
-            onClick={this.toggleOutcome}
+            suspended={this.betOffer && this.betOffer.suspended}
+            selected={this.props.selected}
+            onClick={this.props.onClick}
          />
       );
    }
@@ -137,6 +91,16 @@ CustomOutcomeButton.propTypes = {
     * Event entity
     */
    event: PropTypes.object.isRequired,
+
+   /**
+    * Outcome button selected state
+    */
+   selected: PropTypes.bool.isRequired,
+
+   /**
+    * Handler for button click action
+    */
+   onClick: PropTypes.func.isRequired
 };
 
 export default CustomOutcomeButton;
