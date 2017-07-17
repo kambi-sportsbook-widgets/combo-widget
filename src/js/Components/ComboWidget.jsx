@@ -157,7 +157,7 @@ class ComboWidget extends React.Component {
          .map(stateEvent => stateEvent.selectedOutcome.id);
 
       widgetModule.addOutcomeToBetslip(
-         outcomeIds,
+         outcomeIds[0],
          null,
          this.props.replaceOutcomes ? 'replace' : null
       );
