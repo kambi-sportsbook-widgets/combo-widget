@@ -46,7 +46,7 @@ class ComboWidget extends React.Component {
     * Called before mounting component.
     */
    componentWillMount() {
-      widgetModule.events.subscribe('ODDS:FORMAT', this.renderCombinedOdds.bind(this));
+      eventsModule.subscribe('ODDS:FORMAT', this.renderCombinedOdds.bind(this));
       this.renderCombinedOdds();
    }
 
@@ -75,7 +75,7 @@ class ComboWidget extends React.Component {
     * Called just before unmounting the component.
     */
    componentWillUnmount() {
-      widgetModule.events.unsubscribe('ODDS:FORMAT', this.oddsFormatHandler);
+      eventsModule.unsubscribe('ODDS:FORMAT', this.oddsFormatHandler);
    }
 
    /**
@@ -152,29 +152,15 @@ class ComboWidget extends React.Component {
     * Adds selected outcomes to BetSlip.
     */
    addOutcomesToBetslip() {
-      const handler = (betslipOffers) => {
-         eventsModule.unsubscribe('OUTCOMES:UPDATE', handler);
+      const outcomeIds = this.state.events
+         .filter(stateEvent => stateEvent.visible)
+         .map(stateEvent => stateEvent.selectedOutcome.id);
 
-         const outcomeIds = this.state.events
-            .filter(stateEvent => stateEvent.visible)
-            .map(stateEvent => stateEvent.selectedOutcome.id);
-
-         if (this.props.replaceOutcomes) {
-            const removeIds = this.state.events
-               .filter(stateEvent => stateEvent.visible)
-               .map(stateEvent => betslipOffers.outcomes
-                  .filter(outcome => outcome.eventId === stateEvent.event.event.id && outcomeIds.indexOf(outcome.id) < 0))
-               .reduce((all, outcomes) => all.concat(outcomes), [])
-               .map(outcome => outcome.id);
-
-            widgetModule.removeOutcomeFromBetslip(removeIds);
-         }
-
-         widgetModule.addOutcomeToBetslip(outcomeIds);
-      };
-
-      eventsModule.subscribe('OUTCOMES:UPDATE', handler);
-      widgetModule.requestBetslipOutcomes();
+      widgetModule.addOutcomeToBetslip(
+         outcomeIds,
+         null,
+         this.props.replaceOutcomes ? 'replace' : null
+      );
    }
 
    /**
