@@ -16,13 +16,13 @@
    },
    "dependencies": {
       "kambi-widget-components": "^1.16.0",
-      "kambi-widget-core-library": "^3.9.8",
+      "kambi-widget-core-library": "^3.9.9",
       "prop-types": "^15.3.2",
       "react": "^15.3.2",
       "react-dom": "^15.3.2"
    },
    "devDependencies": {
-      "kambi-widget-build-tools": "^4.0.0"
+      "kambi-widget-build-tools": "^4.0.2"
    },
    "repository": {
       "type": "git",
