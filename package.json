@@ -1,38 +1,55 @@
 {
-   "name": "combo-widget",
-   "version": "4.3.18",
-   "description": "A combo building widget for the Kambi sportsbook",
-   "main": "dist/index.html",
-   "useHttps": true,
-   "scripts": {
-      "clean": "kambi-widgets-cli clean",
-      "prestart": "npm run clean",
-      "start": "kambi-widgets-cli start",
-      "prebuild": "npm run clean",
-      "build": "kambi-widgets-cli build",
-      "preversion": "kambi-widgets-cli preversion",
-      "postversion": "kambi-widgets-cli postversion",
-      "test": "kambi-widgets-cli test"
-   },
-   "dependencies": {
-      "kambi-widget-components": "^1.16.0",
-      "kambi-widget-core-library": "^3.9.9",
-      "prop-types": "^15.3.2",
-      "react": "^15.3.2",
-      "react-dom": "^15.3.2"
-   },
-   "devDependencies": {
-      "kambi-widget-build-tools": "^4.0.2"
-   },
-   "repository": {
-      "type": "git",
-      "url": "git+ssh://git@github.com/kambi-sportsbook-widgets/combo-widget.git"
-   },
-   "author": "Michael Blom <michael@globalmouth.com>",
-   "contributors": [
-      "Andrei Teodorescu <andrei@globalmouth.com>",
-      "Daniel Hoffmann <daniel.hoffmann@globalmouth.com>"
-   ],
-   "license": "MIT",
-   "homepage": "https://github.com/kambi-sportsbook-widgets/combo-widget"
+  "name": "combo-widget",
+  "version": "4.3.18",
+  "description": "A combo building widget for the Kambi sportsbook",
+  "main": "dist/index.html",
+  "useHttps": true,
+  "scripts": {
+    "clean": "kambi-widgets-cli clean",
+    "prestart": "npm run clean",
+    "start": "kambi-widgets-cli start",
+    "prebuild": "npm run clean",
+    "build": "kambi-widgets-cli build",
+    "preversion": "kambi-widgets-cli preversion",
+    "postversion": "kambi-widgets-cli postversion",
+    "test": "kambi-widgets-cli test",
+    "prettier-all": "find ./src -name \"*.jsx\" -o -name \"*.js\" | xargs prettier --write",
+    "precommit": "lint-staged"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "lint-staged": {
+    "*.{js,json,css}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "kambi-widget-components": "^1.16.0",
+    "kambi-widget-core-library": "^3.11.1",
+    "prop-types": "^15.3.2",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
+  "devDependencies": {
+    "kambi-widget-build-tools": "^4.2.1",
+    "lint-staged": "^6.1.0",
+    "prettier": "^1.10.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kambi-sportsbook-widgets/combo-widget.git"
+  },
+  "author": "Michael Blom <michael@globalmouth.com>",
+  "contributors": [
+    "Andrei Teodorescu <andrei@globalmouth.com>",
+    "Daniel Hoffmann <daniel.hoffmann@globalmouth.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/kambi-sportsbook-widgets/combo-widget"
 }
