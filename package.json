@@ -32,7 +32,7 @@
     "https": true
   },
   "dependencies": {
-    "kambi-widget-core-library": "^4.2.0",
+    "kambi-widget-core-library": "^4.2.1",
     "kambi-widget-components": "^1.18.4"
   },
   "peerDependencies": {
