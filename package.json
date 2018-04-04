@@ -9,6 +9,8 @@
     "start": "kambi-widgets-cli start",
     "prebuild": "npm run clean",
     "build": "kambi-widgets-cli build",
+    "start-embedded": "kambi-widgets-cli start-embedded",
+    "build-embedded": "kambi-widgets-cli build-embedded",
     "preversion": "kambi-widgets-cli preversion",
     "postversion": "kambi-widgets-cli postversion",
     "test": "kambi-widgets-cli test",
@@ -32,7 +34,7 @@
     "https": true
   },
   "dependencies": {
-    "kambi-widget-core-library": "^4.2.1",
+    "kambi-widget-core-library": "^4.4.0",
     "kambi-widget-components": "^1.18.4"
   },
   "peerDependencies": {
