@@ -52,7 +52,11 @@ class CustomOutcomeButton extends Component {
       case 'fractional':
         return this.props.outcome.oddsFractional
       case 'american':
-        return this.props.outcome.oddsAmerican
+        let odds = this.props.outcome.oddsAmerican
+        if (parseFloat(odds, 10) >= 0) {
+          odds = '+' + odds
+        }
+        return odds
       default:
         return utilModule.getOddsDecimalValue(this.props.outcome.odds / 1000)
     }
