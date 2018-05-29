@@ -7,7 +7,7 @@ import store from './Store/store'
 coreLibrary
   .init({
     widgetTrackingName: 'gm-combo-widget',
-    sport: 'FOOTBALL',
+    sport: 'TENNIS',
     defaultListLimit: 3, // A default setting for the size of the list, used when resetting
     selectionLimit: 12, // The maximum allowed selections, the bet slip supports up to 12 outcomes
     replaceOutcomes: true, // When selecting a different outcome in a betoffer that has already been added to the betslip, should we replace it?
@@ -33,7 +33,7 @@ coreLibrary
         selectionLimit={coreLibrary.args.selectionLimit}
         replaceOutcome={coreLibrary.args.replaceOutcomes}
       />,
-      document.getElementById('root')
+      coreLibrary.rootElement
     )
   })
   .catch(error => {

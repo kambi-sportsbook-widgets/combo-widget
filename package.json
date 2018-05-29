@@ -3,6 +3,7 @@
   "version": "4.4.0",
   "description": "A combo building widget for the Kambi sportsbook",
   "main": "dist/index.html",
+  "widgetCssVersion": "1.0.0.64",
   "scripts": {
     "clean": "kambi-widgets-cli clean",
     "prestart": "npm run clean",
@@ -34,8 +35,8 @@
     "https": true
   },
   "dependencies": {
-    "kambi-widget-core-library": "^4.4.0",
-    "kambi-widget-components": "^1.19.0"
+    "kambi-widget-core-library": "^4.8.0",
+    "kambi-widget-components": "^1.21.6"
   },
   "peerDependencies": {
     "prop-types": "x",
