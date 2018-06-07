@@ -3,7 +3,7 @@
   "version": "4.5.0",
   "description": "A combo building widget for the Kambi sportsbook",
   "main": "dist/index.html",
-  "widgetCssVersion": "1.0.0.64",
+  "widgetCssVersion": "1.0.0.65",
   "scripts": {
     "clean": "kambi-widgets-cli clean",
     "prestart": "npm run clean",
