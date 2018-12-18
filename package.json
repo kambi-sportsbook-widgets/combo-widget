@@ -12,6 +12,7 @@
     "build": "kambi-widgets-cli build",
     "start-embedded": "kambi-widgets-cli start-embedded",
     "build-embedded": "kambi-widgets-cli build-embedded",
+    "deploy:kambi": "npm run build && wdt deploy kambi -if",
     "preversion": "kambi-widgets-cli preversion",
     "postversion": "kambi-widgets-cli postversion",
     "test": "kambi-widgets-cli test",
