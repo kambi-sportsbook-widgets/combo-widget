@@ -1,6 +1,6 @@
 {
   "name": "combo-widget",
-  "version": "4.5.8",
+  "version": "4.5.9",
   "description": "A combo building widget for the Kambi sportsbook",
   "main": "dist/index.html",
   "widgetCssVersion": "1.0.0.93",
@@ -16,8 +16,7 @@
     "preversion": "kambi-widgets-cli preversion",
     "postversion": "kambi-widgets-cli postversion",
     "test": "kambi-widgets-cli test",
-    "prettier-all":
-      "find ./src -name \"*.jsx\" -o -name \"*.js\" | xargs prettier --write",
+    "prettier-all": "find ./src -name \"*.jsx\" -o -name \"*.js\" | xargs prettier --write",
     "precommit": "lint-staged"
   },
   "prettier": {
@@ -28,7 +27,10 @@
     "trailingComma": "es5"
   },
   "lint-staged": {
-    "*.{js,json,css,scss}": ["prettier --write", "git add"]
+    "*.{js,json,css,scss}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "devServer": {
     "https": true
