@@ -32,6 +32,10 @@
       "git add"
     ]
   },
+  "useRealReact": {
+    "development": true,
+    "production": true
+  },
   "devServer": {
     "https": true
   },
