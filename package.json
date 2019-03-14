@@ -17,7 +17,8 @@
     "postversion": "kambi-widgets-cli postversion",
     "test": "kambi-widgets-cli test",
     "prettier-all": "find ./src -name \"*.jsx\" -o -name \"*.js\" | xargs prettier --write",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "production-deployment": "aws s3 sync ./dist s3://extwidgets/combo-widget/v4.5 --profile kambi"
   },
   "prettier": {
     "tabWidth": 2,
