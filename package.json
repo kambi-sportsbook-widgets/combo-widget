@@ -41,8 +41,8 @@
     "https": true
   },
   "dependencies": {
-    "kambi-widget-core-library": "^4.11.4",
-    "kambi-widget-components": "^1.21.6"
+    "kambi-widget-components": "^1.21.12",
+    "kambi-widget-core-library": "^4.11.7"
   },
   "peerDependencies": {
     "prop-types": "x",
@@ -50,8 +50,8 @@
     "react-dom": "x"
   },
   "devDependencies": {
-    "lint-staged": "^6.1.0",
-    "prettier": "^1.10.2"
+    "lint-staged": "^8.2.0",
+    "prettier": "^1.18.2"
   },
   "repository": {
     "type": "git",
